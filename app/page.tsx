@@ -1,18 +1,22 @@
-import { Button } from "@/components/ui/button"
+import { RippleButton } from "@/components/ui/ripple-button"
+import { RainbowButton } from "@/components/ui/rainbow-button"
 
 export default function Home() {
   return (
-    <div
-      className="min-h-screen bg-[#f0f2ef] relative overflow-hidden"
-      style={{
-        backgroundImage: "url(/background1.png)",
-        backgroundSize: "cover",
-        backgroundPosition: "center",
-        backgroundRepeat: "no-repeat",
-      }}
-    >
+    <div className="min-h-screen bg-[#f0f2ef] relative">
+      {/* Background */}
+      <div 
+        className="fixed inset-0 z-0"
+        style={{
+          backgroundImage: "url(/background.svg)",
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          backgroundRepeat: "no-repeat",
+        }}
+      />
+      
       {/* Navigation */}
-      <nav className="relative z-10 pt-8 pb-6">
+      <nav className="sticky top-0 z-50 pt-8 pb-6 bg-gradient-to-b from-[#f0f2ef] to-[#f0f2ef]/0">
         <div className="flex justify-center px-6">
           <div className="bg-[#0b0b0b] rounded-[10px] p-[7px] inline-flex items-center gap-[23px] shadow-lg">
             {/* Logo */}
@@ -49,9 +53,13 @@ export default function Home() {
               </a>
             </div>
 
-            <Button className="bg-white text-[#0b0b0b] hover:bg-[#ffffff]/90 rounded-[11px] px-6">
+            <RainbowButton 
+              variant="outline"
+              size={undefined}
+              className="text-[#0b0b0b] rounded-[11px] px-[11px]"
+            >
               Bądź na bieżąco →
-            </Button>
+            </RainbowButton>
           </div>
         </div>
       </nav>
@@ -64,54 +72,63 @@ export default function Home() {
           </p>
 
           {/* Headline */}
-          <h1 className="text-7xl md:text-8xl font-bold text-[#0b0b0b] mb-6 tracking-tight">MyMidwife</h1>
+          <h1 className="text-[64px] md:text-[132px] font-bold text-[#0b0b0b] mb-0 tracking-tight">MyMidwife</h1>
 
           {/* Description */}
-          <p className="text-[#0b0b0b] text-lg max-w-2xl mx-auto mb-4">
-            MyMidwife to platforma łącząca przyszłe mamy z ekspertkami.{" "}
-            <span className="text-[#e352ad]">Bezpieczeństwo, wiedzą i wsparcie w jednej aplikacji.</span>
+          <p className="text-[rgba(65,65,65,1)] text-[24px] max-w-2xl mx-auto mb-4">
+            MyMidwife to platforma łącząca kobiety z ekspertkami.{" "}
+            <span className="text-[rgba(230,159,205,1)]">Bezpieczeństwo, wiedzą i wsparcie w jednej aplikacji.</span>
           </p>
 
-          <div className="flex items-center justify-center gap-4 mb-8">
-            <Button className="bg-[#0b0b0b] text-white hover:bg-[#414141] rounded-[11px] px-8 py-6 text-base">
+          <div className="flex items-center justify-center gap-4 mb-8 text-[rgba(10,10,10,1)]">
+            <RippleButton 
+              rippleColor="rgba(255, 255, 255, 0.5)"
+              className="bg-[#0b0b0b] text-white hover:bg-[#414141] rounded-[11px] px-[11px] py-[11px] text-base border-0"
+            >
               Jestem pacjentką
-            </Button>
-            <Button className="bg-[#eac9df] text-[#0b0b0b] hover:bg-[#e352ad]/30 rounded-[11px] px-8 py-6 text-base">
+            </RippleButton>
+            <RippleButton 
+              rippleColor="rgba(227, 82, 173, 0.4)"
+              className="bg-[#eac9df] text-[#0b0b0b] hover:bg-[#e352ad]/30 rounded-[11px] px-[11px] py-[11px] text-base border-0"
+            >
               Jestem położną
-            </Button>
+            </RippleButton>
           </div>
 
           {/* Trust section */}
           <div className="mb-12">
-            <p className="text-sm text-[#989a98] mb-4">Zaufali nam:</p>
+            <p className="text-sm text-[#989a98] mb-4">Partnerzy:</p>
             <div className="flex items-center justify-center gap-8 flex-wrap">
-              <div className="text-[#0b0b0b] font-semibold text-sm">BraveCamp</div>
-              <div className="text-[#0b0b0b] font-semibold text-sm">UAM INNOVATION HUB</div>
-              <div className="text-[#0b0b0b] font-semibold text-sm">Innovation Hub</div>
+              <img
+                src="/co-logos/logos1.png"
+                alt="BraveCamp"
+                className="h-5 opacity-40 object-contain"
+              />
+              <img
+                src="/co-logos/logos2.png"
+                alt="UAM INNOVATION HUB"
+                className="h-5 opacity-40 object-contain"
+              />
+              <img
+                src="/co-logos/logos3.png"
+                alt="Innovation Hub"
+                className="h-5 opacity-40 object-contain"
+              />
             </div>
           </div>
 
           {/* Phone mockup */}
           <div className="relative w-full max-w-md mx-auto">
-            <div className="relative aspect-[9/19] w-full">
-              {/* Phone frame */}
-              <div className="absolute inset-0 bg-[#0b0b0b] rounded-[3rem] shadow-2xl p-3">
-                {/* Screen */}
-                <div className="w-full h-full bg-white rounded-[2.5rem] overflow-hidden">
-                  {/* Notch */}
-                  <div className="absolute top-0 left-1/2 -translate-x-1/2 bg-[#0b0b0b] rounded-b-3xl h-7 w-32 z-10" />
-                </div>
-              </div>
-
-              {/* Hand holding phone */}
-              <div className="absolute -bottom-8 left-1/2 -translate-x-1/2 w-[110%] h-[60%] pointer-events-none">
-                <img
-                  src="/placeholder.svg?height=400&width=350"
-                  alt=""
-                  className="w-full h-full object-contain opacity-80"
-                />
-              </div>
-            </div>
+            <img
+              src="/images/Group 3.png"
+              alt="MyMidwife App Interface"
+              className="h-auto scale-[2]"
+              style={{
+                width: '634px',
+                paddingTop: '139px',
+                paddingBottom: '139px',
+              }}
+            />
           </div>
         </div>
       </main>

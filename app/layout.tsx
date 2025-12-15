@@ -4,7 +4,11 @@ import { Inter_Tight } from "next/font/google"
 import { Analytics } from "@vercel/analytics/next"
 import "./globals.css"
 
-const _interTight = Inter_Tight({ subsets: ["latin"] })
+const _interTight = Inter_Tight({ 
+  subsets: ["latin"],
+  display: "swap",
+  preload: true,
+})
 
 export const metadata: Metadata = {
   title: "MyMidwife - Łączymy mamy z ekspertkami",

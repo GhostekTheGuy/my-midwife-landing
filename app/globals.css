@@ -158,3 +158,47 @@
     @apply bg-background text-foreground;
   }
 }
+
+@layer utilities {
+  .grid-responsive-cards {
+    grid-template-columns: repeat(1, minmax(0, 1fr));
+  }
+  
+  @media (min-width: 640px) {
+    .grid-responsive-cards {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @keyframes marquee {
+    0% {
+      transform: translateX(0);
+    }
+    100% {
+      transform: translateX(calc(-100% - var(--gap, 1rem)));
+    }
+  }
+
+  @keyframes marquee-vertical {
+    0% {
+      transform: translateY(0);
+    }
+    100% {
+      transform: translateY(calc(-100% - var(--gap, 1rem)));
+    }
+  }
+
+  .animate-marquee {
+    animation-name: marquee;
+    animation-duration: var(--duration, 40s);
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+  }
+
+  .animate-marquee-vertical {
+    animation-name: marquee-vertical;
+    animation-duration: var(--duration, 40s);
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+  }
+}

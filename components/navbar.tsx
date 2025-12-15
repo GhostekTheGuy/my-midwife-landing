@@ -3,7 +3,6 @@
 import { useState } from "react"
 import { Menu, X } from "lucide-react"
 import { RainbowButton } from "@/components/ui/rainbow-button"
-import { BlurFade } from "@/components/ui/blur-fade"
 import { cn } from "@/lib/utils"
 import { useJoinModal } from "@/contexts/join-modal-context"
 
@@ -20,9 +19,8 @@ export function Navbar() {
   }
 
   return (
-    <nav className="sticky top-0 z-50 pt-4 sm:pt-8 pb-4 sm:pb-6 bg-gradient-to-b from-[#FEFBFD] to-[#FEFBFD]/0">
-      <BlurFade delay={0} inView>
-        <div className="flex justify-center px-4 sm:px-6">
+    <nav className="sticky top-0 z-50 pt-4 sm:pt-8 pb-4 sm:pb-6 bg-gradient-to-b from-white to-white/0">
+      <div className="flex justify-center px-4 sm:px-6">
           <div className="bg-[#0b0b0b] rounded-[10px] p-2 sm:p-[7px] flex items-center justify-between sm:justify-center gap-3 sm:gap-[23px] shadow-lg w-full sm:w-auto max-w-full sm:max-w-none">
             {/* Logo */}
             <div className="flex items-center">
@@ -97,7 +95,7 @@ export function Navbar() {
           </div>
         </div>
 
-        {/* Mobile Menu */}
+      {/* Mobile Menu */}
         <div
           className={cn(
             "sm:hidden fixed inset-x-0 top-[88px] bg-[#0b0b0b] rounded-b-[10px] mx-4 shadow-lg transition-all duration-300 ease-in-out overflow-hidden",
@@ -135,7 +133,6 @@ export function Navbar() {
             </a>
           </div>
         </div>
-      </BlurFade>
     </nav>
   )
 }

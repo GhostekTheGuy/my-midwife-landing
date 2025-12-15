@@ -3,7 +3,6 @@
 import Image from "next/image"
 import { RippleButton } from "@/components/ui/ripple-button"
 import { RainbowButton } from "@/components/ui/rainbow-button"
-import { BlurFade } from "@/components/ui/blur-fade"
 import { RotatingTestimonial } from "@/components/ui/rotating-testimonials"
 import { UserSearch, MessageCircle, ClipboardList, BookOpen, Eye, Calendar, FileText } from "lucide-react"
 import { Navbar } from "@/components/navbar"
@@ -22,7 +21,7 @@ export default function Home() {
   const { openModal } = useJoinModal()
   
   return (
-    <div className="min-h-screen bg-[#FEFBFD] relative overflow-x-hidden">
+    <div className="min-h-screen bg-[#FEFBFD] relative">
       {/* Background - Full Page */}
       <div 
         className="fixed top-0 left-0 w-full h-full z-0"
@@ -43,91 +42,81 @@ export default function Home() {
         {/* Hero Content */}
         <div className="w-full max-w-7xl px-4 sm:px-6 pt-12 sm:pt-16 pb-12 sm:pb-20">
           <div className="text-center mb-12">
-            <BlurFade delay={0.1} variant="slideUp">
             <p className="text-sm text-[#989a98] mb-4 tracking-wide">
               #medtech #mhealth #startup
             </p>
-          </BlurFade>
 
           {/* Headline */}
-          <BlurFade delay={0.2} variant="slideUp">
-            <h1 className="text-[48px] sm:text-[64px] md:text-[132px] font-bold text-[#0b0b0b] mb-0 tracking-tight px-4 sm:px-0">MyMidwife</h1>
-          </BlurFade>
+          <h1 className="text-[48px] sm:text-[64px] md:text-[132px] font-bold text-[#0b0b0b] mb-0 tracking-tight px-4 sm:px-0">MyMidwife</h1>
 
           {/* Description */}
-          <BlurFade delay={0.3} variant="slideUp">
-            <p className="text-[rgba(65,65,65,1)] text-base sm:text-lg md:text-[24px] max-w-2xl mx-auto mb-4 px-4 sm:px-0">
-              MyMidwife to platforma łącząca kobiety z ekspertkami.{" "}
-              <span className="text-[rgba(230,159,205,1)]">Bezpieczeństwo, wiedza i wsparcie w jednej aplikacji.</span>
-            </p>
-          </BlurFade>
+          <p className="text-[rgba(65,65,65,1)] text-base sm:text-lg md:text-[24px] max-w-2xl mx-auto mb-4 px-4 sm:px-0">
+            MyMidwife to platforma łącząca kobiety z ekspertkami.{" "}
+            <span className="text-[rgba(230,159,205,1)]">Bezpieczeństwo, wiedza i wsparcie w jednej aplikacji.</span>
+          </p>
 
-          <BlurFade delay={0.4} variant="slideUp">
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 mb-8 text-[rgba(10,10,10,1)] px-4 sm:px-0">
-              <RippleButton 
-                rippleColor="rgba(255, 255, 255, 0.5)"
-                className="bg-[#0b0b0b] text-white hover:bg-[#414141] rounded-[11px] px-4 sm:px-[11px] py-2 sm:py-[11px] text-sm sm:text-base border-0 w-full sm:w-auto"
-                onClick={openModal}
-              >
-                Dołącz teraz
-              </RippleButton>
-              <RippleButton
-                rippleColor="rgba(227, 82, 173, 0.4)"
-                className="bg-[#eac9df] text-[#0b0b0b] hover:bg-[#e352ad]/30 rounded-[11px] px-4 sm:px-[11px] py-2 sm:py-[11px] text-sm sm:text-base border-0 w-full sm:w-auto"
-                onClick={() => window.open("https://mymidwife.pl/", "_blank")}
-              >
-                Sprawdź demo
-              </RippleButton>
-            </div>
-          </BlurFade>
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 mb-8 text-[rgba(10,10,10,1)] px-4 sm:px-0">
+            <RippleButton 
+              rippleColor="rgba(255, 255, 255, 0.5)"
+              className="bg-[#0b0b0b] text-white hover:bg-[#414141] rounded-[11px] px-4 sm:px-[11px] py-2 sm:py-[11px] text-sm sm:text-base border-0 w-full sm:w-auto"
+              onClick={openModal}
+            >
+              Dołącz teraz
+            </RippleButton>
+            <RippleButton
+              rippleColor="rgba(227, 82, 173, 0.4)"
+              className="bg-[#eac9df] text-[#0b0b0b] hover:bg-[#e352ad]/30 rounded-[11px] px-4 sm:px-[11px] py-2 sm:py-[11px] text-sm sm:text-base border-0 w-full sm:w-auto"
+              onClick={() => window.open("https://mymidwife.pl/", "_blank")}
+            >
+              Sprawdź demo
+            </RippleButton>
+          </div>
 
           {/* Trust section */}
-          <BlurFade delay={0.5} variant="slideUp">
-            <div className="mb-12">
-              <p className="text-sm text-[#989a98] mb-4">Partnerzy:</p>
-              <div className="flex items-center justify-center gap-8 flex-wrap">
-                <Image
-                  src="/co-logos/logos1.png"
-                  alt="BraveCamp"
-                  width={120}
-                  height={20}
-                  className="h-5 opacity-40 object-contain"
-                  loading="lazy"
-                />
-                <Image
-                  src="/co-logos/logos2.png"
-                  alt="UAM INNOVATION HUB"
-                  width={120}
-                  height={20}
-                  className="h-5 opacity-40 object-contain"
-                  loading="lazy"
-                />
-                <Image
-                  src="/co-logos/logos3.png"
-                  alt="Innovation Hub"
-                  width={120}
-                  height={20}
-                  className="h-5 opacity-40 object-contain"
-                  loading="lazy"
-                />
-              </div>
+          <div className="mb-12">
+            <p className="text-sm text-[#989a98] mb-4">Partnerzy:</p>
+            <div className="flex items-center justify-center gap-8 flex-wrap">
+              <Image
+                src="/co-logos/logos1.png"
+                alt="BraveCamp"
+                width={120}
+                height={20}
+                className="h-5 opacity-40 object-contain"
+                loading="lazy"
+              />
+              <Image
+                src="/co-logos/logos2.png"
+                alt="UAM INNOVATION HUB"
+                width={120}
+                height={20}
+                className="h-5 opacity-40 object-contain"
+                loading="lazy"
+              />
+              <Image
+                src="/co-logos/logos3.png"
+                alt="Innovation Hub"
+                width={120}
+                height={20}
+                className="h-5 opacity-40 object-contain"
+                loading="lazy"
+              />
             </div>
-          </BlurFade>
+          </div>
 
           {/* Phone mockup with testimonials */}
           <div className="relative w-full max-w-7xl mx-auto">
             <div className="flex items-center justify-center gap-8 flex-wrap lg:flex-nowrap">
               {/* Left testimonial */}
-              <BlurFade delay={0.6} variant="slideUp" className="hidden lg:block relative z-20">
+              <div className="hidden lg:block relative z-20">
                 <RotatingTestimonial 
                   className="w-[232px]"
                   rotationInterval={5000}
                   indexOffset={0}
                 />
-              </BlurFade>
+              </div>
 
               {/* Phone image */}
-              <BlurFade delay={0.7} variant="slideUp" className="flex-shrink-0 relative z-10">
+              <div className="flex-shrink-0 relative z-10">
                 <div className="relative w-full max-w-md mx-auto">
                   <Image
                     src="/images/Group 3.png"
@@ -145,20 +134,20 @@ export default function Home() {
                     quality={90}
                   />
                 </div>
-              </BlurFade>
+              </div>
 
               {/* Right testimonial */}
-              <BlurFade delay={0.8} variant="slideUp" className="hidden lg:block lg:-mt-[100px] relative z-20">
+              <div className="hidden lg:block lg:-mt-[100px] relative z-20">
                 <RotatingTestimonial 
                   className="w-[232px]"
                   rotationInterval={5000}
                   indexOffset={1}
                 />
-              </BlurFade>
+              </div>
             </div>
 
             {/* Mobile testimonial - below phone image */}
-            <BlurFade delay={0.9} variant="slideUp" className="lg:hidden mt-8 relative z-20">
+            <div className="lg:hidden mt-8 relative z-20">
               <div className="flex justify-center">
                 <RotatingTestimonial 
                   className="w-full max-w-[232px]"
@@ -166,7 +155,7 @@ export default function Home() {
                   indexOffset={2}
                 />
               </div>
-            </BlurFade>
+            </div>
           </div>
           </div>
         </div>
@@ -176,92 +165,80 @@ export default function Home() {
           <div className="flex flex-col gap-[43px] w-full">
             {/* Header */}
             <div className="flex flex-col gap-7 text-center">
-              <BlurFade delay={1.0} variant="slideUp">
-                <p className="text-[#989898] text-sm">
-                  Problem, który widzimy na co dzień.
-                </p>
-              </BlurFade>
+              <p className="text-[#989898] text-sm">
+                Problem, który widzimy na co dzień.
+              </p>
 
-              <BlurFade delay={1.1} variant="slideUp">
-                <h2 className="text-[32px] sm:text-[40px] md:text-[56px] font-bold text-[#0b0b0b] tracking-tight px-4 sm:px-0">
-                  Trzy główne wyzwania
-                </h2>
-              </BlurFade>
+              <h2 className="text-[32px] sm:text-[40px] md:text-[56px] font-bold text-[#0b0b0b] tracking-tight px-4 sm:px-0">
+                Trzy główne wyzwania
+              </h2>
 
-              <BlurFade delay={1.2} variant="slideUp">
-                <p className="text-[#414141] text-base sm:text-lg md:text-xl max-w-[655px] mx-auto px-4 sm:px-0">
-                  Zidentyfikowaliśmy kluczowe problemy, z którymi mierzą się kobiety i położne w systemie opieki okołoporodowej.
-                </p>
-              </BlurFade>
+              <p className="text-[#414141] text-base sm:text-lg md:text-xl max-w-[655px] mx-auto px-4 sm:px-0">
+                Zidentyfikowaliśmy kluczowe problemy, z którymi mierzą się kobiety i położne w systemie opieki okołoporodowej.
+              </p>
             </div>
 
             {/* Three problem cards */}
             <div className="flex flex-col md:flex-row gap-[18px] w-full max-w-[828px] mx-auto text-left">
               {/* Problem 1: Niepewność */}
-              <BlurFade delay={1.3} variant="slideUp">
-                <div className="flex flex-col gap-[17px] w-full md:w-[232px]">
-                  <div className="w-full h-[200px] sm:h-[240px] md:h-[274px] rounded-2xl overflow-hidden bg-gray-200 relative">
-                    <Image
-                      src="/stock/problem/problem1.jpg"
-                      alt="Niepewność"
-                      fill
-                      className="object-cover"
-                      loading="lazy"
-                      sizes="(max-width: 768px) 100vw, 232px"
-                    />
-                  </div>
-                  <h3 className="text-base sm:text-[19px] font-bold text-[#0b0b0b]">
-                    Niepewność
-                  </h3>
-                  <p className="text-[#989898] text-sm leading-relaxed max-w-full md:max-w-[197px]">
-                    Kobiet w wyborze odpowiedniej położnej i brak zaufanych informacji.
-                  </p>
+              <div className="flex flex-col gap-[17px] w-full md:w-[232px]">
+                <div className="w-full h-[200px] sm:h-[240px] md:h-[274px] rounded-2xl overflow-hidden bg-gray-200 relative">
+                  <Image
+                    src="/stock/problem/problem1.jpg"
+                    alt="Niepewność"
+                    fill
+                    className="object-cover"
+                    loading="lazy"
+                    sizes="(max-width: 768px) 100vw, 232px"
+                  />
                 </div>
-              </BlurFade>
+                <h3 className="text-base sm:text-[19px] font-bold text-[#0b0b0b]">
+                  Niepewność
+                </h3>
+                <p className="text-[#989898] text-sm leading-relaxed max-w-full md:max-w-[197px]">
+                  Kobiet w wyborze odpowiedniej położnej i brak zaufanych informacji.
+                </p>
+              </div>
 
               {/* Problem 2: Niewykorzystana wiedza */}
-              <BlurFade delay={1.4} variant="slideUp">
-                <div className="flex flex-col gap-[17px] w-full md:w-[232px]">
-                  <div className="w-full h-[200px] sm:h-[240px] md:h-[274px] rounded-2xl overflow-hidden bg-gray-200 relative">
-                    <Image
-                      src="/stock/problem/problem2.avif"
-                      alt="Niewykorzystana wiedza"
-                      fill
-                      className="object-cover"
-                      loading="lazy"
-                      sizes="(max-width: 768px) 100vw, 232px"
-                    />
-                  </div>
-                  <h3 className="text-base sm:text-[19px] font-bold text-[#0b0b0b]">
-                    Niewykorzystana wiedza
-                  </h3>
-                  <p className="text-[#989898] text-sm leading-relaxed max-w-full md:max-w-[197px]">
-                    Potencjał edukacyjny i ekspercki położnych nie dociera do pacjentek.
-                  </p>
+              <div className="flex flex-col gap-[17px] w-full md:w-[232px]">
+                <div className="w-full h-[200px] sm:h-[240px] md:h-[274px] rounded-2xl overflow-hidden bg-gray-200 relative">
+                  <Image
+                    src="/stock/problem/problem2.avif"
+                    alt="Niewykorzystana wiedza"
+                    fill
+                    className="object-cover"
+                    loading="lazy"
+                    sizes="(max-width: 768px) 100vw, 232px"
+                  />
                 </div>
-              </BlurFade>
+                <h3 className="text-base sm:text-[19px] font-bold text-[#0b0b0b]">
+                  Niewykorzystana wiedza
+                </h3>
+                <p className="text-[#989898] text-sm leading-relaxed max-w-full md:max-w-[197px]">
+                  Potencjał edukacyjny i ekspercki położnych nie dociera do pacjentek.
+                </p>
+              </div>
 
               {/* Problem 3: Brak kontaktu */}
-              <BlurFade delay={1.5} variant="slideUp">
-                <div className="flex flex-col gap-[17px] w-full md:w-[232px]">
-                  <div className="w-full h-[200px] sm:h-[240px] md:h-[274px] rounded-2xl overflow-hidden bg-gray-200 relative">
-                    <Image
-                      src="/stock/problem/problem3.avif"
-                      alt="Brak kontaktu"
-                      fill
-                      className="object-cover"
-                      loading="lazy"
-                      sizes="(max-width: 768px) 100vw, 232px"
-                    />
-                  </div>
-                  <h3 className="text-base sm:text-[19px] font-bold text-[#0b0b0b]">
-                    Brak kontaktu
-                  </h3>
-                  <p className="text-[#989898] text-sm leading-relaxed max-w-full md:max-w-[197px]">
-                    Brak platformy umożliwiającej łatwy kontakt i wsparcie 24/7.
-                  </p>
+              <div className="flex flex-col gap-[17px] w-full md:w-[232px]">
+                <div className="w-full h-[200px] sm:h-[240px] md:h-[274px] rounded-2xl overflow-hidden bg-gray-200 relative">
+                  <Image
+                    src="/stock/problem/problem3.avif"
+                    alt="Brak kontaktu"
+                    fill
+                    className="object-cover"
+                    loading="lazy"
+                    sizes="(max-width: 768px) 100vw, 232px"
+                  />
                 </div>
-              </BlurFade>
+                <h3 className="text-base sm:text-[19px] font-bold text-[#0b0b0b]">
+                  Brak kontaktu
+                </h3>
+                <p className="text-[#989898] text-sm leading-relaxed max-w-full md:max-w-[197px]">
+                  Brak platformy umożliwiającej łatwy kontakt i wsparcie 24/7.
+                </p>
+              </div>
             </div>
           </div>
         </div>
@@ -271,23 +248,17 @@ export default function Home() {
           <div className="flex flex-col gap-[43px] w-full max-w-full">
             {/* Header */}
             <div className="flex flex-col gap-7 text-center">
-              <BlurFade delay={1.6} variant="slideUp">
-                <p className="text-[#989898] text-sm">
-                  Dla przyszłych mam.
-                </p>
-              </BlurFade>
+              <p className="text-[#989898] text-sm">
+                Dla przyszłych mam.
+              </p>
 
-              <BlurFade delay={1.7} variant="slideUp">
-                <h2 className="text-[32px] sm:text-[40px] md:text-[56px] font-bold text-[#0b0b0b] tracking-tight px-4 sm:px-0">
-                  Zadbaj o spokój i bezpieczeństwo
-                </h2>
-              </BlurFade>
+              <h2 className="text-[32px] sm:text-[40px] md:text-[56px] font-bold text-[#0b0b0b] tracking-tight px-4 sm:px-0">
+                Zadbaj o spokój i bezpieczeństwo
+              </h2>
 
-              <BlurFade delay={1.8} variant="slideUp">
-                <p className="text-[#414141] text-base sm:text-lg md:text-xl max-w-[828px] mx-auto px-4 sm:px-0">
-                  Ciąża to czas pełen pytań. MyMidwife to Twoja osobista asystentka, która zamienia niepewność w wiedzę, a stres w poczucie bezpieczeństwa.
-                </p>
-              </BlurFade>
+              <p className="text-[#414141] text-base sm:text-lg md:text-xl max-w-[828px] mx-auto px-4 sm:px-0">
+                Ciąża to czas pełen pytań. MyMidwife to Twoja osobista asystentka, która zamienia niepewność w wiedzę, a stres w poczucie bezpieczeństwa.
+              </p>
             </div>
 
             {/* Features Grid */}
@@ -295,7 +266,7 @@ export default function Home() {
               {/* Left side - 4 feature cards in 2x2 grid */}
               <div className="grid grid-responsive-cards gap-4 sm:gap-[17px] w-full lg:flex-1 lg:min-w-0">
                 {/* Card 1: Znajdź idealną Położną */}
-                <BlurFade delay={1.9} variant="slideUp" className="w-full min-w-0">
+                <div className="w-full min-w-0">
                   <div className="bg-white border border-[#EEE] rounded-2xl p-[17px] flex flex-col gap-[10px] w-full h-auto min-h-[250px]">
                     <div className="flex flex-col gap-[80px] sm:gap-[120px] lg:gap-[115px] w-full h-auto">
                       <div className="w-[25px] h-[25px] rounded-lg border border-[#EEE] flex items-center justify-center">
@@ -309,10 +280,10 @@ export default function Home() {
                       Koniec z szukaniem po omacku. Przeglądaj zweryfikowane profile, czytaj opinie i wybierz specjalistkę, której zaufasz w 100%.
                     </p>
                   </div>
-                </BlurFade>
+                </div>
 
                 {/* Card 2: Wsparcie 24/7 na Czacie */}
-                <BlurFade delay={2.0} variant="slideUp" className="w-full min-w-0">
+                <div className="w-full min-w-0">
                   <div className="bg-white border border-[#EEE] rounded-2xl p-[17px] flex flex-col gap-[10px] w-full h-auto min-h-[250px]">
                     <div className="flex flex-col gap-[80px] sm:gap-[120px] lg:gap-[115px] w-full h-auto">
                       <div className="w-[25px] h-[25px] rounded-lg border border-[#EEE] flex items-center justify-center">
@@ -326,10 +297,10 @@ export default function Home() {
                       Masz pytania, które nie mogą czekać? Szybki kontakt z Twoją położną to gwarancja spokoju i profesjonalnej porady o każdej porze.
                     </p>
                   </div>
-                </BlurFade>
+                </div>
 
                 {/* Card 3: Dzienniczek objawów */}
-                <BlurFade delay={2.1} variant="slideUp" className="w-full min-w-0">
+                <div className="w-full min-w-0">
                   <div className="bg-white border border-[#EEE] rounded-2xl p-[17px] flex flex-col gap-[10px] w-full h-auto min-h-[250px]">
                     <div className="flex flex-col gap-[80px] sm:gap-[120px] lg:gap-[150px] w-full h-auto">
                       <div className="w-[25px] h-[25px] rounded-lg border border-[#EEE] flex items-center justify-center">
@@ -343,10 +314,10 @@ export default function Home() {
                       Monitoruj wagę, ciśnienie i nastrój w jednym miejscu. Aplikacja dba o historię Twojego zdrowia, byś Ty nie musiała o tym pamiętać.
                     </p>
                   </div>
-                </BlurFade>
+                </div>
 
                 {/* Card 4: Rzetelna wiedza (różowe tło) */}
-                <BlurFade delay={2.2} variant="slideUp" className="w-full min-w-0">
+                <div className="w-full min-w-0">
                   <div className="bg-[#e352ad] border border-[#EEE] rounded-2xl p-[17px] flex flex-col gap-[10px] w-full h-auto min-h-[250px]">
                     <div className="flex flex-col gap-[80px] sm:gap-[120px] lg:gap-[128px] w-full h-auto">
                       <div className="w-[25px] h-[25px] rounded-lg border border-[#EEE] flex items-center justify-center">
@@ -360,11 +331,11 @@ export default function Home() {
                       Dostęp do sprawdzonych materiałów edukacyjnych tworzonych przez ekspertów. Przygotuj się do porodu świadomie i bez mitów.
                     </p>
                   </div>
-                </BlurFade>
+                </div>
               </div>
 
               {/* Right side - Image */}
-              <BlurFade delay={2.3} variant="slideUp" className="w-full lg:w-auto lg:flex-shrink-0 lg:h-auto">
+              <div className="w-full lg:w-auto lg:flex-shrink-0 lg:h-auto">
                 <div className="w-full lg:w-[330px] h-[300px] sm:h-[400px] md:h-[500px] lg:h-full rounded-2xl overflow-hidden relative mt-4 lg:mt-0">
                   <Image
                     src="/stock/img/preg1.png"
@@ -375,59 +346,55 @@ export default function Home() {
                     sizes="(max-width: 1024px) 100vw, 330px"
                   />
                 </div>
-              </BlurFade>
+              </div>
             </div>
 
             {/* Button */}
-            <BlurFade delay={2.4} variant="slideUp">
-              <div className="flex justify-center sm:justify-start">
-                <RippleButton 
-                  rippleColor="rgba(255, 255, 255, 0.5)"
-                  className="bg-[#0b0b0b] text-white border border-[#989898] rounded-[11px] px-4 sm:px-[13px] py-2 sm:py-[11px] text-sm sm:text-base w-full sm:w-auto"
-                  onClick={openModal}
-                >
-                  Dołącz teraz
-                </RippleButton>
-              </div>
-            </BlurFade>
+            <div className="flex justify-center sm:justify-start">
+              <RippleButton 
+                rippleColor="rgba(255, 255, 255, 0.5)"
+                className="bg-[#0b0b0b] text-white border border-[#989898] rounded-[11px] px-4 sm:px-[13px] py-2 sm:py-[11px] text-sm sm:text-base w-full sm:w-auto"
+                onClick={openModal}
+              >
+                Dołącz teraz
+              </RippleButton>
+            </div>
           </div>
         </div>
 
         {/* Quote Section */}
         <div className="relative z-10 w-full max-w-[828px] px-4 sm:px-6 py-12 sm:py-20">
-          <BlurFade delay={2.5} variant="slideUp">
-            <div className="flex flex-col items-center gap-[33px] w-full max-w-[655px] mx-auto">
-              {/* Quote Text */}
-              <p className="text-[#0b0b0b] text-xl sm:text-2xl md:text-[32px] font-normal text-center leading-relaxed">
-                "Łączymy kobiety z położnymi – prosto, wygodnie i bez stresu."
-              </p>
+          <div className="flex flex-col items-center gap-[33px] w-full max-w-[655px] mx-auto">
+            {/* Quote Text */}
+            <p className="text-[#0b0b0b] text-xl sm:text-2xl md:text-[32px] font-normal text-center leading-relaxed">
+              "Łączymy kobiety z położnymi – prosto, wygodnie i bez stresu."
+            </p>
 
-              {/* Author Info */}
-              <div className="flex items-center gap-[14px]">
-                {/* Avatar */}
-                <div className="w-[69px] h-[69px] rounded-full overflow-hidden flex-shrink-0 relative">
-                  <Image
-                    src="/stock/img/1764706067560.jpeg"
-                    alt="Joanna Romaniuk"
-                    fill
-                    className="object-cover"
-                    loading="lazy"
-                    sizes="69px"
-                  />
-                </div>
+            {/* Author Info */}
+            <div className="flex items-center gap-[14px]">
+              {/* Avatar */}
+              <div className="w-[69px] h-[69px] rounded-full overflow-hidden flex-shrink-0 relative">
+                <Image
+                  src="/stock/img/1764706067560.jpeg"
+                  alt="Joanna Romaniuk"
+                  fill
+                  className="object-cover"
+                  loading="lazy"
+                  sizes="69px"
+                />
+              </div>
 
-                {/* Author Details */}
-                <div className="flex flex-col gap-[1px]">
-                  <p className="text-[#414141] text-base font-normal">
-                    Joanna Romaniuk
-                  </p>
-                  <p className="text-[#989898] text-sm font-normal">
-                    CEO, Founder MyMidwife
-                  </p>
-                </div>
+              {/* Author Details */}
+              <div className="flex flex-col gap-[1px]">
+                <p className="text-[#414141] text-base font-normal">
+                  Joanna Romaniuk
+                </p>
+                <p className="text-[#989898] text-sm font-normal">
+                  CEO, Founder MyMidwife
+                </p>
               </div>
             </div>
-          </BlurFade>
+          </div>
         </div>
 
         {/* For Midwives Section - Dla Położnych */}
@@ -435,23 +402,17 @@ export default function Home() {
           <div className="flex flex-col gap-[43px] w-full max-w-[828px]">
             {/* Header */}
             <div className="flex flex-col gap-7 text-center">
-              <BlurFade delay={2.6} variant="slideUp">
-                <p className="text-[#989898] text-sm">
-                  Dla Położnych.
-                </p>
-              </BlurFade>
+              <p className="text-[#989898] text-sm">
+                Dla Położnych.
+              </p>
 
-              <BlurFade delay={2.7} variant="slideUp">
-                <h2 className="text-[32px] sm:text-[40px] md:text-[56px] font-bold text-[#0b0b0b] tracking-tight px-4 sm:px-0">
-                  Promocja kompetencji i łatwiejsza organizacja
-                </h2>
-              </BlurFade>
+              <h2 className="text-[32px] sm:text-[40px] md:text-[56px] font-bold text-[#0b0b0b] tracking-tight px-4 sm:px-0">
+                Promocja kompetencji i łatwiejsza organizacja
+              </h2>
 
-              <BlurFade delay={2.8} variant="slideUp">
-                <p className="text-[#414141] text-base sm:text-lg md:text-xl max-w-[655px] mx-auto px-4 sm:px-0">
-                  Buduj swoją markę osobistą, zarządzaj wizytami i utrzymuj profesjonalne relacje z pacjentkami w jednej aplikacji.
-                </p>
-              </BlurFade>
+              <p className="text-[#414141] text-base sm:text-lg md:text-xl max-w-[655px] mx-auto px-4 sm:px-0">
+                Buduj swoją markę osobistą, zarządzaj wizytami i utrzymuj profesjonalne relacje z pacjentkami w jednej aplikacji.
+              </p>
             </div>
 
             {/* Features Grid - Reversed Layout */}
@@ -459,7 +420,7 @@ export default function Home() {
               {/* Right side - 4 feature cards in 2x2 grid */}
               <div className="grid grid-responsive-cards gap-4 sm:gap-[17px] w-full lg:flex-1 lg:min-w-0 lg:max-h-[642px]">
                 {/* Card 1: Widoczność (różowe tło) */}
-                <BlurFade delay={2.9} variant="slideUp" className="w-full min-w-0 max-h-[313px]">
+                <div className="w-full min-w-0 max-h-[313px]">
                   <div className="bg-[#e352ad] border border-[#EEE] rounded-2xl p-[17px] flex flex-col gap-[10px] w-full h-auto min-h-[250px]">
                     <div className="flex flex-col gap-[80px] sm:gap-[120px] lg:gap-[150px] w-full h-auto">
                       <div className="w-[25px] h-[25px] rounded-lg border border-[#EEE] flex items-center justify-center">
@@ -473,10 +434,10 @@ export default function Home() {
                       Dotrzyj do pacjentek szukających profesjonalnej opieki w Twojej okolicy.
                     </p>
                   </div>
-                </BlurFade>
+                </div>
 
                 {/* Card 2: Kalendarz */}
-                <BlurFade delay={3.0} variant="slideUp" className="w-full min-w-0">
+                <div className="w-full min-w-0">
                   <div className="bg-white border border-[#EEE] rounded-2xl p-[17px] flex flex-col gap-[10px] w-full h-auto min-h-[250px]">
                     <div className="flex flex-col gap-[80px] sm:gap-[120px] lg:gap-[150px] w-full h-auto">
                       <div className="w-[25px] h-[25px] rounded-lg border border-[#EEE] flex items-center justify-center">
@@ -490,10 +451,10 @@ export default function Home() {
                       Zarządzaj dostępnością i umówionymi wizytami bez chaosu.
                     </p>
                   </div>
-                </BlurFade>
+                </div>
 
                 {/* Card 3: Komunikacja */}
-                <BlurFade delay={3.1} variant="slideUp" className="w-full min-w-0">
+                <div className="w-full min-w-0">
                   <div className="bg-white border border-[#EEE] rounded-2xl p-[17px] flex flex-col gap-[10px] w-full h-auto min-h-[250px]">
                     <div className="flex flex-col gap-[80px] sm:gap-[120px] lg:gap-[150px] w-full h-auto">
                       <div className="w-[25px] h-[25px] rounded-lg border border-[#EEE] flex items-center justify-center">
@@ -507,10 +468,10 @@ export default function Home() {
                       Oddziel życie prywatne od zawodowego dzięki dedykowanemu czatowi.
                     </p>
                   </div>
-                </BlurFade>
+                </div>
 
                 {/* Card 4: Materiały */}
-                <BlurFade delay={3.2} variant="slideUp" className="w-full min-w-0">
+                <div className="w-full min-w-0">
                   <div className="bg-white border border-[#EEE] rounded-2xl p-[17px] flex flex-col gap-[10px] w-full h-auto min-h-[250px]">
                     <div className="flex flex-col gap-[80px] sm:gap-[120px] lg:gap-[150px] w-full h-auto">
                       <div className="w-[25px] h-[25px] rounded-lg border border-[#EEE] flex items-center justify-center">
@@ -524,11 +485,11 @@ export default function Home() {
                       Udostępniaj swoje materiały edukacyjne i buduj autorytet eksperta.
                     </p>
                   </div>
-                </BlurFade>
+                </div>
               </div>
 
               {/* Left side - Image */}
-              <BlurFade delay={3.3} variant="slideUp" className="w-full lg:w-auto lg:flex-shrink-0">
+              <div className="w-full lg:w-auto lg:flex-shrink-0">
                 <div className="w-full lg:w-[330px] h-[300px] sm:h-[400px] md:h-[500px] lg:h-[642px] rounded-2xl overflow-hidden relative mt-4 lg:mt-0">
                   <Image
                     src="/stock/img/preg2.png"
@@ -539,21 +500,19 @@ export default function Home() {
                     sizes="(max-width: 1024px) 100vw, 330px"
                   />
                 </div>
-              </BlurFade>
+              </div>
             </div>
 
             {/* Button */}
-            <BlurFade delay={3.4} variant="slideUp">
-              <div className="flex justify-center sm:justify-start">
-                <RippleButton 
-                  rippleColor="rgba(255, 255, 255, 0.5)"
-                  className="bg-[#0b0b0b] text-white border border-[#989898] rounded-[11px] px-4 sm:px-[13px] py-2 sm:py-[11px] text-sm sm:text-base w-full sm:w-auto"
-                  onClick={openModal}
-                >
-                  Dołącz teraz
-                </RippleButton>
-              </div>
-            </BlurFade>
+            <div className="flex justify-center sm:justify-start">
+              <RippleButton 
+                rippleColor="rgba(255, 255, 255, 0.5)"
+                className="bg-[#0b0b0b] text-white border border-[#989898] rounded-[11px] px-4 sm:px-[13px] py-2 sm:py-[11px] text-sm sm:text-base w-full sm:w-auto"
+                onClick={openModal}
+              >
+                Dołącz teraz
+              </RippleButton>
+            </div>
           </div>
         </div>
 

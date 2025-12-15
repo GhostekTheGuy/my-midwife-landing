@@ -43,7 +43,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="pl">
-      <body className={`font-sans antialiased ${_interTight.className}`}>
+      <body className={`font-sans antialiased ${_interTight.className} overflow-x-hidden`}>
         <JoinModalProvider>
           {children}
           <JoinModalWrapper />

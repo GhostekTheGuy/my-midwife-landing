@@ -4,6 +4,7 @@ import Image from "next/image"
 import { RippleButton } from "@/components/ui/ripple-button"
 import { RainbowButton } from "@/components/ui/rainbow-button"
 import { RotatingTestimonial } from "@/components/ui/rotating-testimonials"
+import { BlurFade } from "@/components/ui/blur-fade"
 import { UserSearch, MessageCircle, ClipboardList, BookOpen, Eye, Calendar, FileText } from "lucide-react"
 import { Navbar } from "@/components/navbar"
 import { useJoinModal } from "@/contexts/join-modal-context"
@@ -42,121 +43,133 @@ export default function Home() {
         {/* Hero Content */}
         <div className="w-full max-w-7xl px-4 sm:px-6 pt-12 sm:pt-16 pb-12 sm:pb-20">
           <div className="text-center mb-12">
-            <p className="text-sm text-[#989a98] mb-4 tracking-wide">
-              #medtech #mhealth #startup
-            </p>
+            <BlurFade delay={0.1}>
+              <p className="text-sm text-[#989a98] mb-4 tracking-wide">
+                #medtech #mhealth #startup
+              </p>
+            </BlurFade>
 
-          {/* Headline */}
-          <h1 className="text-[48px] sm:text-[64px] md:text-[132px] font-bold text-[#0b0b0b] mb-0 tracking-tight px-4 sm:px-0">MyMidwife</h1>
+            {/* Headline */}
+            <BlurFade delay={0.2}>
+              <h1 className="text-[48px] sm:text-[64px] md:text-[132px] font-bold text-[#0b0b0b] mb-0 tracking-tight px-4 sm:px-0">MyMidwife</h1>
+            </BlurFade>
 
-          {/* Description */}
-          <p className="text-[rgba(65,65,65,1)] text-base sm:text-lg md:text-[24px] max-w-2xl mx-auto mb-4 px-4 sm:px-0">
-            MyMidwife to platforma łącząca kobiety z ekspertkami.{" "}
-            <span className="text-[rgba(230,159,205,1)]">Bezpieczeństwo, wiedza i wsparcie w jednej aplikacji.</span>
-          </p>
+            {/* Description */}
+            <BlurFade delay={0.3}>
+              <p className="text-[rgba(65,65,65,1)] text-base sm:text-lg md:text-[24px] max-w-2xl mx-auto mb-4 px-4 sm:px-0">
+                MyMidwife to platforma łącząca kobiety z ekspertkami.{" "}
+                <span className="text-[rgba(230,159,205,1)]">Bezpieczeństwo, wiedza i wsparcie w jednej aplikacji.</span>
+              </p>
+            </BlurFade>
 
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 mb-8 text-[rgba(10,10,10,1)] px-4 sm:px-0">
-            <RippleButton 
-              rippleColor="rgba(255, 255, 255, 0.5)"
-              className="bg-[#0b0b0b] text-white hover:bg-[#414141] rounded-[11px] px-4 sm:px-[11px] py-2 sm:py-[11px] text-sm sm:text-base border-0 w-full sm:w-auto"
-              onClick={openModal}
-            >
-              Dołącz teraz
-            </RippleButton>
-            <RippleButton
-              rippleColor="rgba(227, 82, 173, 0.4)"
-              className="bg-[#eac9df] text-[#0b0b0b] hover:bg-[#e352ad]/30 rounded-[11px] px-4 sm:px-[11px] py-2 sm:py-[11px] text-sm sm:text-base border-0 w-full sm:w-auto"
-              onClick={() => window.open("https://mymidwife.pl/", "_blank")}
-            >
-              Sprawdź demo
-            </RippleButton>
-          </div>
-
-          {/* Trust section */}
-          <div className="mb-12">
-            <p className="text-sm text-[#989a98] mb-4">Partnerzy:</p>
-            <div className="flex items-center justify-center gap-8 flex-wrap">
-              <Image
-                src="/co-logos/logos1.png"
-                alt="BraveCamp"
-                width={120}
-                height={20}
-                className="h-5 opacity-40 object-contain"
-                loading="lazy"
-              />
-              <Image
-                src="/co-logos/logos2.png"
-                alt="UAM INNOVATION HUB"
-                width={120}
-                height={20}
-                className="h-5 opacity-40 object-contain"
-                loading="lazy"
-              />
-              <Image
-                src="/co-logos/logos3.png"
-                alt="Innovation Hub"
-                width={120}
-                height={20}
-                className="h-5 opacity-40 object-contain"
-                loading="lazy"
-              />
-            </div>
-          </div>
-
-          {/* Phone mockup with testimonials */}
-          <div className="relative w-full max-w-7xl mx-auto">
-            <div className="flex items-center justify-center gap-8 flex-wrap lg:flex-nowrap">
-              {/* Left testimonial */}
-              <div className="hidden lg:block relative z-20">
-                <RotatingTestimonial 
-                  className="w-[232px]"
-                  rotationInterval={5000}
-                  indexOffset={0}
-                />
+            <BlurFade delay={0.4}>
+              <div className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 mb-8 text-[rgba(10,10,10,1)] px-4 sm:px-0">
+                <RippleButton 
+                  rippleColor="rgba(255, 255, 255, 0.5)"
+                  className="bg-[#0b0b0b] text-white hover:bg-[#414141] rounded-[11px] px-4 sm:px-[11px] py-2 sm:py-[11px] text-sm sm:text-base border-0 w-full sm:w-auto"
+                  onClick={openModal}
+                >
+                  Dołącz teraz
+                </RippleButton>
+                <RippleButton
+                  rippleColor="rgba(227, 82, 173, 0.4)"
+                  className="bg-[#eac9df] text-[#0b0b0b] hover:bg-[#e352ad]/30 rounded-[11px] px-4 sm:px-[11px] py-2 sm:py-[11px] text-sm sm:text-base border-0 w-full sm:w-auto"
+                  onClick={() => window.open("https://mymidwife.pl/", "_blank")}
+                >
+                  Sprawdź demo
+                </RippleButton>
               </div>
+            </BlurFade>
 
-              {/* Phone image */}
-              <div className="flex-shrink-0 relative z-10">
-                <div className="relative w-full max-w-md mx-auto">
+            {/* Trust section */}
+            <BlurFade delay={0.5}>
+              <div className="mb-12">
+                <p className="text-sm text-[#989a98] mb-4">Partnerzy:</p>
+                <div className="flex items-center justify-center gap-8 flex-wrap">
                   <Image
-                    src="/images/Group 3.png"
-                    alt="MyMidwife App Interface"
-                    width={517}
-                    height={800}
-                    className="h-auto w-full max-w-[517px] sm:max-w-[400px] md:max-w-[500px] scale-[2] lg:scale-[2] lg:max-w-none mx-auto"
-                    style={{
-                      marginTop: '112px',
-                      marginBottom: '112px',
-                      paddingTop: '0px',
-                      paddingBottom: '0px',
-                    }}
-                    priority
-                    quality={90}
+                    src="/co-logos/logos1.png"
+                    alt="BraveCamp"
+                    width={120}
+                    height={20}
+                    className="h-5 opacity-40 object-contain"
+                    loading="lazy"
+                  />
+                  <Image
+                    src="/co-logos/logos2.png"
+                    alt="UAM INNOVATION HUB"
+                    width={120}
+                    height={20}
+                    className="h-5 opacity-40 object-contain"
+                    loading="lazy"
+                  />
+                  <Image
+                    src="/co-logos/logos3.png"
+                    alt="Innovation Hub"
+                    width={120}
+                    height={20}
+                    className="h-5 opacity-40 object-contain"
+                    loading="lazy"
                   />
                 </div>
               </div>
+            </BlurFade>
 
-              {/* Right testimonial */}
-              <div className="hidden lg:block lg:-mt-[100px] relative z-20">
-                <RotatingTestimonial 
-                  className="w-[232px]"
-                  rotationInterval={5000}
-                  indexOffset={1}
-                />
-              </div>
-            </div>
+            {/* Phone mockup with testimonials */}
+            <BlurFade delay={0.6}>
+              <div className="relative w-full max-w-7xl mx-auto">
+                <div className="flex items-center justify-center gap-8 flex-wrap lg:flex-nowrap">
+                  {/* Left testimonial */}
+                  <div className="hidden lg:block relative z-20">
+                    <RotatingTestimonial 
+                      className="w-[232px]"
+                      rotationInterval={5000}
+                      indexOffset={0}
+                    />
+                  </div>
 
-            {/* Mobile testimonial - below phone image */}
-            <div className="lg:hidden mt-8 relative z-20">
-              <div className="flex justify-center">
-                <RotatingTestimonial 
-                  className="w-full max-w-[232px]"
-                  rotationInterval={5000}
-                  indexOffset={2}
-                />
+                  {/* Phone image */}
+                  <div className="flex-shrink-0 relative z-10">
+                    <div className="relative w-full max-w-md mx-auto">
+                      <Image
+                        src="/images/Group 3.png"
+                        alt="MyMidwife App Interface"
+                        width={517}
+                        height={800}
+                        className="h-auto w-full max-w-[517px] sm:max-w-[400px] md:max-w-[500px] scale-[2] lg:scale-[2] lg:max-w-none mx-auto"
+                        style={{
+                          marginTop: '112px',
+                          marginBottom: '112px',
+                          paddingTop: '0px',
+                          paddingBottom: '0px',
+                        }}
+                        priority
+                        quality={90}
+                      />
+                    </div>
+                  </div>
+
+                  {/* Right testimonial */}
+                  <div className="hidden lg:block lg:-mt-[100px] relative z-20">
+                    <RotatingTestimonial 
+                      className="w-[232px]"
+                      rotationInterval={5000}
+                      indexOffset={1}
+                    />
+                  </div>
+                </div>
+
+                {/* Mobile testimonial - below phone image */}
+                <div className="lg:hidden mt-8 relative z-20">
+                  <div className="flex justify-center">
+                    <RotatingTestimonial 
+                      className="w-full max-w-[232px]"
+                      rotationInterval={5000}
+                      indexOffset={2}
+                    />
+                  </div>
+                </div>
               </div>
-            </div>
-          </div>
+            </BlurFade>
           </div>
         </div>
 

@@ -5,9 +5,11 @@ import { Menu, X } from "lucide-react"
 import { RainbowButton } from "@/components/ui/rainbow-button"
 import { BlurFade } from "@/components/ui/blur-fade"
 import { cn } from "@/lib/utils"
+import { useJoinModal } from "@/contexts/join-modal-context"
 
 export function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
+  const { openModal } = useJoinModal()
 
   function toggleMenu() {
     setIsMenuOpen(!isMenuOpen)
@@ -62,6 +64,7 @@ export function Navbar() {
                 variant="outline"
                 size={undefined}
                 className="text-[#0b0b0b] rounded-[11px] px-[11px] text-sm whitespace-nowrap"
+                onClick={openModal}
               >
                 Dołącz teraz →
               </RainbowButton>
@@ -73,6 +76,7 @@ export function Navbar() {
                 variant="outline"
                 size={undefined}
                 className="text-[#0b0b0b] rounded-[11px] px-2 text-xs whitespace-nowrap"
+                onClick={openModal}
               >
                 Dołącz teraz
               </RainbowButton>

@@ -1,8 +1,11 @@
+"use client"
+
 import { cn } from "@/lib/utils";
 import { Marquee } from "@/components/ui/marquee";
 import { Testimonial } from "@/components/ui/testimonial";
 import { BlurFade } from "@/components/ui/blur-fade";
 import { RippleButton } from "@/components/ui/ripple-button";
+import { useJoinModal } from "@/contexts/join-modal-context";
 
 const testimonials = [
   {
@@ -73,6 +76,8 @@ const thirdColumn = [testimonials[6], testimonials[7], testimonials[8]];
 const fourthColumn = [testimonials[9], testimonials[10], testimonials[11]];
 
 export function TestimonialsSection() {
+  const { openModal } = useJoinModal()
+  
   return (
     <div 
       className="relative z-10 w-full max-w-[828px] mx-auto px-4 sm:px-6 py-12 sm:py-20 overflow-hidden"
@@ -138,6 +143,7 @@ export function TestimonialsSection() {
             <RippleButton 
               rippleColor="rgba(255, 255, 255, 0.5)"
               className="bg-[#0b0b0b] text-white border border-[#989898] rounded-[11px] px-4 sm:px-[13px] py-2 sm:py-[11px] text-sm sm:text-base w-full sm:w-auto"
+              onClick={openModal}
             >
               Dołącz teraz
             </RippleButton>

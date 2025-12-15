@@ -1,10 +1,15 @@
+"use client"
+
 import Image from "next/image"
 import { RippleButton } from "@/components/ui/ripple-button"
 import { Instagram, Linkedin } from "lucide-react"
 import Link from "next/link"
 import { cn } from "@/lib/utils"
+import { useJoinModal } from "@/contexts/join-modal-context"
 
 export function Footer() {
+  const { openModal } = useJoinModal()
+  
   return (
     <footer className="relative w-full max-w-7xl mx-auto px-4 sm:px-6 pt-12 pb-12 sm:pt-20">
       <div className="relative w-full overflow-hidden rounded-[20px] bg-gradient-to-b from-[#E155AC] to-[#FEFBFD] min-h-[400px] flex flex-col items-center justify-between pt-12 sm:pt-16 pb-8">
@@ -34,6 +39,7 @@ export function Footer() {
                 <RippleButton 
                     rippleColor="rgba(255, 255, 255, 0.5)"
                     className="bg-[#0b0b0b] text-white hover:bg-[#252525] border-0 rounded-[12px] px-6 py-2.5 h-[44px] text-sm font-medium whitespace-nowrap"
+                    onClick={openModal}
                 >
                     Dołącz teraz
                 </RippleButton>

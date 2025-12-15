@@ -1,3 +1,5 @@
+"use client"
+
 import Image from "next/image"
 import { RippleButton } from "@/components/ui/ripple-button"
 import { RainbowButton } from "@/components/ui/rainbow-button"
@@ -5,6 +7,7 @@ import { BlurFade } from "@/components/ui/blur-fade"
 import { RotatingTestimonial } from "@/components/ui/rotating-testimonials"
 import { UserSearch, MessageCircle, ClipboardList, BookOpen, Eye, Calendar, FileText } from "lucide-react"
 import { Navbar } from "@/components/navbar"
+import { useJoinModal } from "@/contexts/join-modal-context"
 import dynamic from "next/dynamic"
 
 const TestimonialsSection = dynamic(() => import("@/components/testimonials-section").then(mod => ({ default: mod.TestimonialsSection })), {
@@ -16,11 +19,13 @@ const Footer = dynamic(() => import("@/components/footer").then(mod => ({ defaul
 })
 
 export default function Home() {
+  const { openModal } = useJoinModal()
+  
   return (
     <div className="min-h-screen bg-[#FEFBFD] relative overflow-x-hidden">
-      {/* Hero Background - Full Width */}
+      {/* Background - Full Page */}
       <div 
-        className="absolute top-0 left-0 w-full h-[800px] sm:h-[1000px] z-0"
+        className="fixed top-0 left-0 w-full h-full z-0"
         style={{
           backgroundImage: "url(/background.svg)",
           backgroundSize: "cover",
@@ -62,12 +67,14 @@ export default function Home() {
               <RippleButton 
                 rippleColor="rgba(255, 255, 255, 0.5)"
                 className="bg-[#0b0b0b] text-white hover:bg-[#414141] rounded-[11px] px-4 sm:px-[11px] py-2 sm:py-[11px] text-sm sm:text-base border-0 w-full sm:w-auto"
+                onClick={openModal}
               >
                 Dołącz teraz
               </RippleButton>
-              <RippleButton 
+              <RippleButton
                 rippleColor="rgba(227, 82, 173, 0.4)"
                 className="bg-[#eac9df] text-[#0b0b0b] hover:bg-[#e352ad]/30 rounded-[11px] px-4 sm:px-[11px] py-2 sm:py-[11px] text-sm sm:text-base border-0 w-full sm:w-auto"
+                onClick={() => window.open("https://mymidwife.pl/", "_blank")}
               >
                 Sprawdź demo
               </RippleButton>
@@ -377,6 +384,7 @@ export default function Home() {
                 <RippleButton 
                   rippleColor="rgba(255, 255, 255, 0.5)"
                   className="bg-[#0b0b0b] text-white border border-[#989898] rounded-[11px] px-4 sm:px-[13px] py-2 sm:py-[11px] text-sm sm:text-base w-full sm:w-auto"
+                  onClick={openModal}
                 >
                   Dołącz teraz
                 </RippleButton>
@@ -540,6 +548,7 @@ export default function Home() {
                 <RippleButton 
                   rippleColor="rgba(255, 255, 255, 0.5)"
                   className="bg-[#0b0b0b] text-white border border-[#989898] rounded-[11px] px-4 sm:px-[13px] py-2 sm:py-[11px] text-sm sm:text-base w-full sm:w-auto"
+                  onClick={openModal}
                 >
                   Dołącz teraz
                 </RippleButton>

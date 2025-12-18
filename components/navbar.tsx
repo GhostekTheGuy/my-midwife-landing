@@ -1,7 +1,7 @@
 "use client"
 
 import { useState } from "react"
-import { Menu, X } from "lucide-react"
+import { Menu, X, ArrowRight } from "lucide-react"
 import { RainbowButton } from "@/components/ui/rainbow-button"
 import { cn } from "@/lib/utils"
 import { useJoinModal } from "@/contexts/join-modal-context"
@@ -42,17 +42,14 @@ export function Navbar() {
 
             {/* Nav links - Desktop */}
             <div className="hidden sm:flex items-center gap-[23px]">
-              <a href="#" className="text-white text-sm hover:text-[#e352ad] transition-colors">
-                O nas
+              <a href="#o-nas" className="text-white text-sm hover:text-[#e352ad] transition-colors">
+                Wyzwanie
               </a>
-              <a href="#" className="text-white text-sm hover:text-[#e352ad] transition-colors">
-                Zespół
+              <a href="#pacjentki" className="text-white text-sm hover:text-[#e352ad] transition-colors">
+                Pacjentki
               </a>
-              <a href="#" className="text-white text-sm hover:text-[#e352ad] transition-colors">
-                Blog
-              </a>
-              <a href="#" className="text-white text-sm hover:text-[#e352ad] transition-colors">
-                FAQ
+              <a href="#polozne" className="text-white text-sm hover:text-[#e352ad] transition-colors">
+                Położne
               </a>
             </div>
 
@@ -61,10 +58,11 @@ export function Navbar() {
               <RainbowButton 
                 variant="outline"
                 size={undefined}
-                className="text-[#0b0b0b] rounded-[11px] px-[11px] text-sm whitespace-nowrap"
+                className="text-[#0b0b0b] rounded-[11px] px-[11px] text-sm whitespace-nowrap group/button"
                 onClick={openModal}
               >
-                Dołącz teraz →
+                <span>Dołącz teraz</span>
+                <ArrowRight className="w-4 h-4 transition-transform duration-300 ease-in-out group-hover/button:translate-x-1" />
               </RainbowButton>
             </div>
 
@@ -104,32 +102,25 @@ export function Navbar() {
         >
           <div className="flex flex-col gap-4 p-4">
             <a
-              href="#"
+              href="#o-nas"
               onClick={closeMenu}
               className="text-white text-sm hover:text-[#e352ad] transition-colors py-2"
             >
-              O nas
+              Wyzwanie
             </a>
             <a
-              href="#"
+              href="#pacjentki"
               onClick={closeMenu}
               className="text-white text-sm hover:text-[#e352ad] transition-colors py-2"
             >
-              Zespół
+              Pacjentki
             </a>
             <a
-              href="#"
+              href="#polozne"
               onClick={closeMenu}
               className="text-white text-sm hover:text-[#e352ad] transition-colors py-2"
             >
-              Blog
-            </a>
-            <a
-              href="#"
-              onClick={closeMenu}
-              className="text-white text-sm hover:text-[#e352ad] transition-colors py-2"
-            >
-              FAQ
+              Położne
             </a>
           </div>
         </div>

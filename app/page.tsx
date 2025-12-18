@@ -132,8 +132,8 @@ export default function Home() {
                       <Image
                         src="/images/Group 3.png"
                         alt="MyMidwife App Interface"
-                        width={517}
-                        height={800}
+                        width={1034}
+                        height={1600}
                         className="h-auto w-full max-w-[517px] sm:max-w-[400px] md:max-w-[500px] scale-[2] lg:scale-[2] lg:max-w-none mx-auto"
                         style={{
                           marginTop: '112px',
@@ -142,7 +142,9 @@ export default function Home() {
                           paddingBottom: '0px',
                         }}
                         priority
-                        quality={90}
+                        quality={100}
+                        sizes="(max-width: 640px) 800px, (max-width: 768px) 1000px, 1034px"
+                        unoptimized={false}
                       />
                     </div>
                   </div>
@@ -173,7 +175,7 @@ export default function Home() {
         </div>
 
         {/* Problems Section */}
-        <div className="relative z-10 w-full max-w-[828px] px-4 sm:px-6 py-12 sm:py-20">
+        <div id="o-nas" className="relative z-10 w-full max-w-[828px] px-4 sm:px-6 py-12 sm:py-20">
           <div className="flex flex-col gap-[43px] w-full">
             {/* Header */}
             <div className="flex flex-col gap-7 text-center">
@@ -256,7 +258,7 @@ export default function Home() {
         </div>
 
         {/* Features Section - Dla przyszłych mam */}
-        <div className="relative z-10 w-full max-w-[828px] px-4 sm:px-6 py-12 sm:py-20 overflow-hidden">
+        <div id="pacjentki" className="relative z-10 w-full max-w-[828px] px-4 sm:px-6 py-12 sm:py-20 overflow-hidden">
           <div className="flex flex-col gap-[43px] w-full max-w-full">
             {/* Header */}
             <div className="flex flex-col gap-7 text-left">
@@ -410,7 +412,7 @@ export default function Home() {
         </div>
 
         {/* For Midwives Section - Dla Położnych */}
-        <div className="relative z-10 w-full max-w-[828px] px-4 sm:px-6 py-12 sm:py-20 overflow-hidden">
+        <div id="polozne" className="relative z-10 w-full max-w-[828px] px-4 sm:px-6 py-12 sm:py-20 overflow-hidden">
           <div className="flex flex-col gap-[43px] w-full max-w-[828px]">
             {/* Header */}
             <div className="flex flex-col gap-7 text-left">
@@ -529,7 +531,9 @@ export default function Home() {
         </div>
 
         {/* Testimonials Section */}
-        <TestimonialsSection />
+        <div id="blog">
+          <TestimonialsSection />
+        </div>
 
         {/* Footer */}
         <Footer />

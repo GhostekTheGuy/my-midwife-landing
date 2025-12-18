@@ -47,7 +47,7 @@ export function Footer() {
             {/* Middle Section: Team + Socials */}
             <div className="flex flex-col sm:flex-row items-center justify-between gap-6 w-full">
                 {/* Team */}
-                <div className="flex items-center gap-3">
+                <div id="zespol" className="flex items-center gap-3">
                     <span className="text-[#414141] text-[15px] font-normal">Zespół:</span>
                     <div className="flex -space-x-2">
                         {[
@@ -78,7 +78,7 @@ export function Footer() {
 
         {/* Bottom Section: Huge Logo + Copyright */}
         <div className="relative z-10 w-full flex flex-col items-center mt-8 sm:mt-12 px-4">
-             <h1 className="text-[64px] sm:text-[100px] md:text-[140px] lg:text-[170px] font-medium leading-[0.8] tracking-[-0.04em] text-transparent bg-clip-text bg-gradient-to-b from-[#414141] to-[#A7A7A7] select-none text-center mix-blend-multiply opacity-90 px-1.5">
+             <h1 className="text-[64px] sm:text-[100px] md:text-[140px] lg:text-[170px] font-medium leading-[0.8] tracking-[-0.04em] text-transparent bg-clip-text bg-gradient-to-b from-[#414141] to-[#A7A7A7] select-none text-center mix-blend-multiply opacity-90 px-1.5 mt-0 mb-0 pb-8">
                 MyMidwife
              </h1>
              <p className="text-[#666666] text-xs sm:text-[13px] mt-6 sm:mt-8 font-medium">

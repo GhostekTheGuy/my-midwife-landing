@@ -73,7 +73,7 @@ export default function Home() {
                 </LiquidButton>
                 <LiquidButton
                   className="bg-[#eac9df] text-white hover:text-white rounded-[11px] px-4 sm:px-[11px] py-2 sm:py-[11px] text-sm sm:text-base border-0 w-full sm:w-auto h-auto [--liquid-button-background-color:#e352ad] [--liquid-button-color:#eac9df]"
-                  onClick={() => window.open("https://mymidwife.pl/", "_blank")}
+                  onClick={() => window.open("https://mymidwife.vercel.app/", "_blank")}
                 >
                   Sprawdź demo
                 </LiquidButton>

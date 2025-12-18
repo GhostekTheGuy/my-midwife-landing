@@ -83,10 +83,10 @@ export function Footer() {
 
                 {/* Socials */}
                 <div className="flex items-center gap-3 text-[#414141]">
-                     <Link href="#" className="hover:text-black transition-colors">
+                     <Link href="https://www.linkedin.com/in/joanna-romaniuk-131a81386/" target="_blank" rel="noopener noreferrer" className="hover:text-black transition-colors">
                         <Linkedin className="w-[22px] h-[22px]" />
                      </Link>
-                     <Link href="#" className="hover:text-black transition-colors">
+                     <Link href="https://www.instagram.com/mymidwife.pl/" target="_blank" rel="noopener noreferrer" className="hover:text-black transition-colors">
                         <Instagram className="w-[22px] h-[22px]" />
                      </Link>
                 </div>

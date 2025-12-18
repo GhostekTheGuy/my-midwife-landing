@@ -3,6 +3,7 @@
 import Image from "next/image"
 import { RippleButton } from "@/components/ui/ripple-button"
 import { RainbowButton } from "@/components/ui/rainbow-button"
+import { LiquidButton } from "@/components/animate-ui/components/buttons/liquid"
 import { RotatingTestimonial } from "@/components/ui/rotating-testimonials"
 import { BlurFade } from "@/components/ui/blur-fade"
 import { UserSearch, MessageCircle, ClipboardList, BookOpen, Eye, Calendar, FileText } from "lucide-react"
@@ -64,20 +65,18 @@ export default function Home() {
 
             <BlurFade delay={0.4}>
               <div className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 mb-8 text-[rgba(10,10,10,1)] px-4 sm:px-0">
-                <RippleButton 
-                  rippleColor="rgba(255, 255, 255, 0.5)"
-                  className="bg-[#0b0b0b] text-white hover:bg-[#414141] rounded-[11px] px-4 sm:px-[11px] py-2 sm:py-[11px] text-sm sm:text-base border-0 w-full sm:w-auto"
+                <LiquidButton 
+                  className="bg-[#0b0b0b] text-white hover:text-white rounded-[11px] px-4 sm:px-[11px] py-2 sm:py-[11px] text-sm sm:text-base border-0 w-full sm:w-auto h-auto [--liquid-button-background-color:#414141] [--liquid-button-color:#0b0b0b]"
                   onClick={openModal}
                 >
                   Dołącz teraz
-                </RippleButton>
-                <RippleButton
-                  rippleColor="rgba(227, 82, 173, 0.4)"
-                  className="bg-[#eac9df] text-[#0b0b0b] hover:bg-[#e352ad]/30 rounded-[11px] px-4 sm:px-[11px] py-2 sm:py-[11px] text-sm sm:text-base border-0 w-full sm:w-auto"
+                </LiquidButton>
+                <LiquidButton
+                  className="bg-[#eac9df] text-white hover:text-white rounded-[11px] px-4 sm:px-[11px] py-2 sm:py-[11px] text-sm sm:text-base border-0 w-full sm:w-auto h-auto [--liquid-button-background-color:#e352ad] [--liquid-button-color:#eac9df]"
                   onClick={() => window.open("https://mymidwife.pl/", "_blank")}
                 >
                   Sprawdź demo
-                </RippleButton>
+                </LiquidButton>
               </div>
             </BlurFade>
 
@@ -260,16 +259,17 @@ export default function Home() {
         <div className="relative z-10 w-full max-w-[828px] px-4 sm:px-6 py-12 sm:py-20 overflow-hidden">
           <div className="flex flex-col gap-[43px] w-full max-w-full">
             {/* Header */}
-            <div className="flex flex-col gap-7 text-center">
+            <div className="flex flex-col gap-7 text-left">
               <p className="text-[#989898] text-sm">
                 Dla przyszłych mam.
               </p>
 
               <h2 className="text-[32px] sm:text-[40px] md:text-[56px] font-bold text-[#0b0b0b] tracking-tight px-4 sm:px-0">
-                Zadbaj o spokój i bezpieczeństwo
+                Zadbaj o spokój<br />
+                i bezpieczeństwo
               </h2>
 
-              <p className="text-[#414141] text-base sm:text-lg md:text-xl max-w-[828px] mx-auto px-4 sm:px-0">
+              <p className="text-[#414141] text-base sm:text-lg md:text-xl max-w-[828px] px-4 sm:px-0">
                 Ciąża to czas pełen pytań. MyMidwife to Twoja osobista asystentka, która zamienia niepewność w wiedzę, a stres w poczucie bezpieczeństwa.
               </p>
             </div>
@@ -364,13 +364,12 @@ export default function Home() {
 
             {/* Button */}
             <div className="flex justify-center sm:justify-start">
-              <RippleButton 
-                rippleColor="rgba(255, 255, 255, 0.5)"
-                className="bg-[#0b0b0b] text-white border border-[#989898] rounded-[11px] px-4 sm:px-[13px] py-2 sm:py-[11px] text-sm sm:text-base w-full sm:w-auto"
+              <LiquidButton 
+                className="bg-[#0b0b0b] text-white hover:text-white border border-[#989898] rounded-[11px] px-4 sm:px-[13px] py-2 sm:py-[11px] text-sm sm:text-base w-full sm:w-auto h-auto [--liquid-button-background-color:#414141] [--liquid-button-color:#0b0b0b]"
                 onClick={openModal}
               >
                 Dołącz teraz
-              </RippleButton>
+              </LiquidButton>
             </div>
           </div>
         </div>
@@ -414,16 +413,17 @@ export default function Home() {
         <div className="relative z-10 w-full max-w-[828px] px-4 sm:px-6 py-12 sm:py-20 overflow-hidden">
           <div className="flex flex-col gap-[43px] w-full max-w-[828px]">
             {/* Header */}
-            <div className="flex flex-col gap-7 text-center">
+            <div className="flex flex-col gap-7 text-left">
               <p className="text-[#989898] text-sm">
                 Dla Położnych.
               </p>
 
               <h2 className="text-[32px] sm:text-[40px] md:text-[56px] font-bold text-[#0b0b0b] tracking-tight px-4 sm:px-0">
-                Promocja kompetencji i łatwiejsza organizacja
+                Promocja kompetencji<br />
+                i łatwiejsza organizacja
               </h2>
 
-              <p className="text-[#414141] text-base sm:text-lg md:text-xl max-w-[655px] mx-auto px-4 sm:px-0">
+              <p className="text-[#414141] text-base sm:text-lg md:text-xl max-w-[655px] px-4 sm:px-0">
                 Buduj swoją markę osobistą, zarządzaj wizytami i utrzymuj profesjonalne relacje z pacjentkami w jednej aplikacji.
               </p>
             </div>
@@ -518,13 +518,12 @@ export default function Home() {
 
             {/* Button */}
             <div className="flex justify-center sm:justify-start">
-              <RippleButton 
-                rippleColor="rgba(255, 255, 255, 0.5)"
-                className="bg-[#0b0b0b] text-white border border-[#989898] rounded-[11px] px-4 sm:px-[13px] py-2 sm:py-[11px] text-sm sm:text-base w-full sm:w-auto"
+              <LiquidButton 
+                className="bg-[#0b0b0b] text-white hover:text-white border border-[#989898] rounded-[11px] px-4 sm:px-[13px] py-2 sm:py-[11px] text-sm sm:text-base w-full sm:w-auto h-auto [--liquid-button-background-color:#414141] [--liquid-button-color:#0b0b0b]"
                 onClick={openModal}
               >
                 Dołącz teraz
-              </RippleButton>
+              </LiquidButton>
             </div>
           </div>
         </div>

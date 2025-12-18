@@ -1,7 +1,7 @@
 "use client"
 
 import Image from "next/image"
-import { RippleButton } from "@/components/ui/ripple-button"
+import { LiquidButton } from "@/components/animate-ui/components/buttons/liquid"
 import { Instagram, Linkedin } from "lucide-react"
 import Link from "next/link"
 import { cn } from "@/lib/utils"
@@ -36,13 +36,12 @@ export function Footer() {
                 <h3 className="text-[#0b0b0b] text-lg sm:text-[22px] font-normal tracking-tight text-center sm:text-left">
                     Dołącz do naszej kobiecej społeczności.
                 </h3>
-                <RippleButton 
-                    rippleColor="rgba(255, 255, 255, 0.5)"
-                    className="bg-[#0b0b0b] text-white hover:bg-[#252525] border-0 rounded-[12px] px-6 py-2.5 h-[44px] text-sm font-medium whitespace-nowrap"
+                <LiquidButton 
+                    className="bg-[#0b0b0b] text-white hover:text-white border-0 rounded-[12px] px-6 py-2.5 h-[44px] text-sm font-medium whitespace-nowrap [--liquid-button-background-color:#414141] [--liquid-button-color:#0b0b0b]"
                     onClick={openModal}
                 >
                     Dołącz teraz
-                </RippleButton>
+                </LiquidButton>
             </div>
 
             {/* Middle Section: Team + Socials */}

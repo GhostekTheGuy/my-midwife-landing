@@ -10,7 +10,7 @@ import {
   DialogDescription,
   DialogHeader,
   DialogTitle,
-} from "@/components/ui/dialog"
+} from "@/components/animate-ui/components/radix/dialog"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Checkbox } from "@/components/ui/checkbox"
@@ -72,14 +72,28 @@ export function JoinModal({ open, onOpenChange }: JoinModalProps) {
   async function onSubmit(data: FormData) {
     setIsSubmitting(true)
     try {
-      // Here you would typically send the data to your API
-      console.log({ formData: data })
-      // Simulate API call
-      await new Promise((resolve) => setTimeout(resolve, 1000))
+      const response = await fetch("/api/submit-form", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      })
+
+      if (!response.ok) {
+        const errorData = await response.json()
+        throw new Error(errorData.error || "Failed to submit form")
+      }
+
+      const result = await response.json()
+      console.log({ success: result })
+      
       reset()
       handleOpenChange(false)
     } catch (error) {
       console.error({ error })
+      // You can add toast notification here if needed
+      alert("Wystąpił błąd podczas wysyłania formularza. Spróbuj ponownie.")
     } finally {
       setIsSubmitting(false)
     }

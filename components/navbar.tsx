@@ -83,7 +83,7 @@ export function Navbar() {
             {/* Hamburger Menu Button - Mobile */}
             <button
               onClick={toggleMenu}
-              className="sm:hidden text-white p-2 hover:text-[#e352ad] transition-colors"
+              className="sm:hidden text-white p-2 hover:text-[#e352ad] transition-colors cursor-pointer"
               aria-label="Toggle menu"
             >
               {isMenuOpen ? (

@@ -3,7 +3,7 @@
 import { cn } from "@/lib/utils";
 import { Marquee } from "@/components/ui/marquee";
 import { Testimonial } from "@/components/ui/testimonial";
-import { RippleButton } from "@/components/ui/ripple-button";
+import { LiquidButton } from "@/components/animate-ui/components/buttons/liquid";
 import { useJoinModal } from "@/contexts/join-modal-context";
 
 const testimonials = [
@@ -134,13 +134,12 @@ export function TestimonialsSection() {
 
         {/* Button */}
         <div className="flex justify-center mt-4">
-          <RippleButton 
-            rippleColor="rgba(255, 255, 255, 0.5)"
-            className="bg-[#0b0b0b] text-white border border-[#989898] rounded-[11px] px-4 sm:px-[13px] py-2 sm:py-[11px] text-sm sm:text-base w-full sm:w-auto"
+          <LiquidButton 
+            className="bg-[#0b0b0b] text-white hover:text-white border border-[#989898] rounded-[11px] px-4 sm:px-[13px] py-2 sm:py-[11px] text-sm sm:text-base w-full sm:w-auto h-auto [--liquid-button-background-color:#414141] [--liquid-button-color:#0b0b0b]"
             onClick={openModal}
           >
             Dołącz teraz
-          </RippleButton>
+          </LiquidButton>
         </div>
       </div>
     </div>

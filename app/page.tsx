@@ -161,11 +161,12 @@ export default function Home() {
 
                 {/* Mobile testimonial - below phone image */}
                 <div className="lg:hidden mt-8 relative z-20">
-                  <div className="flex justify-center">
+                  <div className="flex justify-center min-h-[181px]">
                     <RotatingTestimonial 
                       className="w-full max-w-[232px]"
                       rotationInterval={5000}
                       indexOffset={2}
+                      disableHeightOffset={true}
                     />
                   </div>
                 </div>

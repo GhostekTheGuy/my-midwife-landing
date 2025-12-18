@@ -160,6 +160,17 @@
   body {
     @apply bg-background text-foreground;
   }
+  /* Hide scrollbar on mobile */
+  @media (max-width: 1023px) {
+    body {
+      overflow-x: hidden;
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+    body::-webkit-scrollbar {
+      display: none;
+    }
+  }
 }
 
 @layer utilities {

@@ -127,8 +127,8 @@ export default function Home() {
                   </div>
 
                   {/* Phone image */}
-                  <div className="flex-shrink-0 relative z-10">
-                    <div className="relative w-full max-w-md mx-auto">
+                  <div className="flex-shrink-0 relative z-10 w-full lg:w-auto">
+                    <div className="relative w-full max-w-full lg:max-w-md mx-auto overflow-hidden lg:overflow-visible">
                       <Image
                         src="/images/Group 3.png"
                         alt="MyMidwife App Interface"
@@ -145,6 +145,20 @@ export default function Home() {
                         quality={100}
                         sizes="(max-width: 640px) 800px, (max-width: 768px) 1000px, 1034px"
                         unoptimized={false}
+                      />
+                      {/* White gradient fade at bottom - mobile only */}
+                      <div 
+                        className="lg:hidden absolute bottom-0 left-0 right-0 h-32 pointer-events-none z-30"
+                        style={{
+                          background: 'linear-gradient(to bottom, transparent 0%, rgba(254, 251, 253, 0.3) 30%, rgba(254, 251, 253, 0.7) 60%, rgba(254, 251, 253, 1) 100%)',
+                        }}
+                      />
+                      {/* White gradient fade at right - mobile only */}
+                      <div 
+                        className="lg:hidden absolute top-0 right-0 bottom-0 w-32 pointer-events-none z-30"
+                        style={{
+                          background: 'linear-gradient(to right, transparent 0%, rgba(254, 251, 253, 0.3) 30%, rgba(254, 251, 253, 0.7) 60%, rgba(254, 251, 253, 1) 100%)',
+                        }}
                       />
                     </div>
                   </div>

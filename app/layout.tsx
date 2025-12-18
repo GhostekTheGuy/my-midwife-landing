@@ -13,9 +13,9 @@ const _interTight = Inter_Tight({
 })
 
 export const metadata: Metadata = {
-  title: "MyMidwife - Łączymy mamy z ekspertkami",
+  title: "MyMidwife - Łączymy kobiety z ekspertkami",
   description:
-    "Platforma łącząca przyszłe mamy z ekspertkami położniczymi. Bezpieczeństwo, wiedza i wsparcie w jednej aplikacji.",
+    "Platforma łącząca kobiety z ekspertkami położniczymi. Bezpieczeństwo, wiedza i wsparcie w jednej aplikacji.",
   generator: "v0.app",
   icons: {
     icon: [

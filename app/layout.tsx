@@ -2,7 +2,6 @@ import type React from "react"
 import type { Metadata } from "next"
 import { Inter_Tight } from "next/font/google"
 import { Analytics } from "@vercel/analytics/next"
-import { JoinModalProvider } from "@/contexts/join-modal-context"
 import { JoinModalWrapper } from "@/components/join-modal-wrapper"
 import "./globals.css"
 
@@ -44,10 +43,8 @@ export default function RootLayout({
   return (
     <html lang="pl">
       <body className={`font-sans antialiased ${_interTight.className} overflow-x-hidden`}>
-        <JoinModalProvider>
-          {children}
-          <JoinModalWrapper />
-        </JoinModalProvider>
+        {children}
+        <JoinModalWrapper />
         <Analytics />
       </body>
     </html>

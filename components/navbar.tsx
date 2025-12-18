@@ -4,7 +4,7 @@ import { useState, useEffect } from "react"
 import { Menu, X, ArrowRight } from "lucide-react"
 import { RainbowButton } from "@/components/ui/rainbow-button"
 import { cn } from "@/lib/utils"
-import { useJoinModal } from "@/contexts/join-modal-context"
+import { useJoinModalStore } from "@/stores/join-modal-store"
 import Confetti from "react-confetti"
 
 export function Navbar() {
@@ -12,7 +12,7 @@ export function Navbar() {
   const [isVisible, setIsVisible] = useState(false)
   const [showConfetti, setShowConfetti] = useState(false)
   const [windowDimensions, setWindowDimensions] = useState({ width: 0, height: 0 })
-  const { openModal } = useJoinModal()
+  const { openModal } = useJoinModalStore()
 
   useEffect(() => {
     // Small delay to ensure smooth animation

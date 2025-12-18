@@ -1,10 +1,10 @@
 "use client"
 
 import { JoinModal } from "@/components/join-modal"
-import { useJoinModal } from "@/contexts/join-modal-context"
+import { useJoinModalStore } from "@/stores/join-modal-store"
 
 export function JoinModalWrapper() {
-  const { isOpen, closeModal } = useJoinModal()
+  const { isOpen, closeModal } = useJoinModalStore()
   return <JoinModal open={isOpen} onOpenChange={closeModal} />
 }
 

@@ -8,7 +8,7 @@ import { RotatingTestimonial } from "@/components/ui/rotating-testimonials"
 import { BlurFade } from "@/components/ui/blur-fade"
 import { UserSearch, MessageCircle, ClipboardList, BookOpen, Eye, Calendar, FileText } from "lucide-react"
 import { Navbar } from "@/components/navbar"
-import { useJoinModal } from "@/contexts/join-modal-context"
+import { useJoinModalStore } from "@/stores/join-modal-store"
 import dynamic from "next/dynamic"
 
 const TestimonialsSection = dynamic(() => import("@/components/testimonials-section").then(mod => ({ default: mod.TestimonialsSection })), {
@@ -20,7 +20,7 @@ const Footer = dynamic(() => import("@/components/footer").then(mod => ({ defaul
 })
 
 export default function Home() {
-  const { openModal } = useJoinModal()
+  const { openModal } = useJoinModalStore()
   
   return (
     <div className="min-h-screen bg-[#FEFBFD] relative">

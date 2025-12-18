@@ -4,7 +4,7 @@ import { cn } from "@/lib/utils";
 import { Marquee } from "@/components/ui/marquee";
 import { Testimonial } from "@/components/ui/testimonial";
 import { LiquidButton } from "@/components/animate-ui/components/buttons/liquid";
-import { useJoinModal } from "@/contexts/join-modal-context";
+import { useJoinModalStore } from "@/stores/join-modal-store";
 
 const testimonials = [
   {
@@ -75,7 +75,7 @@ const thirdColumn = [testimonials[6], testimonials[7], testimonials[8]];
 const fourthColumn = [testimonials[9], testimonials[10], testimonials[11]];
 
 export function TestimonialsSection() {
-  const { openModal } = useJoinModal()
+  const { openModal } = useJoinModalStore()
   
   return (
     <div 

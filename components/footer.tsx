@@ -5,7 +5,7 @@ import { LiquidButton } from "@/components/animate-ui/components/buttons/liquid"
 import { Instagram, Linkedin } from "lucide-react"
 import Link from "next/link"
 import { cn } from "@/lib/utils"
-import { useJoinModal } from "@/contexts/join-modal-context"
+import { useJoinModalStore } from "@/stores/join-modal-store"
 import {
   Tooltip,
   TooltipContent,
@@ -14,7 +14,7 @@ import {
 } from "@/components/ui/tooltip"
 
 export function Footer() {
-  const { openModal } = useJoinModal()
+  const { openModal } = useJoinModalStore()
   
   return (
     <footer className="relative w-full max-w-7xl mx-auto px-4 sm:px-6 pt-12 pb-12 sm:pt-20">

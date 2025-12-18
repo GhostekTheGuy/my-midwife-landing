@@ -204,4 +204,26 @@
     animation-timing-function: linear;
     animation-iteration-count: infinite;
   }
+
+  @keyframes navbar-bounce {
+    0% {
+      transform: scaleY(0.8) scaleX(0.95);
+      opacity: 0;
+    }
+    50% {
+      transform: scaleY(1.05) scaleX(1.02);
+    }
+    70% {
+      transform: scaleY(0.98) scaleX(0.99);
+    }
+    100% {
+      transform: scaleY(1) scaleX(1);
+      opacity: 1;
+    }
+  }
+
+  .animate-navbar-bounce {
+    animation: navbar-bounce 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+    transform-origin: center top;
+  }
 }

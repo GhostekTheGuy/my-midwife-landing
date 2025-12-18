@@ -2,8 +2,54 @@
 
 import { useState, useEffect } from 'react'
 import { Testimonial } from './testimonial'
-import { testimonials } from '@/lib/testimonials-data'
-import { cn } from '@/lib/utils'
+
+interface TestimonialData {
+  quote: string
+  author: string
+}
+
+export const testimonials: TestimonialData[] = [
+  {
+    quote: "Aplikacja MyMidwife całkowicie zmieniła sposób, w jaki wspieram moje pacjentki. Wszystkie informacje są w jednym miejscu, a komunikacja jest niezwykle prosta.",
+    author: "~ Anna, Położna"
+  },
+  {
+    quote: "Jako położna doceniam możliwość szybkiego dostępu do historii pacjentki. To oszczędza mnóstwo czasu i pozwala mi skupić się na tym, co najważniejsze - na opiece.",
+    author: "~ Maria, Położna"
+  },
+  {
+    quote: "MyMidwife to nie tylko aplikacja - to prawdziwe wsparcie dla kobiet w ciąży. Widzę, jak moje pacjentki czują się bezpieczniej i bardziej pewnie.",
+    author: "~ Katarzyna, Położna"
+  },
+  {
+    quote: "Platforma jest intuicyjna i łatwa w obsłudze. Moje pacjentki chętnie z niej korzystają, a ja mam wszystko pod kontrolą.",
+    author: "~ Joanna, Położna"
+  },
+  {
+    quote: "Jako doświadczona położna widzę ogromny potencjał w MyMidwife. To przyszłość opieki okołoporodowej w Polsce.",
+    author: "~ Ewa, Położna"
+  },
+  {
+    quote: "Aplikacja pomaga mi lepiej organizować pracę i dbać o każdą pacjentkę indywidualnie. To narzędzie, którego brakowało na rynku.",
+    author: "~ Magdalena, Położna"
+  },
+  {
+    quote: "MyMidwife ułatwia komunikację z pacjentkami i pozwala na szybkie reagowanie na ich potrzeby. To rewolucja w opiece położniczej.",
+    author: "~ Agnieszka, Położna"
+  },
+  {
+    quote: "Jestem pod wrażeniem, jak aplikacja wspiera zarówno położne, jak i kobiety w ciąży. To kompleksowe rozwiązanie dla całego sektora.",
+    author: "~ Barbara, Położna"
+  },
+  {
+    quote: "Dzięki MyMidwife mogę lepiej planować wizyty i monitorować stan zdrowia moich pacjentek. To nieocenione wsparcie w codziennej pracy.",
+    author: "~ Monika, Położna"
+  },
+  {
+    quote: "Aplikacja jest niezwykle pomocna w zarządzaniu dokumentacją i komunikacji z pacjentkami. Polecam ją wszystkim koleżankom po fachu.",
+    author: "~ Paulina, Położna"
+  }
+]
 
 interface RotatingTestimonialProps {
   className?: string
@@ -64,7 +110,7 @@ export function RotatingTestimonial({
       <Testimonial
         quote={testimonial.quote}
         author={testimonial.author}
-        className={cn(className, testimonial.className)}
+        className={className}
       />
     </div>
   )

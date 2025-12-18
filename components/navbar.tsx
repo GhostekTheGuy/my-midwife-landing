@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { Menu, X, ArrowRight } from "lucide-react"
 import { RainbowButton } from "@/components/ui/rainbow-button"
 import { cn } from "@/lib/utils"
@@ -8,7 +8,16 @@ import { useJoinModal } from "@/contexts/join-modal-context"
 
 export function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
+  const [isVisible, setIsVisible] = useState(false)
   const { openModal } = useJoinModal()
+
+  useEffect(() => {
+    // Small delay to ensure smooth animation
+    const timer = requestAnimationFrame(() => {
+      setIsVisible(true)
+    })
+    return () => cancelAnimationFrame(timer)
+  }, [])
 
   function toggleMenu() {
     setIsMenuOpen(!isMenuOpen)
@@ -19,9 +28,17 @@ export function Navbar() {
   }
 
   return (
-    <nav className="sticky top-0 z-50 pt-4 sm:pt-8 pb-4 sm:pb-6 bg-gradient-to-b from-white to-white/0">
+    <nav className={cn(
+      "sticky top-0 z-50 pt-4 sm:pt-8 pb-4 sm:pb-6 bg-gradient-to-b from-white to-white/0 transition-all duration-700 ease-out",
+      isVisible 
+        ? "opacity-100 translate-y-0" 
+        : "opacity-0 -translate-y-8"
+    )}>
       <div className="flex justify-center px-4 sm:px-6">
-          <div className="bg-[#0b0b0b] rounded-[10px] p-2 sm:p-[7px] flex items-center justify-between sm:justify-center gap-3 sm:gap-[23px] shadow-lg w-full sm:w-auto max-w-full sm:max-w-none">
+          <div className={cn(
+            "bg-[#0b0b0b] rounded-[10px] p-2 sm:p-[7px] flex items-center justify-between sm:justify-center gap-3 sm:gap-[23px] shadow-lg w-full sm:w-auto max-w-full sm:max-w-none",
+            isVisible && "animate-navbar-bounce"
+          )}>
             {/* Logo */}
             <div className="flex items-center">
               <div className="bg-[#e352ad] rounded-lg p-2 w-9 h-9 flex items-center justify-center">

@@ -6,6 +6,12 @@ import { Instagram, Linkedin } from "lucide-react"
 import Link from "next/link"
 import { cn } from "@/lib/utils"
 import { useJoinModal } from "@/contexts/join-modal-context"
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip"
 
 export function Footer() {
   const { openModal } = useJoinModal()
@@ -47,21 +53,33 @@ export function Footer() {
             {/* Middle Section: Team + Socials */}
             <div className="flex flex-col sm:flex-row items-center justify-between gap-6 w-full">
                 {/* Team */}
-                <div id="zespol" className="flex items-center gap-3">
-                    <span className="text-[#414141] text-[15px] font-normal">Zespół:</span>
-                    <div className="flex -space-x-2">
-                        {[
-                            "/stock/img/1764706067560.jpeg",
-                            "/stock/img/Ellipse 3.png", 
-                            "/stock/img/Ellipse 4.png",
-                            "/stock/img/Ellipse 5.png"
-                        ].map((src, i) => (
-                            <div key={i} className="w-[34px] h-[34px] rounded-full overflow-hidden grayscale border border-[#E69FCD] relative">
-                                <Image src={src} alt="Team" fill className="object-cover" loading="lazy" sizes="34px" />
-                            </div>
-                        ))}
+                <TooltipProvider delayDuration={200}>
+                    <div id="zespol" className="flex items-center gap-3">
+                        <span className="text-[#414141] text-[15px] font-normal">Zespół:</span>
+                        <div className="flex -space-x-2">
+                            {[
+                                { src: "/stock/img/1764706067560.jpeg", name: "Joanna Romaniuk", role: "CEO" },
+                                { src: "/stock/img/Ellipse 3.png", name: "Bartek Świtała", role: "Backend Developer" },
+                                { src: "/stock/img/Ellipse 4.png", name: "Hubert Kolejko", role: "Product Designer" },
+                                { src: "/stock/img/Ellipse 5.png", name: "Piotr Pręciuk", role: "Fullstack Developer" }
+                            ].map((member, i) => (
+                                <Tooltip key={i}>
+                                    <TooltipTrigger asChild>
+                                        <div className="w-[34px] h-[34px] rounded-full overflow-hidden grayscale border border-[#E69FCD] relative cursor-pointer hover:grayscale-0 transition-all duration-200">
+                                            <Image src={member.src} alt={member.name} fill className="object-cover" loading="lazy" sizes="34px" />
+                                        </div>
+                                    </TooltipTrigger>
+                                    <TooltipContent>
+                                        <div className="flex flex-col gap-0.5">
+                                            <p className="font-medium">{member.name}</p>
+                                            <p className="text-xs text-white/80">{member.role}</p>
+                                        </div>
+                                    </TooltipContent>
+                                </Tooltip>
+                            ))}
+                        </div>
                     </div>
-                </div>
+                </TooltipProvider>
 
                 {/* Socials */}
                 <div className="flex items-center gap-3 text-[#414141]">

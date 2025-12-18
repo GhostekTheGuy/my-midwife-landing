@@ -1,56 +1,45 @@
 import { NextRequest, NextResponse } from "next/server"
 import { supabase } from "@/lib/supabase"
+import { z } from "zod"
 
-interface FormSubmission {
-  userType: "patient" | "midwife"
-  email: string
-  city: string
-  privacyConsent: boolean
-  demoTesting?: boolean
-}
+// Server-side validation schema (lightweight check)
+const formSubmissionSchema = z.object({
+  userType: z.enum(["patient", "midwife"]),
+  email: z.string().email(),
+  city: z.string().min(1),
+  privacyConsent: z.literal(true),
+  demoTesting: z.boolean().optional(),
+})
 
-async function checkEmailExists(email: string): Promise<boolean> {
-  const { data, error } = await supabase
-    .from("form_submissions")
-    .select("id")
-    .eq("email", email.toLowerCase().trim())
-    .limit(1)
-    .maybeSingle()
-
-  if (error) {
-    console.error({ error: "Error checking email existence", error })
-    // If there's an error checking, we'll allow the insert to proceed
-    // The unique constraint in the database will catch duplicates
-    return false
-  }
-
-  return data !== null
-}
+type FormSubmission = z.infer<typeof formSubmissionSchema>
 
 async function saveSubmission(data: FormSubmission) {
-  // Check if email already exists
-  const emailExists = await checkEmailExists(data.email)
-  if (emailExists) {
-    const error = new Error("Ten adres email jest już zarejestrowany")
-    ;(error as any).code = "DUPLICATE_EMAIL"
-    throw error
-  }
+  // Normalize email before insert
+  const normalizedEmail = data.email.toLowerCase().trim()
+  const normalizedCity = data.city.trim()
 
+  // Direct insert - let database handle uniqueness constraint
+  // This is faster than checking existence first
   const { data: submission, error } = await supabase
     .from("form_submissions")
     .insert({
       user_type: data.userType,
-      email: data.email.toLowerCase().trim(),
-      city: data.city.trim(),
+      email: normalizedEmail,
+      city: normalizedCity,
       privacy_consent: data.privacyConsent,
-      demo_testing: data.demoTesting || false,
+      demo_testing: data.demoTesting ?? false,
     })
-    .select()
+    .select("id")
     .single()
 
   if (error) {
-    // Check if it's a unique constraint violation
-    if (error.code === "23505" || error.message?.includes("duplicate") || error.message?.includes("unique")) {
+    // Check for unique constraint violation (PostgreSQL error code 23505)
+    if (
+      error.code === "23505" ||
+      error.message?.toLowerCase().includes("duplicate") ||
+      error.message?.toLowerCase().includes("unique") ||
+      error.message?.includes("violates unique constraint")
+    ) {
       const duplicateError = new Error("Ten adres email jest już zarejestrowany")
       ;(duplicateError as any).code = "DUPLICATE_EMAIL"
       throw duplicateError
@@ -65,38 +54,17 @@ export async function POST(request: NextRequest) {
   try {
     const body = await request.json()
 
-    // Validate required fields
-    if (!body.userType || !body.email || !body.city || body.privacyConsent !== true) {
+    // Fast server-side validation with Zod
+    const validationResult = formSubmissionSchema.safeParse(body)
+    
+    if (!validationResult.success) {
       return NextResponse.json(
-        { error: "Missing required fields" },
+        { error: "Nieprawidłowe dane formularza", details: validationResult.error.errors },
         { status: 400 }
       )
     }
 
-    // Validate email format
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-    if (!emailRegex.test(body.email)) {
-      return NextResponse.json(
-        { error: "Invalid email format" },
-        { status: 400 }
-      )
-    }
-
-    // Validate userType
-    if (!["patient", "midwife"].includes(body.userType)) {
-      return NextResponse.json(
-        { error: "Invalid user type" },
-        { status: 400 }
-      )
-    }
-
-    const submission = await saveSubmission({
-      userType: body.userType,
-      email: body.email,
-      city: body.city,
-      privacyConsent: body.privacyConsent,
-      demoTesting: body.demoTesting || false,
-    })
+    const submission = await saveSubmission(validationResult.data)
 
     return NextResponse.json(
       { success: true, message: "Form submitted successfully", data: submission },
@@ -106,31 +74,30 @@ export async function POST(request: NextRequest) {
     console.error({ error: "Failed to submit form", error })
     
     // Handle duplicate email error
-    if (error && typeof error === "object" && "code" in error && (error as { code: string }).code === "DUPLICATE_EMAIL") {
+    if (
+      error &&
+      typeof error === "object" &&
+      "code" in error &&
+      (error as { code: string }).code === "DUPLICATE_EMAIL"
+    ) {
       return NextResponse.json(
-        { error: (error as { message: string }).message || "Ten adres email jest już zarejestrowany" },
+        {
+          error: (error as { message: string }).message || "Ten adres email jest już zarejestrowany",
+        },
         { status: 409 }
       )
     }
     
-    // Provide more specific error messages
+    // Handle other errors
     if (error && typeof error === "object" && "message" in error) {
-      // Check for PostgreSQL unique constraint violation
-      const errorMessage = (error as { message: string }).message
-      if (errorMessage.includes("duplicate") || errorMessage.includes("unique") || errorMessage.includes("23505")) {
-        return NextResponse.json(
-          { error: "Ten adres email jest już zarejestrowany" },
-          { status: 409 }
-        )
-      }
       return NextResponse.json(
-        { error: errorMessage },
+        { error: (error as { message: string }).message },
         { status: 500 }
       )
     }
     
     return NextResponse.json(
-      { error: "Internal server error" },
+      { error: "Wystąpił błąd podczas przetwarzania formularza" },
       { status: 500 }
     )
   }

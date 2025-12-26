@@ -42,6 +42,14 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="pl">
+      <head>
+        <link
+          rel="preload"
+          href="/images/Group 3.webp"
+          as="image"
+          type="image/webp"
+        />
+      </head>
       <body className={`font-sans antialiased ${_interTight.className} overflow-x-hidden`}>
         {children}
         <JoinModalWrapper />

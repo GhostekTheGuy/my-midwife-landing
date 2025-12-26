@@ -130,7 +130,7 @@ export default function Home() {
                   <div className="flex-shrink-0 relative z-10 w-full lg:w-auto">
                     <div className="relative w-full max-w-full lg:max-w-md mx-auto overflow-hidden lg:overflow-visible">
                       <Image
-                        src="/images/Group 3.png"
+                        src="/images/Group 3.webp"
                         alt="MyMidwife App Interface"
                         width={1034}
                         height={1600}
@@ -142,9 +142,9 @@ export default function Home() {
                           paddingBottom: '0px',
                         }}
                         priority
-                        quality={100}
+                        quality={85}
                         sizes="(max-width: 640px) 800px, (max-width: 768px) 1000px, 1034px"
-                        unoptimized={false}
+                        loading="eager"
                       />
                       {/* White gradient fade at bottom - mobile only */}
                       <div 

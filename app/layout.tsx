@@ -45,9 +45,10 @@ export default function RootLayout({
       <head>
         <link
           rel="preload"
-          href="/images/Group 3.webp"
+          href="/images/Group 3-optimized.webp"
           as="image"
           type="image/webp"
+          fetchPriority="high"
         />
       </head>
       <body className={`font-sans antialiased ${_interTight.className} overflow-x-hidden`}>

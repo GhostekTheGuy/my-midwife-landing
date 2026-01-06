@@ -8,71 +8,111 @@ import { useJoinModalStore } from "@/stores/join-modal-store";
 
 const testimonials = [
   {
-    quote: "Aplikacja MyMidwife całkowicie zmieniła sposób, w jaki wspieram moje pacjentki. Wszystkie informacje są w jednym miejscu.",
-    author: "~ Anna, Położna",
+    quote: "Pełny szacunek za pomysł, realizację i wizję! To ukłon w stronę naszych pacjentek, które jako osoby młode szukają położnych na grupach dla mam. Aplikacja będzie super!!",
+    author: "~ Ania, Położna",
     className: "bg-[#e352ad] text-white border-transparent"
   },
   {
-    quote: "Jako położna doceniam możliwość szybkiego dostępu do historii pacjentki. To oszczędza mnóstwo czasu.",
-    author: "~ Maria, Położna",
+    quote: "Super ta aplikacja. Myślę, że pacjentki będą chętnie korzystać. Mam nadzieję, że nam też to ułatwi pracę. Trzymam kciuki!",
+    author: "~ Aga, Położna",
     className: "bg-white"
   },
   {
-    quote: "MyMidwife to nie tylko aplikacja - to prawdziwe wsparcie dla kobiet w ciąży. Pacjentki czują się bezpieczniej.",
-    author: "~ Katarzyna, Położna",
+    quote: "Super pomysł i brawo za inicjatywę! Powodzenia, czekam na wersję gotową do pracy.",
+    author: "~ Anna, Położna",
     className: "bg-[#e69fcd] text-white border-transparent"
   },
   {
-    quote: "Platforma jest intuicyjna i łatwa w obsłudze. Moje pacjentki chętnie z niej korzystają.",
-    author: "~ Joanna, Położna",
-    className: "bg-white"
-  },
-  {
-    quote: "Jako doświadczona położna widzę ogromny potencjał w MyMidwife. To przyszłość opieki.",
-    author: "~ Ewa, Położna",
-    className: "bg-white"
-  },
-  {
-    quote: "Aplikacja pomaga mi lepiej organizować pracę i dbać o każdą pacjentkę indywidualnie.",
-    author: "~ Magdalena, Położna",
-    className: "bg-white"
-  },
-  {
-    quote: "MyMidwife ułatwia komunikację z pacjentkami i pozwala na szybkie reagowanie na ich potrzeby.",
-    author: "~ Agnieszka, Położna",
-    className: "bg-white"
-  },
-  {
-    quote: "Jestem pod wrażeniem, jak aplikacja wspiera zarówno położne, jak i kobiety w ciąży.",
-    author: "~ Barbara, Położna",
-    className: "bg-[#e69fcd] text-white border-transparent"
-  },
-  {
-    quote: "Dzięki MyMidwife mogę lepiej planować wizyty i monitorować stan zdrowia moich pacjentek.",
+    quote: "Wygląda bardzo ciekawie i super pomysł! Powodzenia!",
     author: "~ Monika, Położna",
     className: "bg-white"
   },
   {
-    quote: "Aplikacja jest niezwykle pomocna w zarządzaniu dokumentacją i komunikacji z pacjentkami. Polecam ją wszystkim koleżankom.",
-    author: "~ Paulina, Położna",
+    quote: "Ekstra pomysł! Trzymam kciuki!",
+    author: "~ Ada, Pacjentka",
     className: "bg-white"
   },
   {
-    quote: "MyMidwife to rewolucja w opiece położniczej. Wszystko w jednym miejscu, łatwe w użyciu i profesjonalne.",
-    author: "~ Karolina, Położna",
+    quote: "Genialna sprawa!!! Powodzenia!",
+    author: "~ Kasia, Pacjentka",
     className: "bg-[#e352ad] text-white border-transparent"
   },
   {
-    quote: "Jako młoda położna doceniam możliwość budowania relacji z pacjentkami przez aplikację. To przyszłość opieki.",
+    quote: "Super! Gratuluję. Oby jak najszybciej była dostępna!",
+    author: "~ Diana, Pacjentka",
+    className: "bg-white"
+  },
+  {
+    quote: "Świetny pomysł. Powodzenia.",
+    author: "~ Wiesia, Położna",
+    className: "bg-[#e69fcd] text-white border-transparent"
+  },
+  {
+    quote: "Brawo, genialny pomysł!",
+    author: "~ Maria, Położna",
+    className: "bg-white"
+  },
+  {
+    quote: "Jestem pod wrażeniem!",
+    author: "~ Gosia, Położna",
+    className: "bg-white"
+  },
+  {
+    quote: "Wizja MyMidwife to dokładnie to, czego potrzebuje nowoczesne położnictwo. Przeniesienie komunikacji z Messengera do profesjonalnej aplikacji to strzał w dziesiątkę.",
+    author: "~ Asia, Położna",
+    className: "bg-[#e352ad] text-white border-transparent"
+  },
+  {
+    quote: "Jako położna widzę ogromny potencjał w uporządkowaniu historii pacjentki w jednym miejscu. To może zaoszczędzić nam godziny pracy administracyjnej.",
+    author: "~ Maria, Położna",
+    className: "bg-white"
+  },
+  {
+    quote: "Czekam na taką platformę! Szukanie sprawdzonej położnej w internecie to dziś loteria. Taka aplikacja da nam, mamom, ogromne poczucie bezpieczeństwa.",
+    author: "~ Magda, Pacjentka",
+    className: "bg-[#e69fcd] text-white border-transparent"
+  },
+  {
+    quote: "Pomysł na ułatwienie kontaktu z pacjentką w ciąży jest genialny. To nie tylko wygoda, to przede wszystkim lepsza opieka.",
+    author: "~ Ewa, Położna",
+    className: "bg-white"
+  },
+  {
+    quote: "Jeśli ta aplikacja faktycznie pomoże mi lepiej organizować wizyty patronażowe, to wchodzę w to od razu po premierze.",
+    author: "~  Magda, Położna",
+    className: "bg-white"
+  },
+  {
+    quote: "Nareszcie ktoś pomyślał o cyfryzacji pracy położnych. Zapowiada się narzędzie, które realnie podniesie standard naszej pracy.",
+    author: "~ Paulina, Położna",
+    className: "bg-[#e69fcd] text-white border-transparent"
+  },
+  {
+    quote: "Młode mamy żyją w smartfonach. MyMidwife to wyjście naprzeciw ich oczekiwaniom. Bardzo potrzebujemy takiego łącznika.",
+    author: "~ Karolina, Położna",
+    className: "bg-white"
+  },
+  {
+    quote: "Trzymam kciuki za realizację! Możliwość szybkiego podglądu parametrów pacjentki przed wizytą brzmi jak marzenie każdego medyka.",
     author: "~ Natalia, Położna",
+    className: "bg-[#e352ad] text-white border-transparent"
+  },
+  {
+    quote: "To wygląda na projekt, który w końcu uporządkuje chaos informacyjny, z jakim mierzą się kobiety w pierwszej ciąży.",
+    author: "~ Ola, Pacjentka",
+    className: "bg-white"
+  },
+  {
+    quote: "Gratuluję odwagi w cyfryzacji tak ważnego obszaru. To projekt z misją, którego bardzo brakowało na polskim rynku.",
+    author: "~ Basia, Położna",
     className: "bg-white"
   }
 ];
 
-const firstColumn = [testimonials[0], testimonials[1], testimonials[2]];
-const secondColumn = [testimonials[3], testimonials[4], testimonials[5]];
-const thirdColumn = [testimonials[6], testimonials[7], testimonials[8]];
-const fourthColumn = [testimonials[9], testimonials[10], testimonials[11]];
+const firstColumn = [testimonials[0], testimonials[1], testimonials[2], testimonials[3], testimonials[4]];
+const secondColumn = [testimonials[5], testimonials[6], testimonials[7], testimonials[8], testimonials[9]];
+const thirdColumn = [testimonials[10], testimonials[11], testimonials[12], testimonials[13], testimonials[14]];
+const fourthColumn = [testimonials[15], testimonials[16], testimonials[17], testimonials[18], testimonials[19]];
 
 export function TestimonialsSection() {
   const { openModal } = useJoinModalStore()

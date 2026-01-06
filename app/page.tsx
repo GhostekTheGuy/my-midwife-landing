@@ -114,10 +114,10 @@ export default function Home() {
             </BlurFade>
 
             {/* Phone mockup with testimonials */}
-            <BlurFade delay={0.6}>
-              <div className="relative w-full max-w-7xl mx-auto">
-                <div className="flex items-center justify-center gap-8 flex-wrap lg:flex-nowrap">
-                  {/* Left testimonial */}
+            <div className="relative w-full max-w-7xl mx-auto">
+              <div className="flex items-center justify-center gap-8 flex-wrap lg:flex-nowrap">
+                {/* Left testimonial */}
+                <BlurFade delay={0.6}>
                   <div className="hidden lg:block relative z-20">
                     <RotatingTestimonial 
                       className="w-[232px]"
@@ -125,12 +125,14 @@ export default function Home() {
                       indexOffset={0}
                     />
                   </div>
+                </BlurFade>
 
-                  {/* Phone image */}
+                {/* Phone image - loads immediately after hero copy */}
+                <BlurFade delay={0.5} inView={false}>
                   <div className="flex-shrink-0 relative z-10 w-full lg:w-auto">
                     <div className="relative w-full max-w-full lg:max-w-md mx-auto overflow-hidden lg:overflow-visible">
                       <Image
-                        src="/images/Group 3.png"
+                        src="/images/Group 3-optimized.webp"
                         alt="MyMidwife App Interface"
                         width={1034}
                         height={1600}
@@ -142,9 +144,10 @@ export default function Home() {
                           paddingBottom: '0px',
                         }}
                         priority
-                        quality={100}
-                        sizes="(max-width: 640px) 800px, (max-width: 768px) 1000px, 1034px"
-                        unoptimized={false}
+                        quality={75}
+                        sizes="(max-width: 640px) 400px, (max-width: 768px) 500px, 517px"
+                        fetchPriority="high"
+                        loading="eager"
                       />
                       {/* White gradient fade at bottom - mobile only */}
                       <div 
@@ -162,8 +165,10 @@ export default function Home() {
                       />
                     </div>
                   </div>
+                </BlurFade>
 
-                  {/* Right testimonial */}
+                {/* Right testimonial */}
+                <BlurFade delay={0.6}>
                   <div className="hidden lg:block lg:-mt-[100px] relative z-20">
                     <RotatingTestimonial 
                       className="w-[232px]"
@@ -171,9 +176,11 @@ export default function Home() {
                       indexOffset={1}
                     />
                   </div>
-                </div>
+                </BlurFade>
+              </div>
 
-                {/* Mobile testimonial - below phone image */}
+              {/* Mobile testimonial - below phone image */}
+              <BlurFade delay={0.6}>
                 <div className="lg:hidden mt-8 relative z-20">
                   <div className="flex justify-center min-h-[181px]">
                     <RotatingTestimonial 
@@ -184,8 +191,8 @@ export default function Home() {
                     />
                   </div>
                 </div>
-              </div>
-            </BlurFade>
+              </BlurFade>
+            </div>
           </div>
         </div>
 

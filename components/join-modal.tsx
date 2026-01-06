@@ -404,7 +404,7 @@ export function JoinModal({ open, onOpenChange }: JoinModalProps) {
                 htmlFor="demoTesting"
                 className="text-sm font-normal leading-relaxed cursor-pointer text-[#0b0b0b]"
               >
-                Chcę wziąć udział w testach wersji demonstracyjnej
+                Chcę wziąć udział w testach wersji pilotażowej
               </Label>
             </div>
           </div>

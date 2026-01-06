@@ -15,6 +15,10 @@ const TestimonialsSection = dynamic(() => import("@/components/testimonials-sect
   ssr: true,
 })
 
+const FAQSection = dynamic(() => import("@/components/faq-section").then(mod => ({ default: mod.FAQSection })), {
+  ssr: false,
+})
+
 const Footer = dynamic(() => import("@/components/footer").then(mod => ({ default: mod.Footer })), {
   ssr: true,
 })
@@ -132,7 +136,7 @@ export default function Home() {
                   <div className="flex-shrink-0 relative z-10 w-full lg:w-auto">
                     <div className="relative w-full max-w-full lg:max-w-md mx-auto overflow-hidden lg:overflow-visible">
                       <Image
-                        src="/images/Group 3-optimized.webp"
+                        src="/images/Group 3-final.webp"
                         alt="MyMidwife App Interface"
                         width={1034}
                         height={1600}
@@ -144,7 +148,7 @@ export default function Home() {
                           paddingBottom: '0px',
                         }}
                         priority
-                        quality={75}
+                        unoptimized
                         sizes="(max-width: 640px) 400px, (max-width: 768px) 500px, 517px"
                         fetchPriority="high"
                         loading="eager"
@@ -556,6 +560,9 @@ export default function Home() {
         <div id="blog">
           <TestimonialsSection />
         </div>
+
+        {/* FAQ Section */}
+        <FAQSection />
 
         {/* Footer */}
         <Footer />

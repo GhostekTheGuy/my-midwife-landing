@@ -101,6 +101,9 @@ export function Navbar() {
               <a href="#polozne" className="text-white text-sm hover:text-[#e352ad] transition-colors">
                 Położne
               </a>
+              <a href="#faq" className="text-white text-sm hover:text-[#e352ad] transition-colors">
+                FAQ
+              </a>
             </div>
 
             {/* Button - Desktop */}
@@ -171,6 +174,13 @@ export function Navbar() {
               className="text-white text-sm hover:text-[#e352ad] transition-colors py-2"
             >
               Położne
+            </a>
+            <a
+              href="#faq"
+              onClick={closeMenu}
+              className="text-white text-sm hover:text-[#e352ad] transition-colors py-2"
+            >
+              FAQ
             </a>
           </div>
         </div>

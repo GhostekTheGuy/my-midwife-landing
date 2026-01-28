@@ -3,6 +3,7 @@ import type { Metadata } from "next"
 import { Inter_Tight } from "next/font/google"
 import { Analytics } from "@vercel/analytics/next"
 import { JoinModalWrapper } from "@/components/join-modal-wrapper"
+import { PrivacyModalWrapper } from "@/components/privacy-modal-wrapper"
 import "./globals.css"
 
 const _interTight = Inter_Tight({ 
@@ -54,6 +55,7 @@ export default function RootLayout({
       <body className={`font-sans antialiased ${_interTight.className} overflow-x-hidden`}>
         {children}
         <JoinModalWrapper />
+        <PrivacyModalWrapper />
         <Analytics />
       </body>
     </html>

@@ -6,6 +6,7 @@ import { Instagram, Linkedin } from "lucide-react"
 import Link from "next/link"
 import { cn } from "@/lib/utils"
 import { useJoinModalStore } from "@/stores/join-modal-store"
+import { usePrivacyModalStore } from "@/stores/privacy-modal-store"
 import {
   Tooltip,
   TooltipContent,
@@ -15,6 +16,7 @@ import {
 
 export function Footer() {
   const { openModal } = useJoinModalStore()
+  const { openModal: openPrivacyModal } = usePrivacyModalStore()
   
   return (
     <footer className="relative w-full max-w-7xl mx-auto px-4 sm:px-6 pt-12 pb-12 sm:pt-20">
@@ -109,8 +111,21 @@ export function Footer() {
              <h1 className="text-[64px] sm:text-[100px] md:text-[140px] lg:text-[170px] font-medium leading-[0.8] tracking-[-0.04em] text-transparent bg-clip-text bg-gradient-to-b from-[#414141] to-[#A7A7A7] select-none text-center mix-blend-multiply opacity-90 px-1.5 mt-0 mb-0 pb-8">
                 MyMidwife
              </h1>
-             <p className="text-[#666666] text-xs sm:text-[13px] mt-6 sm:mt-8 font-medium">
-                © 2025 MyMidwife
+             <div className="flex flex-col sm:flex-row items-center gap-2 sm:gap-6 text-[#666666] text-xs sm:text-[13px] mt-6 sm:mt-8">
+                <span>NIP: 5372694237</span>
+                <span className="hidden sm:inline">|</span>
+                <span>REGON: 54383309900000</span>
+                <span className="hidden sm:inline">|</span>
+                <span>KRS: 0001220264</span>
+             </div>
+             <button
+                onClick={openPrivacyModal}
+                className="text-[#666666] text-xs sm:text-[13px] mt-3 hover:text-[#e352ad] transition-colors underline"
+             >
+                Polityka prywatności
+             </button>
+             <p className="text-[#666666] text-xs sm:text-[13px] mt-2 font-medium">
+                © 2026 MyMidwife
              </p>
         </div>
 

@@ -19,9 +19,9 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Checkbox } from "@/components/ui/checkbox"
 import { Button } from "@/components/ui/button"
-import Link from "next/link"
 import { cn } from "@/lib/utils"
 import { useWindowDimensions } from "@/hooks/use-window-dimensions"
+import { usePrivacyModalStore } from "@/stores/privacy-modal-store"
 
 // ============================================================================
 // Schema & Types
@@ -151,6 +151,7 @@ function SuccessScreen({ onClose }: SuccessScreenProps) {
 // ============================================================================
 
 export function JoinModal({ open, onOpenChange }: JoinModalProps) {
+  const { openModal: openPrivacyModal } = usePrivacyModalStore()
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [isSuccess, setIsSuccess] = useState(false)
   const [hideForm, setHideForm] = useState(false)
@@ -394,13 +395,13 @@ export function JoinModal({ open, onOpenChange }: JoinModalProps) {
                     >
                       Wyrażam zgodę na przechowywanie i przetwarzanie moich
                       danych osobowych.{" "}
-                      <Link
-                        href="/polityka-prywatnosci"
+                      <button
+                        type="button"
+                        onClick={openPrivacyModal}
                         className="text-[#e352ad] hover:underline"
-                        target="_blank"
                       >
                         Polityka prywatności
-                      </Link>
+                      </button>
                     </Label>
                   </div>
                   {showFieldError("privacyConsent") && (

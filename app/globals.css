@@ -159,6 +159,22 @@
   }
   body {
     @apply bg-background text-foreground;
+    background:
+      linear-gradient(to bottom, #D85A9E, transparent) 0 0 / 70px 100% no-repeat,
+      linear-gradient(to bottom, #F8C8DC, transparent) 70px 0 / 100px 100% no-repeat,
+      linear-gradient(to bottom, #F8C8DC, transparent) calc(100% - 170px) 0 / 100px 100% no-repeat,
+      linear-gradient(to bottom, #D85A9E, transparent) calc(100% - 70px) 0 / 70px 100% no-repeat,
+      white;
+    background-attachment: fixed;
+  }
+  @media (max-width: 1364px) {
+    body {
+      background:
+        linear-gradient(to bottom, #D85A9E, transparent) 0 0 / 70px 100% no-repeat,
+        linear-gradient(to bottom, #D85A9E, transparent) calc(100% - 70px) 0 / 70px 100% no-repeat,
+        white;
+      background-attachment: fixed;
+    }
   }
   /* Hide scrollbar on mobile */
   @media (max-width: 1023px) {

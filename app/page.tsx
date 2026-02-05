@@ -407,7 +407,7 @@ export default function Home() {
           <div className="flex flex-col items-center gap-[33px] w-full max-w-[655px] mx-auto">
             {/* Quote Text */}
             <p className="text-[#0b0b0b] text-xl sm:text-2xl md:text-[32px] font-normal text-center leading-relaxed">
-              "Łączymy kobiety z położnymi – prosto, wygodnie i bez stresu."
+              &ldquo;Łączymy kobiety z położnymi – prosto, wygodnie i bez stresu.&rdquo;
             </p>
 
             {/* Author Info */}

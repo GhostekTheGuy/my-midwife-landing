@@ -1,13 +1,12 @@
 import { cn } from "@/lib/utils";
 
-interface MarqueeProps {
+interface MarqueeProps extends React.ComponentPropsWithoutRef<"div"> {
   className?: string;
   reverse?: boolean;
   pauseOnHover?: boolean;
   children?: React.ReactNode;
   vertical?: boolean;
   repeat?: number;
-  [key: string]: any;
 }
 
 export function Marquee({
@@ -49,17 +48,3 @@ export function Marquee({
     </div>
   );
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-

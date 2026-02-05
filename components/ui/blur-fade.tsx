@@ -11,14 +11,11 @@ interface BlurFadeProps {
 }
 
 export function BlurFade({ children, delay = 0, inView = true, className }: BlurFadeProps) {
-  const [isVisible, setIsVisible] = useState(false)
+  const [isVisible, setIsVisible] = useState(!inView)
   const ref = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
-    if (!inView) {
-      setIsVisible(true)
-      return
-    }
+    if (!inView) return
 
     const observer = new IntersectionObserver(
       (entries) => {
@@ -67,4 +64,3 @@ export function BlurFade({ children, delay = 0, inView = true, className }: Blur
     </div>
   )
 }
-

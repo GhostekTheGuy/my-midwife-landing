@@ -1,6 +1,7 @@
 "use client"
 
 import { useState, useEffect } from "react"
+import Image from "next/image"
 import { Menu, X, ArrowRight } from "lucide-react"
 import { RainbowButton } from "@/components/ui/rainbow-button"
 import { cn } from "@/lib/utils"
@@ -82,9 +83,11 @@ export function Navbar() {
                   className="bg-[#e352ad] rounded-lg p-2 w-9 h-9 flex items-center justify-center cursor-pointer hover:bg-[#d1429d] transition-colors"
                   aria-label="Logo"
                 >
-                  <img 
-                    src="/logo_biel@10x 1.png" 
-                    alt="Logo" 
+                  <Image
+                    src="/logo_biel@10x 1.png"
+                    alt="Logo"
+                    width={20}
+                    height={20}
                     className="w-5 h-5"
                   />
                 </button>

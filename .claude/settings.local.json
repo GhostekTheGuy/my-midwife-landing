@@ -1,0 +1,7 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git -C \"F:\\\\Koding\\\\Web-proj\\\\my-midwife-landing\" log --oneline -10)"
+    ]
+  }
+}

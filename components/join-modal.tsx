@@ -214,7 +214,14 @@ export function JoinModal({ open, onOpenChange }: JoinModalProps) {
       const response = await fetch("/api/submit-form", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(data),
+        body: JSON.stringify({
+          ...data,
+          _meta: {
+            eventSourceUrl: window.location.href,
+            clientUserAgent: navigator.userAgent,
+            eventId: crypto.randomUUID(),
+          },
+        }),
       })
 
       if (!response.ok) {

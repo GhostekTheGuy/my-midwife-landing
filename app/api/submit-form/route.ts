@@ -1,6 +1,7 @@
-import { NextRequest, NextResponse } from "next/server"
+import { NextRequest, NextResponse, after } from "next/server"
 import { supabase } from "@/lib/supabase"
 import { z } from "zod"
+import { sendLeadEvent } from "@/lib/meta-capi"
 
 // Server-side validation schema (lightweight check)
 const formSubmissionSchema = z.object({
@@ -59,8 +60,11 @@ export async function POST(request: NextRequest) {
   try {
     const body = await request.json()
 
+    // Extract Meta CAPI metadata before Zod validation
+    const { _meta, ...formData } = body
+
     // Fast server-side validation with Zod
-    const validationResult = formSubmissionSchema.safeParse(body)
+    const validationResult = formSubmissionSchema.safeParse(formData)
 
     if (!validationResult.success) {
       return NextResponse.json(
@@ -70,6 +74,18 @@ export async function POST(request: NextRequest) {
     }
 
     const submission = await saveSubmission(validationResult.data)
+
+    // Schedule Meta CAPI Lead event to run after response is sent
+    if (_meta?.eventSourceUrl && _meta?.clientUserAgent && _meta?.eventId) {
+      after(async () => {
+        await sendLeadEvent({
+          email: validationResult.data.email,
+          eventSourceUrl: _meta.eventSourceUrl,
+          clientUserAgent: _meta.clientUserAgent,
+          eventId: _meta.eventId,
+        })
+      })
+    }
 
     return NextResponse.json(
       { success: true, message: "Form submitted successfully", data: submission },

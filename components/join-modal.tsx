@@ -242,6 +242,11 @@ export function JoinModal({ open, onOpenChange }: JoinModalProps) {
         return
       }
 
+      // Track Lead event in Meta Pixel (browser-side)
+      if (typeof window !== "undefined" && window.fbq) {
+        window.fbq("track", "Lead")
+      }
+
       // Success flow
       reset()
       setIsSubmitting(false)

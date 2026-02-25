@@ -176,7 +176,7 @@ export function TestimonialsSection() {
         <div className="flex justify-center mt-4">
           <LiquidButton 
             className="bg-[#0b0b0b] text-white hover:text-white border border-[#989898] rounded-[11px] px-4 sm:px-[13px] py-2 sm:py-[11px] text-sm sm:text-base w-full sm:w-auto h-auto [--liquid-button-background-color:#414141] [--liquid-button-color:#0b0b0b]"
-            onClick={openModal}
+            onClick={() => openModal("testimonials")}
           >
             Dołącz teraz
           </LiquidButton>

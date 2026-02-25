@@ -22,6 +22,7 @@ import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
 import { useWindowDimensions } from "@/hooks/use-window-dimensions"
 import { usePrivacyModalStore } from "@/stores/privacy-modal-store"
+import posthog from "posthog-js"
 
 // ============================================================================
 // Schema & Types
@@ -127,7 +128,7 @@ function SuccessScreen({ onClose }: SuccessScreenProps) {
       className="flex flex-col items-center justify-center py-8 px-4 text-center"
     >
       <h2 className="text-2xl font-bold text-[#0b0b0b] mb-6">
-        Dziękujemy, że jesteś z nami
+        Jesteś z nami!
       </h2>
       <div className="w-full max-w-[300px] h-[300px] mb-6">
         <DotLottieReact
@@ -163,7 +164,7 @@ export function JoinModal({ open, onOpenChange }: JoinModalProps) {
   const {
     register,
     handleSubmit,
-    formState: { errors, touchedFields, isSubmitted },
+    formState: { errors, isSubmitted },
     setValue,
     watch,
     reset,
@@ -171,7 +172,7 @@ export function JoinModal({ open, onOpenChange }: JoinModalProps) {
     trigger,
   } = useForm<FormData>({
     resolver: zodResolver(formSchema),
-    mode: "onChange",
+    mode: "onSubmit",
     reValidateMode: "onChange",
     defaultValues: {
       userType: undefined,
@@ -195,6 +196,18 @@ export function JoinModal({ open, onOpenChange }: JoinModalProps) {
   }
 
   function handleOpenChange(newOpen: boolean) {
+    if (!newOpen && !isSuccess) {
+      const filledFields = [
+        userType ? "userType" : null,
+        watch("email") ? "email" : null,
+        watch("city") ? "city" : null,
+      ].filter(Boolean)
+
+      posthog.capture("form_abandoned", {
+        fields_filled: filledFields,
+        fields_filled_count: filledFields.length,
+      })
+    }
     if (!newOpen) {
       resetModalState()
     }
@@ -202,13 +215,15 @@ export function JoinModal({ open, onOpenChange }: JoinModalProps) {
   }
 
   function handleUserTypeSelect(type: UserType) {
-    setValue("userType", type, { shouldValidate: true, shouldTouch: true })
+    posthog.capture("form_user_type_selected", { user_type: type })
+    setValue("userType", type, { shouldValidate: isSubmitted })
     clearErrors("userType")
   }
 
   async function onSubmit(data: FormData) {
     setIsSubmitting(true)
     setSubmitError(null)
+    posthog.capture("form_submit_attempted", { user_type: data.userType })
 
     try {
       const response = await fetch("/api/submit-form", {
@@ -237,6 +252,10 @@ export function JoinModal({ open, onOpenChange }: JoinModalProps) {
           trigger("email")
         }
 
+        posthog.capture("form_submit_error", {
+          status: response.status,
+          error: errorMessage,
+        })
         setSubmitError(errorMessage)
         setIsSubmitting(false)
         return
@@ -247,6 +266,11 @@ export function JoinModal({ open, onOpenChange }: JoinModalProps) {
         window.fbq("track", "Lead")
       }
 
+      posthog.capture("form_submitted_successfully", {
+        user_type: data.userType,
+        demo_testing: data.demoTesting,
+      })
+
       // Success flow
       reset()
       setIsSubmitting(false)
@@ -255,7 +279,11 @@ export function JoinModal({ open, onOpenChange }: JoinModalProps) {
       setIsSuccess(true)
 
       setTimeout(() => setShowConfetti(false), 3000)
-    } catch {
+    } catch (error) {
+      posthog.capture("form_submit_error", {
+        status: "network_error",
+        error: error instanceof Error ? error.message : "unknown",
+      })
       setSubmitError(
         "Wystąpił błąd podczas wysyłania formularza. Spróbuj ponownie."
       )
@@ -265,7 +293,7 @@ export function JoinModal({ open, onOpenChange }: JoinModalProps) {
   }
 
   const showFieldError = (field: keyof FormData) =>
-    errors[field] && (touchedFields[field] || isSubmitted)
+    errors[field] && isSubmitted
 
   return (
     <Dialog open={open} onOpenChange={handleOpenChange}>
@@ -304,14 +332,18 @@ export function JoinModal({ open, onOpenChange }: JoinModalProps) {
             >
               <DialogHeader>
                 <DialogTitle className="text-2xl text-[#0b0b0b]">
-                  Dołącz do MyMidwife
+                  Zaczynamy razem!
                 </DialogTitle>
                 <DialogDescription className="text-[#414141]">
-                  Wypełnij formularz, aby dołączyć do naszej społeczności
+                  Zostaw kontakt – odezwiemy się, gdy wystartujemy w Twoim mieście.
                 </DialogDescription>
               </DialogHeader>
 
-              <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+              <form onSubmit={handleSubmit(onSubmit, (validationErrors) => {
+                posthog.capture("form_validation_failed", {
+                  error_fields: Object.keys(validationErrors),
+                })
+              })} className="space-y-6">
                 {/* User Type Selection */}
                 <div className="space-y-3">
                   <Label className="text-[#0b0b0b]">Jestem:</Label>
@@ -340,9 +372,8 @@ export function JoinModal({ open, onOpenChange }: JoinModalProps) {
                   <Input
                     id="email"
                     type="email"
-                    placeholder="twoj@email.pl"
+                    placeholder="anna@email.pl"
                     {...register("email", {
-                      onBlur: () => trigger("email"),
                       onChange: () => {
                         if (submitError) setSubmitError(null)
                       },
@@ -369,9 +400,7 @@ export function JoinModal({ open, onOpenChange }: JoinModalProps) {
                     id="city"
                     type="text"
                     placeholder="Warszawa"
-                    {...register("city", {
-                      onBlur: () => trigger("city"),
-                    })}
+                    {...register("city")}
                   />
                   {showFieldError("city") && (
                     <p className="text-sm text-red-500">
@@ -389,14 +418,10 @@ export function JoinModal({ open, onOpenChange }: JoinModalProps) {
                       onCheckedChange={(checked) => {
                         const isChecked = checked === true
                         setValue("privacyConsent", isChecked, {
-                          shouldDirty: true,
-                          shouldTouch: true,
-                          shouldValidate: true,
+                          shouldValidate: isSubmitted,
                         })
                         if (isChecked) {
                           clearErrors("privacyConsent")
-                        } else {
-                          trigger("privacyConsent")
                         }
                       }}
                       className="mt-1"
@@ -438,28 +463,19 @@ export function JoinModal({ open, onOpenChange }: JoinModalProps) {
                       htmlFor="demoTesting"
                       className="text-sm font-normal leading-relaxed cursor-pointer text-[#0b0b0b]"
                     >
-                      Chcę wziąć udział w testach wersji pilotażowej
+                      Chcę testować aplikację jako jedna z pierwszych!
                     </Label>
                   </div>
                 </div>
 
-                {/* Submit Buttons */}
-                <div className="flex justify-end gap-3 pt-4">
-                  <Button
-                    type="button"
-                    variant="outline"
-                    onClick={() => handleOpenChange(false)}
-                    className="border-[#EEE]"
-                    disabled={isSubmitting}
-                  >
-                    Anuluj
-                  </Button>
+                {/* Submit Button */}
+                <div className="pt-4">
                   <Button
                     type="submit"
                     disabled={isSubmitting}
-                    className="bg-[#0b0b0b] text-white hover:bg-[#414141]"
+                    className="w-full bg-[#0b0b0b] text-white hover:bg-[#414141] h-12 text-base"
                   >
-                    {isSubmitting ? "Wysyłanie..." : "Wyślij"}
+                    {isSubmitting ? "Wysyłanie..." : "Dołączam!"}
                   </Button>
                 </div>
               </form>

@@ -115,7 +115,7 @@ export function Navbar() {
                 variant="outline"
                 size={undefined}
                 className="text-[#0b0b0b] rounded-[11px] px-[11px] text-sm whitespace-nowrap group/button"
-                onClick={openModal}
+                onClick={() => openModal("navbar_desktop")}
               >
                 <span>Dołącz teraz</span>
                 <ArrowRight className="w-4 h-4 transition-transform duration-300 ease-in-out group-hover/button:translate-x-1" />
@@ -128,7 +128,7 @@ export function Navbar() {
                 variant="outline"
                 size={undefined}
                 className="text-[#0b0b0b] rounded-[11px] px-2 text-xs whitespace-nowrap"
-                onClick={openModal}
+                onClick={() => openModal("navbar_mobile")}
               >
                 Dołącz teraz
               </RainbowButton>

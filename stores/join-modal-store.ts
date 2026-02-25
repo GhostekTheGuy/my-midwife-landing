@@ -1,16 +1,20 @@
 "use client"
 
 import { create } from "zustand"
+import posthog from "posthog-js"
 
 interface JoinModalStore {
   isOpen: boolean
-  openModal: () => void
+  openModal: (source?: string) => void
   closeModal: () => void
 }
 
 export const useJoinModalStore = create<JoinModalStore>((set) => ({
   isOpen: false,
-  openModal: () => set({ isOpen: true }),
+  openModal: (source) => {
+    posthog.capture("form_modal_opened", { source })
+    set({ isOpen: true })
+  },
   closeModal: () => set({ isOpen: false }),
 }))
 

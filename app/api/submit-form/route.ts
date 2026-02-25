@@ -2,6 +2,7 @@ import { NextRequest, NextResponse, after } from "next/server"
 import { supabase } from "@/lib/supabase"
 import { z } from "zod"
 import { sendLeadEvent } from "@/lib/meta-capi"
+import { notifyNewSubmission } from "@/lib/notify"
 
 // Server-side validation schema (lightweight check)
 const formSubmissionSchema = z.object({
@@ -75,17 +76,26 @@ export async function POST(request: NextRequest) {
 
     const submission = await saveSubmission(validationResult.data)
 
-    // Schedule Meta CAPI Lead event to run after response is sent
-    if (_meta?.eventSourceUrl && _meta?.clientUserAgent && _meta?.eventId) {
-      after(async () => {
+    // Schedule async tasks to run after response is sent
+    after(async () => {
+      // Meta CAPI Lead event
+      if (_meta?.eventSourceUrl && _meta?.clientUserAgent && _meta?.eventId) {
         await sendLeadEvent({
           email: validationResult.data.email,
           eventSourceUrl: _meta.eventSourceUrl,
           clientUserAgent: _meta.clientUserAgent,
           eventId: _meta.eventId,
         })
-      })
-    }
+      }
+
+      // Email notification
+      await notifyNewSubmission({
+        userType: validationResult.data.userType,
+        email: validationResult.data.email,
+        city: validationResult.data.city,
+        demoTesting: validationResult.data.demoTesting,
+      }).catch((err) => console.error("Failed to send notification:", err))
+    })
 
     return NextResponse.json(
       { success: true, message: "Form submitted successfully", data: submission },

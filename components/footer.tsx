@@ -46,7 +46,7 @@ export function Footer() {
                 </h3>
                 <LiquidButton 
                     className="bg-[#0b0b0b] text-white hover:text-white border-0 rounded-[12px] px-6 py-2.5 h-[44px] text-sm font-medium whitespace-nowrap [--liquid-button-background-color:#414141] [--liquid-button-color:#0b0b0b]"
-                    onClick={openModal}
+                    onClick={() => openModal("footer")}
                 >
                     Dołącz teraz
                 </LiquidButton>

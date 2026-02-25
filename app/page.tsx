@@ -71,7 +71,7 @@ export default function Home() {
               <div className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 mb-8 text-[rgba(10,10,10,1)] px-4 sm:px-0">
                 <LiquidButton 
                   className="bg-[#0b0b0b] text-white hover:text-white rounded-[11px] px-4 sm:px-[11px] py-2 sm:py-[11px] text-sm sm:text-base border-0 w-full sm:w-auto h-auto [--liquid-button-background-color:#414141] [--liquid-button-color:#0b0b0b]"
-                  onClick={openModal}
+                  onClick={() => openModal("hero_primary")}
                 >
                   Dołącz teraz
                 </LiquidButton>
@@ -394,7 +394,7 @@ export default function Home() {
             <div className="flex justify-center sm:justify-start">
               <LiquidButton 
                 className="bg-[#0b0b0b] text-white hover:text-white border border-[#989898] rounded-[11px] px-4 sm:px-[13px] py-2 sm:py-[11px] text-sm sm:text-base w-full sm:w-auto h-auto [--liquid-button-background-color:#414141] [--liquid-button-color:#0b0b0b]"
-                onClick={openModal}
+                onClick={() => openModal("patient_section")}
               >
                 Dołącz teraz
               </LiquidButton>
@@ -548,7 +548,7 @@ export default function Home() {
             <div className="flex justify-center sm:justify-start">
               <LiquidButton 
                 className="bg-[#0b0b0b] text-white hover:text-white border border-[#989898] rounded-[11px] px-4 sm:px-[13px] py-2 sm:py-[11px] text-sm sm:text-base w-full sm:w-auto h-auto [--liquid-button-background-color:#414141] [--liquid-button-color:#0b0b0b]"
-                onClick={openModal}
+                onClick={() => openModal("midwife_section")}
               >
                 Dołącz teraz
               </LiquidButton>

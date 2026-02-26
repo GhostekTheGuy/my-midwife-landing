@@ -85,7 +85,7 @@ function UserTypeButton({ option, isSelected, onSelect }: UserTypeButtonProps) {
       type="button"
       onClick={onSelect}
       className={cn(
-        "flex flex-col items-center justify-center gap-3 p-4 rounded-lg border-2 transition-all duration-200",
+        "flex flex-col items-center justify-center gap-3 p-4 rounded-lg border-2 transition-all duration-200 cursor-pointer",
         "hover:border-[#e352ad] hover:bg-[#fefbfd]",
         "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#e352ad] focus-visible:ring-offset-2",
         isSelected
@@ -178,7 +178,7 @@ export function JoinModal({ open, onOpenChange }: JoinModalProps) {
       userType: undefined,
       email: "",
       city: "",
-      privacyConsent: false,
+      privacyConsent: true,
       demoTesting: false,
     },
   })
@@ -399,7 +399,7 @@ export function JoinModal({ open, onOpenChange }: JoinModalProps) {
                   <Input
                     id="city"
                     type="text"
-                    placeholder="Warszawa"
+                    placeholder="np. Warszawa"
                     {...register("city")}
                   />
                   {showFieldError("city") && (
@@ -424,7 +424,7 @@ export function JoinModal({ open, onOpenChange }: JoinModalProps) {
                           clearErrors("privacyConsent")
                         }
                       }}
-                      className="mt-1"
+                      className="mt-1 cursor-pointer"
                     />
                     <Label
                       htmlFor="privacyConsent"
@@ -457,7 +457,7 @@ export function JoinModal({ open, onOpenChange }: JoinModalProps) {
                       onCheckedChange={(checked) =>
                         setValue("demoTesting", checked === true)
                       }
-                      className="mt-1"
+                      className="mt-1 cursor-pointer"
                     />
                     <Label
                       htmlFor="demoTesting"

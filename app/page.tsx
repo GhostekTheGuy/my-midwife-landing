@@ -53,13 +53,13 @@ export default function Home() {
                 <p className="text-sm text-[#989a98] mb-4 tracking-wide">#medtech #mhealth #startup</p>
               </BlurFade>
               <BlurFade delay={0.2}>
-                <h1 className="text-[36px] sm:text-[48px] lg:text-[64px] font-bold text-[#0b0b0b] mb-4 tracking-tight leading-[1.1] px-4 sm:px-0">
-                  Twoja ciąża.<br /><span className="text-[#e352ad]">Twoja ekspertka.</span>
+                <h1 className="text-[32px] sm:text-[40px] md:text-[56px] font-bold text-[#0b0b0b] mb-4 tracking-tight leading-[1.1] px-4 sm:px-0">
+                  Twoja ciąża.<br /><span className="text-[#e352ad] whitespace-nowrap">Twoja położna.</span>
                 </h1>
               </BlurFade>
               <BlurFade delay={0.3}>
                 <p className="text-[#414141] text-base sm:text-lg lg:text-xl max-w-xl mx-auto lg:mx-0 mb-6 px-4 sm:px-0">
-                  Nie musisz czekać na wizytę, żeby uzyskać odpowiedź. Z MyMidwife masz wsparcie doświadczonych położnych, kiedy go potrzebujesz.
+                  Wizyta z&nbsp;położną w&nbsp;zasięgu ręki. Z&nbsp;MyMidwife masz wsparcie doświadczonych położnych,<br />kiedy&nbsp;go potrzebujesz.
                 </p>
               </BlurFade>
               <BlurFade delay={0.35}>

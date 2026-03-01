@@ -153,6 +153,7 @@ function SuccessScreen({ onClose }: SuccessScreenProps) {
 
 export function JoinModal({ open, onOpenChange }: JoinModalProps) {
   const { openModal: openPrivacyModal } = usePrivacyModalStore()
+  const [step, setStep] = useState<1 | 2>(1)
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [isSuccess, setIsSuccess] = useState(false)
   const [hideForm, setHideForm] = useState(false)
@@ -189,6 +190,7 @@ export function JoinModal({ open, onOpenChange }: JoinModalProps) {
 
   function resetModalState() {
     reset()
+    setStep(1)
     setIsSuccess(false)
     setHideForm(false)
     setShowConfetti(false)
@@ -204,6 +206,7 @@ export function JoinModal({ open, onOpenChange }: JoinModalProps) {
       ].filter(Boolean)
 
       posthog.capture("form_abandoned", {
+        step,
         fields_filled: filledFields,
         fields_filled_count: filledFields.length,
       })
@@ -218,6 +221,11 @@ export function JoinModal({ open, onOpenChange }: JoinModalProps) {
     posthog.capture("form_user_type_selected", { user_type: type })
     setValue("userType", type, { shouldValidate: isSubmitted })
     clearErrors("userType")
+    setStep(2)
+  }
+
+  function handleBack() {
+    setStep(1)
   }
 
   async function onSubmit(data: FormData) {
@@ -332,10 +340,12 @@ export function JoinModal({ open, onOpenChange }: JoinModalProps) {
             >
               <DialogHeader>
                 <DialogTitle className="text-2xl text-[#0b0b0b]">
-                  Zaczynamy razem!
+                  {step === 1 ? "Kim jesteś?" : "Zaczynamy razem!"}
                 </DialogTitle>
                 <DialogDescription className="text-[#414141]">
-                  Zostaw kontakt – odezwiemy się, gdy wystartujemy w Twoim mieście.
+                  {step === 1
+                    ? "Wybierz swoją rolę, aby kontynuować."
+                    : "Zostaw kontakt – odezwiemy się, gdy wystartujemy w Twoim mieście."}
                 </DialogDescription>
               </DialogHeader>
 
@@ -344,140 +354,172 @@ export function JoinModal({ open, onOpenChange }: JoinModalProps) {
                   error_fields: Object.keys(validationErrors),
                 })
               })} className="space-y-6">
-                {/* User Type Selection */}
-                <div className="space-y-3">
-                  <Label className="text-[#0b0b0b]">Jestem:</Label>
-                  <div className="grid grid-cols-2 gap-3">
-                    {USER_TYPE_OPTIONS.map((option) => (
-                      <UserTypeButton
-                        key={option.value}
-                        option={option}
-                        isSelected={userType === option.value}
-                        onSelect={() => handleUserTypeSelect(option.value)}
-                      />
-                    ))}
-                  </div>
-                  {showFieldError("userType") && (
-                    <p className="text-sm text-red-500">
-                      {errors.userType?.message}
-                    </p>
-                  )}
-                </div>
-
-                {/* Email */}
-                <div className="space-y-2">
-                  <Label htmlFor="email" className="text-[#0b0b0b]">
-                    Email:
-                  </Label>
-                  <Input
-                    id="email"
-                    type="email"
-                    placeholder="anna@email.pl"
-                    {...register("email", {
-                      onChange: () => {
-                        if (submitError) setSubmitError(null)
-                      },
-                    })}
-                  />
-                  {showFieldError("email") && (
-                    <p className="text-sm text-red-500">
-                      {errors.email?.message}
-                    </p>
-                  )}
-                  {submitError &&
-                    !errors.email &&
-                    submitError.includes("email") && (
-                      <p className="text-sm text-red-500">{submitError}</p>
-                    )}
-                </div>
-
-                {/* City */}
-                <div className="space-y-2">
-                  <Label htmlFor="city" className="text-[#0b0b0b]">
-                    Miasto:
-                  </Label>
-                  <Input
-                    id="city"
-                    type="text"
-                    placeholder="np. Warszawa"
-                    {...register("city")}
-                  />
-                  {showFieldError("city") && (
-                    <p className="text-sm text-red-500">
-                      {errors.city?.message}
-                    </p>
-                  )}
-                </div>
-
-                {/* Privacy Consent */}
-                <div className="space-y-2">
-                  <div className="flex items-start space-x-2">
-                    <Checkbox
-                      id="privacyConsent"
-                      checked={privacyConsent}
-                      onCheckedChange={(checked) => {
-                        const isChecked = checked === true
-                        setValue("privacyConsent", isChecked, {
-                          shouldValidate: isSubmitted,
-                        })
-                        if (isChecked) {
-                          clearErrors("privacyConsent")
-                        }
-                      }}
-                      className="mt-1 cursor-pointer"
-                    />
-                    <Label
-                      htmlFor="privacyConsent"
-                      className="text-sm font-normal leading-relaxed cursor-pointer text-[#0b0b0b]"
+                <AnimatePresence mode="wait" initial={false}>
+                  {step === 1 ? (
+                    <motion.div
+                      key="step1"
+                      initial={{ opacity: 0, x: -20 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      exit={{ opacity: 0, x: -20 }}
+                      transition={{ duration: 0.2 }}
+                      className="space-y-6"
                     >
-                      Wyrażam zgodę na przechowywanie i przetwarzanie moich
-                      danych osobowych.{" "}
-                      <button
-                        type="button"
-                        onClick={openPrivacyModal}
-                        className="text-[#e352ad] hover:underline"
-                      >
-                        Polityka prywatności
-                      </button>
-                    </Label>
-                  </div>
-                  {showFieldError("privacyConsent") && (
-                    <p className="text-sm text-red-500">
-                      {errors.privacyConsent?.message}
-                    </p>
-                  )}
-                </div>
+                      {/* User Type Selection */}
+                      <div className="space-y-3">
+                        <Label className="text-[#0b0b0b]">Jestem:</Label>
+                        <div className="grid grid-cols-2 gap-3">
+                          {USER_TYPE_OPTIONS.map((option) => (
+                            <UserTypeButton
+                              key={option.value}
+                              option={option}
+                              isSelected={userType === option.value}
+                              onSelect={() => handleUserTypeSelect(option.value)}
+                            />
+                          ))}
+                        </div>
+                        {errors.userType && (
+                          <p className="text-sm text-red-500">
+                            {errors.userType?.message}
+                          </p>
+                        )}
+                      </div>
 
-                {/* Demo Testing Consent */}
-                <div className="space-y-2">
-                  <div className="flex items-start space-x-2">
-                    <Checkbox
-                      id="demoTesting"
-                      checked={demoTesting}
-                      onCheckedChange={(checked) =>
-                        setValue("demoTesting", checked === true)
-                      }
-                      className="mt-1 cursor-pointer"
-                    />
-                    <Label
-                      htmlFor="demoTesting"
-                      className="text-sm font-normal leading-relaxed cursor-pointer text-[#0b0b0b]"
+                    </motion.div>
+                  ) : (
+                    <motion.div
+                      key="step2"
+                      initial={{ opacity: 0, x: 20 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      exit={{ opacity: 0, x: 20 }}
+                      transition={{ duration: 0.2 }}
+                      className="space-y-6"
                     >
-                      Chcę testować aplikację jako jedna z pierwszych!
-                    </Label>
-                  </div>
-                </div>
+                      {/* Email */}
+                      <div className="space-y-2">
+                        <Label htmlFor="email" className="text-[#0b0b0b]">
+                          Email:
+                        </Label>
+                        <Input
+                          id="email"
+                          type="email"
+                          placeholder="anna@email.pl"
+                          autoFocus
+                          {...register("email", {
+                            onChange: () => {
+                              if (submitError) setSubmitError(null)
+                            },
+                          })}
+                        />
+                        {showFieldError("email") && (
+                          <p className="text-sm text-red-500">
+                            {errors.email?.message}
+                          </p>
+                        )}
+                        {submitError &&
+                          !errors.email &&
+                          submitError.includes("email") && (
+                            <p className="text-sm text-red-500">{submitError}</p>
+                          )}
+                      </div>
 
-                {/* Submit Button */}
-                <div className="pt-4">
-                  <Button
-                    type="submit"
-                    disabled={isSubmitting}
-                    className="w-full bg-[#0b0b0b] text-white hover:bg-[#414141] h-12 text-base"
-                  >
-                    {isSubmitting ? "Wysyłanie..." : "Dołączam!"}
-                  </Button>
-                </div>
+                      {/* City */}
+                      <div className="space-y-2">
+                        <Label htmlFor="city" className="text-[#0b0b0b]">
+                          Miasto:
+                        </Label>
+                        <Input
+                          id="city"
+                          type="text"
+                          placeholder="np. Warszawa"
+                          {...register("city")}
+                        />
+                        {showFieldError("city") && (
+                          <p className="text-sm text-red-500">
+                            {errors.city?.message}
+                          </p>
+                        )}
+                      </div>
+
+                      {/* Privacy Consent */}
+                      <div className="space-y-2">
+                        <div className="flex items-start space-x-2">
+                          <Checkbox
+                            id="privacyConsent"
+                            checked={privacyConsent}
+                            onCheckedChange={(checked) => {
+                              const isChecked = checked === true
+                              setValue("privacyConsent", isChecked, {
+                                shouldValidate: isSubmitted,
+                              })
+                              if (isChecked) {
+                                clearErrors("privacyConsent")
+                              }
+                            }}
+                            className="mt-1 cursor-pointer"
+                          />
+                          <Label
+                            htmlFor="privacyConsent"
+                            className="text-sm font-normal leading-relaxed cursor-pointer text-[#0b0b0b]"
+                          >
+                            Wyrażam zgodę na przechowywanie i przetwarzanie moich
+                            danych osobowych.{" "}
+                            <button
+                              type="button"
+                              onClick={openPrivacyModal}
+                              className="text-[#e352ad] hover:underline"
+                            >
+                              Polityka prywatności
+                            </button>
+                          </Label>
+                        </div>
+                        {showFieldError("privacyConsent") && (
+                          <p className="text-sm text-red-500">
+                            {errors.privacyConsent?.message}
+                          </p>
+                        )}
+                      </div>
+
+                      {/* Demo Testing Consent */}
+                      <div className="space-y-2">
+                        <div className="flex items-start space-x-2">
+                          <Checkbox
+                            id="demoTesting"
+                            checked={demoTesting}
+                            onCheckedChange={(checked) =>
+                              setValue("demoTesting", checked === true)
+                            }
+                            className="mt-1 cursor-pointer"
+                          />
+                          <Label
+                            htmlFor="demoTesting"
+                            className="text-sm font-normal leading-relaxed cursor-pointer text-[#0b0b0b]"
+                          >
+                            Chcę testować aplikację jako jedna z pierwszych!
+                          </Label>
+                        </div>
+                      </div>
+
+                      {/* Back & Submit Buttons */}
+                      <div className="flex gap-3 pt-4">
+                        <Button
+                          type="button"
+                          variant="outline"
+                          onClick={handleBack}
+                          className="h-12 text-base border-[#EEE] text-[#414141] hover:bg-[#fefbfd]"
+                        >
+                          Wróć
+                        </Button>
+                        <Button
+                          type="submit"
+                          disabled={isSubmitting}
+                          className="flex-1 bg-[#0b0b0b] text-white hover:bg-[#414141] h-12 text-base"
+                        >
+                          {isSubmitting ? "Wysyłanie..." : "Dołączam!"}
+                        </Button>
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
               </form>
             </motion.div>
           )}

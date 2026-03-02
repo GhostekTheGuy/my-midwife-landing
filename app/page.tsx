@@ -15,7 +15,7 @@ const TestimonialsSection = dynamic(() => import("@/components/testimonials-sect
 })
 
 const FAQSection = dynamic(() => import("@/components/faq-section").then(mod => ({ default: mod.FAQSection })), {
-  ssr: false,
+  ssr: true,
 })
 
 const Footer = dynamic(() => import("@/components/footer").then(mod => ({ default: mod.Footer })), {
@@ -97,7 +97,7 @@ export default function Home() {
             <div className="order-2 w-full lg:w-1/2 relative overflow-hidden">
               <BlurFade delay={0.5} inView={false}>
                 <div className="relative w-full max-w-full lg:max-w-md mx-auto overflow-hidden">
-                  <Image src="/images/Group 3-final.webp" alt="MyMidwife App Interface" width={1034} height={1600} className="h-auto w-full max-w-[517px] sm:max-w-[400px] md:max-w-[500px] scale-[2] lg:scale-[1.8] lg:max-w-none mx-auto" style={{ marginTop: '112px', marginBottom: '112px' }} priority unoptimized sizes="(max-width: 640px) 400px, (max-width: 768px) 500px, 517px" fetchPriority="high" loading="eager" />
+                  <Image src="/images/Group 3-final.webp" alt="Interfejs aplikacji MyMidwife – czat z położną online i dzienniczek ciąży" width={1034} height={1600} className="h-auto w-full max-w-[517px] sm:max-w-[400px] md:max-w-[500px] scale-[2] lg:scale-[1.8] lg:max-w-none mx-auto" style={{ marginTop: '112px', marginBottom: '112px' }} priority unoptimized sizes="(max-width: 640px) 400px, (max-width: 768px) 500px, 517px" fetchPriority="high" loading="eager" />
                   <div className="absolute bottom-0 left-0 right-0 h-32 pointer-events-none z-30" style={{ background: 'linear-gradient(to bottom, transparent 0%, rgba(254,251,253,0.3) 30%, rgba(254,251,253,0.7) 60%, rgba(254,251,253,1) 100%)' }} />
                   <div className="absolute top-0 right-0 bottom-0 w-32 pointer-events-none z-30" style={{ background: 'linear-gradient(to right, transparent 0%, rgba(254,251,253,0.3) 30%, rgba(254,251,253,0.7) 60%, rgba(254,251,253,1) 100%)' }} />
                   <div className="absolute top-0 left-0 bottom-0 w-16 pointer-events-none z-30" style={{ background: 'linear-gradient(to left, transparent 0%, rgba(254,251,253,0.3) 30%, rgba(254,251,253,0.7) 60%, rgba(254,251,253,1) 100%)' }} />
@@ -133,7 +133,7 @@ export default function Home() {
                 <div className="w-full h-[200px] sm:h-[240px] md:h-[274px] rounded-2xl overflow-hidden bg-gray-200 relative">
                   <Image
                     src="/stock/problem/problem1.jpg"
-                    alt="Niepewność"
+                    alt="Kobieta w ciąży odczuwająca niepewność w wyborze położnej"
                     fill
                     className="object-cover"
                     loading="lazy"
@@ -153,7 +153,7 @@ export default function Home() {
                 <div className="w-full h-[200px] sm:h-[240px] md:h-[274px] rounded-2xl overflow-hidden bg-gray-200 relative">
                   <Image
                     src="/stock/problem/problem2.avif"
-                    alt="Niewykorzystana wiedza"
+                    alt="Położna z wiedzą ekspercką, która nie dociera do pacjentek"
                     fill
                     className="object-cover"
                     loading="lazy"
@@ -173,7 +173,7 @@ export default function Home() {
                 <div className="w-full h-[200px] sm:h-[240px] md:h-[274px] rounded-2xl overflow-hidden bg-gray-200 relative">
                   <Image
                     src="/stock/problem/problem3.avif"
-                    alt="Brak kontaktu"
+                    alt="Brak łatwego kontaktu z położną – problem opieki okołoporodowej"
                     fill
                     className="object-cover"
                     loading="lazy"
@@ -288,7 +288,7 @@ export default function Home() {
                 <div className="w-full lg:w-[330px] h-[300px] sm:h-[400px] md:h-[500px] lg:h-full rounded-2xl overflow-hidden relative mt-4 lg:mt-0">
                   <Image
                     src="/stock/img/preg1.png"
-                    alt="Ciąża"
+                    alt="Kobieta w ciąży korzystająca z aplikacji MyMidwife do kontaktu z położną"
                     fill
                     className="object-cover rounded-2xl"
                     loading="lazy"
@@ -442,7 +442,7 @@ export default function Home() {
                 <div className="w-full lg:w-[330px] h-[300px] sm:h-[400px] md:h-[500px] lg:h-[642px] rounded-2xl overflow-hidden relative mt-4 lg:mt-0">
                   <Image
                     src="/stock/img/preg2.png"
-                    alt="Ciąża"
+                    alt="Położna zarządzająca wizytami i kontaktem z pacjentkami przez MyMidwife"
                     fill
                     className="object-cover rounded-2xl"
                     loading="lazy"

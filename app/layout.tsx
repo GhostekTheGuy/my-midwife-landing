@@ -211,6 +211,18 @@ fbq('track', 'PageView');
             alt=""
           />
         </noscript>
+        {/* Google tag (gtag.js) */}
+        <script async src="https://www.googletagmanager.com/gtag/js?id=AW-17700301571" />
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', 'AW-17700301571');
+            `.trim(),
+          }}
+        />
       </head>
       <body className={`font-sans antialiased ${_interTight.className} overflow-x-hidden`}>
         {children}

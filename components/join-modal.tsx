@@ -402,7 +402,7 @@ export function JoinModal({ open, onOpenChange }: JoinModalProps) {
                         <Input
                           id="email"
                           type="email"
-                          placeholder="anna@email.pl"
+                          placeholder="np. anna@email.pl"
                           autoFocus
                           {...register("email", {
                             onChange: () => {

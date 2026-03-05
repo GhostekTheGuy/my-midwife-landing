@@ -98,22 +98,20 @@ export async function POST(request: NextRequest) {
       }).catch((err) => console.error("Failed to send notification:", err))
 
       // Welcome email to subscriber
-      if (!validationResult.data.demoTesting) {
-        await sendDripEmail(
-          validationResult.data.email,
-          validationResult.data.userType,
-          "welcome"
-        )
-          .then(async () => {
-            if (submission) {
-              await supabase.from("sent_emails").insert({
-                submission_id: submission.id,
-                email_key: "welcome",
-              })
-            }
-          })
-          .catch((err) => console.error("Failed to send welcome email:", err))
-      }
+      await sendDripEmail(
+        validationResult.data.email,
+        validationResult.data.userType,
+        "welcome"
+      )
+        .then(async () => {
+          if (submission) {
+            await supabase.from("sent_emails").insert({
+              submission_id: submission.id,
+              email_key: "welcome",
+            })
+          }
+        })
+        .catch((err) => console.error("Failed to send welcome email:", err))
     })
 
     return NextResponse.json(

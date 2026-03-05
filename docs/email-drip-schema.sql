@@ -54,73 +54,92 @@ CREATE POLICY "Allow reads for form_submissions" ON form_submissions
 -- =============================================
 
 -- PATIENT templates
+-- Styles use brand colors: #e352ad (pink), #0b0b0b (dark), #414141 (medium), #989898 (light)
+-- body_html gets wrapped in branded header/footer automatically
 INSERT INTO email_templates (user_type, email_key, subject, body_html) VALUES
-('patient', 'welcome', 'Witaj w MyMidwife! Cieszymy sie, ze jestes z nami', '
-  <h2 style="font-size:20px;">Czesc!</h2>
-  <p>Dziekujemy za dolaczenie do listy oczekujacych MyMidwife. Pracujemy nad aplikacja, ktora polaczy Cie z najlepsza polozna w Twojej okolicy.</p>
-  <p>Jestes jedna z pierwszych osob, ktore dowiedza sie o starcie aplikacji. Bedziesz miala dostep do:</p>
-  <ul style="line-height:1.8;">
-    <li>Wyszukiwania poloznych w Twojej okolicy</li>
-    <li>Rezerwacji wizyt online</li>
-    <li>Bezpiecznej komunikacji z polozna</li>
-  </ul>
-  <p>Damy Ci znac, jak tylko bedziemy gotowi!</p>
-  <p style="margin-top:24px;">Pozdrawiamy,<br/><strong>Zespol MyMidwife</strong></p>
+('patient', 'welcome', 'Witaj w MyMidwife! Cieszymy się, że jesteś z nami', '
+  <h2 style="font-size:22px;font-weight:700;color:#0b0b0b;margin:0 0 16px 0;letter-spacing:-0.3px;">Cześć!</h2>
+  <p style="color:#414141;font-size:15px;line-height:1.7;margin:0 0 16px 0;">Dziękujemy za dołączenie do listy oczekujących <strong style="color:#e352ad;">MyMidwife</strong>. Pracujemy nad aplikacją, która połączy Cię z najlepszą położną w Twojej okolicy.</p>
+  <p style="color:#414141;font-size:15px;line-height:1.7;margin:0 0 12px 0;">Jesteś jedną z pierwszych osób, które dowiedzą się o starcie aplikacji. Będziesz miała dostęp do:</p>
+  <table style="margin:0 0 20px 0;width:100%;">
+    <tr><td style="padding:10px 16px;background:#FEFBFD;border-left:3px solid #e352ad;border-radius:4px;color:#414141;font-size:14px;margin-bottom:6px;">Wyszukiwania położnych w Twojej okolicy</td></tr>
+    <tr><td style="height:6px;"></td></tr>
+    <tr><td style="padding:10px 16px;background:#FEFBFD;border-left:3px solid #e352ad;border-radius:4px;color:#414141;font-size:14px;">Rezerwacji wizyt online</td></tr>
+    <tr><td style="height:6px;"></td></tr>
+    <tr><td style="padding:10px 16px;background:#FEFBFD;border-left:3px solid #e352ad;border-radius:4px;color:#414141;font-size:14px;">Bezpiecznej komunikacji z położną</td></tr>
+  </table>
+  <p style="color:#414141;font-size:15px;line-height:1.7;margin:0 0 24px 0;">Damy Ci znać, jak tylko będziemy gotowi!</p>
+  <p style="color:#989898;font-size:14px;margin:0;">Pozdrawiamy,<br/><strong style="color:#0b0b0b;">Zespół MyMidwife</strong></p>
 '),
-('patient', 'day3', 'Czy wiesz, ze polozna moze Ci pomoc juz w ciazy?', '
-  <h2 style="font-size:20px;">Polozna to wiecej niz porod</h2>
-  <p>Wiele kobiet nie wie, ze polozna moze towarzyszyc Ci przez cala ciaze, porod i polaczek. To wsparcie, ktore naprawde robi roznice.</p>
-  <p>Z MyMidwife bedziesz mogla:</p>
-  <ul style="line-height:1.8;">
-    <li>Znalezc polozna specjalizujaca sie w Twoich potrzebach</li>
-    <li>Umowic sie na wizyte domowa lub online</li>
-    <li>Miec kontakt z polozna przez caly okres opieki</li>
-  </ul>
-  <p>Juz niedlugo to wszystko bedzie mozliwe w jednym miejscu.</p>
-  <p style="margin-top:24px;">Pozdrawiamy,<br/><strong>Zespol MyMidwife</strong></p>
+('patient', 'day3', 'Czy wiesz, że położna może Ci pomóc już w ciąży?', '
+  <h2 style="font-size:22px;font-weight:700;color:#0b0b0b;margin:0 0 16px 0;letter-spacing:-0.3px;">Położna to więcej niż poród</h2>
+  <p style="color:#414141;font-size:15px;line-height:1.7;margin:0 0 16px 0;">Wiele kobiet nie wie, że położna może towarzyszyć Ci przez całą ciążę, poród i połóg. To wsparcie, które naprawdę robi różnicę.</p>
+  <p style="color:#414141;font-size:15px;line-height:1.7;margin:0 0 12px 0;">Z <strong style="color:#e352ad;">MyMidwife</strong> będziesz mogła:</p>
+  <table style="margin:0 0 20px 0;width:100%;">
+    <tr><td style="padding:10px 16px;background:#FEFBFD;border-left:3px solid #e352ad;border-radius:4px;color:#414141;font-size:14px;">Znaleźć położną specjalizującą się w Twoich potrzebach</td></tr>
+    <tr><td style="height:6px;"></td></tr>
+    <tr><td style="padding:10px 16px;background:#FEFBFD;border-left:3px solid #e352ad;border-radius:4px;color:#414141;font-size:14px;">Umówić się na wizytę domową lub online</td></tr>
+    <tr><td style="height:6px;"></td></tr>
+    <tr><td style="padding:10px 16px;background:#FEFBFD;border-left:3px solid #e352ad;border-radius:4px;color:#414141;font-size:14px;">Mieć kontakt z położną przez cały okres opieki</td></tr>
+  </table>
+  <p style="color:#414141;font-size:15px;line-height:1.7;margin:0 0 24px 0;">Już niedługo to wszystko będzie możliwe w jednym miejscu.</p>
+  <p style="color:#989898;font-size:14px;margin:0;">Pozdrawiamy,<br/><strong style="color:#0b0b0b;">Zespół MyMidwife</strong></p>
 '),
-('patient', 'day7', 'MyMidwife - jestesmy coraz blizej startu!', '
-  <h2 style="font-size:20px;">Dziekujemy za cierpliwosc!</h2>
-  <p>Ciezko pracujemy, zeby MyMidwife bylo jak najlepsze dla Ciebie. Jako osoba z listy oczekujacych, bedziesz miala pierwszenstwo dostepu.</p>
-  <p>W miedzyczasie, jesli masz pytania lub sugestie &mdash; po prostu odpowiedz na tego maila. Kazda opinia jest dla nas cenna.</p>
-  <p style="margin-top:24px;">Do zobaczenia wkrotce!<br/><strong>Zespol MyMidwife</strong></p>
+('patient', 'day7', 'MyMidwife – jesteśmy coraz bliżej startu!', '
+  <h2 style="font-size:22px;font-weight:700;color:#0b0b0b;margin:0 0 16px 0;letter-spacing:-0.3px;">Dziękujemy za cierpliwość!</h2>
+  <p style="color:#414141;font-size:15px;line-height:1.7;margin:0 0 16px 0;">Ciężko pracujemy, żeby <strong style="color:#e352ad;">MyMidwife</strong> było jak najlepsze dla Ciebie. Jako osoba z listy oczekujących, będziesz miała pierwszeństwo dostępu.</p>
+  <p style="color:#414141;font-size:15px;line-height:1.7;margin:0 0 24px 0;">W międzyczasie, jeśli masz pytania lub sugestie &mdash; po prostu odpowiedz na tego maila. Każda opinia jest dla nas cenna.</p>
+  <div style="text-align:center;margin:24px 0;">
+    <a href="https://mymidwife.pl" style="display:inline-block;background:#e352ad;color:#ffffff;padding:12px 32px;border-radius:11px;text-decoration:none;font-size:14px;font-weight:600;">Odwiedź mymidwife.pl</a>
+  </div>
+  <p style="color:#989898;font-size:14px;margin:0;">Do zobaczenia wkrótce!<br/><strong style="color:#0b0b0b;">Zespół MyMidwife</strong></p>
 ');
 
 -- MIDWIFE templates
 INSERT INTO email_templates (user_type, email_key, subject, body_html) VALUES
-('midwife', 'welcome', 'Witaj w MyMidwife! Dolacz do naszej spolecznosci poloznych', '
-  <h2 style="font-size:20px;">Czesc!</h2>
-  <p>Dziekujemy za zainteresowanie MyMidwife. Tworzymy platforme, ktora pomoze Ci dotrzec do wiekszej liczby pacjentek i zarzadzac wizytami w prosty sposob.</p>
-  <p>Jako polozna na naszej platformie bedziesz mogla:</p>
-  <ul style="line-height:1.8;">
-    <li>Stworzyc profesjonalny profil widoczny dla pacjentek</li>
-    <li>Zarzadzac kalendarzem wizyt</li>
-    <li>Komunikowac sie z pacjentkami przez bezpieczny chat</li>
-    <li>Rozwijac swoja praktyke</li>
-  </ul>
-  <p>Damy Ci znac, jak tylko platforma bedzie gotowa!</p>
-  <p style="margin-top:24px;">Pozdrawiamy,<br/><strong>Zespol MyMidwife</strong></p>
+('midwife', 'welcome', 'Witaj w MyMidwife! Dołącz do naszej społeczności położnych', '
+  <h2 style="font-size:22px;font-weight:700;color:#0b0b0b;margin:0 0 16px 0;letter-spacing:-0.3px;">Cześć!</h2>
+  <p style="color:#414141;font-size:15px;line-height:1.7;margin:0 0 16px 0;">Dziękujemy za zainteresowanie <strong style="color:#e352ad;">MyMidwife</strong>. Tworzymy platformę, która pomoże Ci dotrzeć do większej liczby pacjentek i zarządzać wizytami w prosty sposób.</p>
+  <p style="color:#414141;font-size:15px;line-height:1.7;margin:0 0 12px 0;">Jako położna na naszej platformie będziesz mogła:</p>
+  <table style="margin:0 0 20px 0;width:100%;">
+    <tr><td style="padding:10px 16px;background:#FEFBFD;border-left:3px solid #e352ad;border-radius:4px;color:#414141;font-size:14px;">Stworzyć profesjonalny profil widoczny dla pacjentek</td></tr>
+    <tr><td style="height:6px;"></td></tr>
+    <tr><td style="padding:10px 16px;background:#FEFBFD;border-left:3px solid #e352ad;border-radius:4px;color:#414141;font-size:14px;">Zarządzać kalendarzem wizyt</td></tr>
+    <tr><td style="height:6px;"></td></tr>
+    <tr><td style="padding:10px 16px;background:#FEFBFD;border-left:3px solid #e352ad;border-radius:4px;color:#414141;font-size:14px;">Komunikować się z pacjentkami przez bezpieczny chat</td></tr>
+    <tr><td style="height:6px;"></td></tr>
+    <tr><td style="padding:10px 16px;background:#FEFBFD;border-left:3px solid #e352ad;border-radius:4px;color:#414141;font-size:14px;">Rozwijać swoją praktykę</td></tr>
+  </table>
+  <p style="color:#414141;font-size:15px;line-height:1.7;margin:0 0 24px 0;">Damy Ci znać, jak tylko platforma będzie gotowa!</p>
+  <p style="color:#989898;font-size:14px;margin:0;">Pozdrawiamy,<br/><strong style="color:#0b0b0b;">Zespół MyMidwife</strong></p>
 '),
-('midwife', 'day3', 'Jak MyMidwife pomoze Ci w codziennej pracy?', '
-  <h2 style="font-size:20px;">Twoja praktyka, Twoje zasady</h2>
-  <p>Wiemy, ze prowadzenie praktyki polozniczej to nie tylko opieka nad pacjentkami. To tez zarzadzanie terminami, dokumentacja i pozyskiwanie nowych pacjentek.</p>
-  <p>MyMidwife pomoze Ci:</p>
-  <ul style="line-height:1.8;">
-    <li>Automatycznie pozyskiwac pacjentki z Twojej okolicy</li>
-    <li>Zarzadzac harmonogramem wizyt bez telefonow</li>
-    <li>Budowac reputacje dzieki opiniom pacjentek</li>
-  </ul>
-  <p>Wszystko w jednym miejscu, bez zbednej biurokracji.</p>
-  <p style="margin-top:24px;">Pozdrawiamy,<br/><strong>Zespol MyMidwife</strong></p>
+('midwife', 'day3', 'Jak MyMidwife pomoże Ci w codziennej pracy?', '
+  <h2 style="font-size:22px;font-weight:700;color:#0b0b0b;margin:0 0 16px 0;letter-spacing:-0.3px;">Twoja praktyka, Twoje zasady</h2>
+  <p style="color:#414141;font-size:15px;line-height:1.7;margin:0 0 16px 0;">Wiemy, że prowadzenie praktyki położniczej to nie tylko opieka nad pacjentkami. To też zarządzanie terminami, dokumentacja i pozyskiwanie nowych pacjentek.</p>
+  <p style="color:#414141;font-size:15px;line-height:1.7;margin:0 0 12px 0;"><strong style="color:#e352ad;">MyMidwife</strong> pomoże Ci:</p>
+  <table style="margin:0 0 20px 0;width:100%;">
+    <tr><td style="padding:10px 16px;background:#FEFBFD;border-left:3px solid #e352ad;border-radius:4px;color:#414141;font-size:14px;">Automatycznie pozyskiwać pacjentki z Twojej okolicy</td></tr>
+    <tr><td style="height:6px;"></td></tr>
+    <tr><td style="padding:10px 16px;background:#FEFBFD;border-left:3px solid #e352ad;border-radius:4px;color:#414141;font-size:14px;">Zarządzać harmonogramem wizyt bez telefonów</td></tr>
+    <tr><td style="height:6px;"></td></tr>
+    <tr><td style="padding:10px 16px;background:#FEFBFD;border-left:3px solid #e352ad;border-radius:4px;color:#414141;font-size:14px;">Budować reputację dzięki opiniom pacjentek</td></tr>
+  </table>
+  <p style="color:#414141;font-size:15px;line-height:1.7;margin:0 0 24px 0;">Wszystko w jednym miejscu, bez zbędnej biurokracji.</p>
+  <p style="color:#989898;font-size:14px;margin:0;">Pozdrawiamy,<br/><strong style="color:#0b0b0b;">Zespół MyMidwife</strong></p>
 '),
-('midwife', 'day7', 'MyMidwife - dolacz do grona pierwszych poloznych!', '
-  <h2 style="font-size:20px;">Badz jedna z pierwszych!</h2>
-  <p>Platforma MyMidwife jest juz prawie gotowa. Polozne, ktore dolacza jako pierwsze, beda mialy:</p>
-  <ul style="line-height:1.8;">
-    <li>Darmowy dostep w okresie beta</li>
-    <li>Wplyw na rozwoj funkcji platformy</li>
-    <li>Priorytetowe wsparcie techniczne</li>
-  </ul>
-  <p>Jesli masz pytania lub pomysly &mdash; odpowiedz na tego maila. Chetnie porozmawiamy!</p>
-  <p style="margin-top:24px;">Do zobaczenia wkrotce!<br/><strong>Zespol MyMidwife</strong></p>
+('midwife', 'day7', 'MyMidwife – dołącz do grona pierwszych położnych!', '
+  <h2 style="font-size:22px;font-weight:700;color:#0b0b0b;margin:0 0 16px 0;letter-spacing:-0.3px;">Bądź jedną z pierwszych!</h2>
+  <p style="color:#414141;font-size:15px;line-height:1.7;margin:0 0 16px 0;">Platforma <strong style="color:#e352ad;">MyMidwife</strong> jest już prawie gotowa. Położne, które dołączą jako pierwsze, będą miały:</p>
+  <table style="margin:0 0 20px 0;width:100%;">
+    <tr><td style="padding:10px 16px;background:#FEFBFD;border-left:3px solid #e352ad;border-radius:4px;color:#414141;font-size:14px;">Darmowy dostęp w okresie beta</td></tr>
+    <tr><td style="height:6px;"></td></tr>
+    <tr><td style="padding:10px 16px;background:#FEFBFD;border-left:3px solid #e352ad;border-radius:4px;color:#414141;font-size:14px;">Wpływ na rozwój funkcji platformy</td></tr>
+    <tr><td style="height:6px;"></td></tr>
+    <tr><td style="padding:10px 16px;background:#FEFBFD;border-left:3px solid #e352ad;border-radius:4px;color:#414141;font-size:14px;">Priorytetowe wsparcie techniczne</td></tr>
+  </table>
+  <p style="color:#414141;font-size:15px;line-height:1.7;margin:0 0 24px 0;">Jeśli masz pytania lub pomysły &mdash; odpowiedz na tego maila. Chętnie porozmawiamy!</p>
+  <div style="text-align:center;margin:24px 0;">
+    <a href="https://mymidwife.pl" style="display:inline-block;background:#e352ad;color:#ffffff;padding:12px 32px;border-radius:11px;text-decoration:none;font-size:14px;font-weight:600;">Odwiedź mymidwife.pl</a>
+  </div>
+  <p style="color:#989898;font-size:14px;margin:0;">Do zobaczenia wkrótce!<br/><strong style="color:#0b0b0b;">Zespół MyMidwife</strong></p>
 ');

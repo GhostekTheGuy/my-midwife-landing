@@ -177,7 +177,7 @@ function AdminContent() {
                   >
                     {previewId === b.id ? "Zamknij" : "Podgląd"}
                   </button>
-                  {(b.status === "draft" || (b.status === "sent" && b.failed_count > 0)) && (
+                  {(b.status === "draft" || b.status === "sent") && (
                     <>
                       <input
                         type="number"

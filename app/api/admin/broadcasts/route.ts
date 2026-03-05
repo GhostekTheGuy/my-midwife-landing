@@ -46,8 +46,8 @@ export async function GET(request: NextRequest) {
     supabase.from("broadcast_recipients").select("*", { count: "exact", head: true }).gte("sent_at", todayISO),
     supabase.from("sent_emails").select("*", { count: "exact", head: true }).gte("sent_at", todayISO),
     supabase.from("form_submissions").select("*", { count: "exact", head: true }).gte("created_at", todayISO),
-    supabase.from("form_submissions").select("*", { count: "exact", head: true }).eq("user_type", "patient").eq("demo_testing", false),
-    supabase.from("form_submissions").select("*", { count: "exact", head: true }).eq("user_type", "midwife").eq("demo_testing", false),
+    supabase.from("form_submissions").select("*", { count: "exact", head: true }).eq("user_type", "patient").neq("demo_testing", true),
+    supabase.from("form_submissions").select("*", { count: "exact", head: true }).eq("user_type", "midwife").neq("demo_testing", true),
   ])
 
   // Each form submission = welcome email + admin notification = 2 emails via sent_emails + notify
@@ -63,6 +63,7 @@ export async function GET(request: NextRequest) {
     broadcasts: enriched,
     daily_limit: 100,
     sent_today: sentToday ?? 0,
+    broadcasts_today: broadcastsToday ?? 0,
     subscribers: { patient: totalPatients ?? 0, midwife: totalMidwives ?? 0 },
   })
 }

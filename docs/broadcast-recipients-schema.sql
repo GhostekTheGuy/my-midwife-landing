@@ -5,7 +5,8 @@ CREATE TABLE IF NOT EXISTS broadcast_recipients (
   id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
   broadcast_id UUID NOT NULL REFERENCES broadcasts(id) ON DELETE CASCADE,
   submission_id UUID NOT NULL REFERENCES form_submissions(id) ON DELETE CASCADE,
-  sent_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+  sent_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+  UNIQUE(broadcast_id, submission_id)
 );
 
 CREATE INDEX IF NOT EXISTS idx_broadcast_recipients_broadcast_id ON broadcast_recipients(broadcast_id);

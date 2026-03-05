@@ -40,22 +40,20 @@ export async function POST(request: NextRequest) {
     .update({ status: "sending" })
     .eq("id", broadcast.id)
 
-  // Find broadcast IDs with the same subject that were already sent
+  // Find ALL recipients who already received a broadcast with the same subject (any status)
   const { data: sameBroadcasts } = await supabase
     .from("broadcasts")
     .select("id")
     .eq("subject", broadcast.subject)
-    .eq("status", "sent")
 
-  const sentBroadcastIds = (sameBroadcasts ?? []).map((b: any) => b.id)
+  const sameBroadcastIds = (sameBroadcasts ?? []).map((b: any) => b.id)
 
-  // Find subscribers who already received a broadcast with the same subject
   let excludeIds = new Set<string>()
-  if (sentBroadcastIds.length > 0) {
+  if (sameBroadcastIds.length > 0) {
     const { data: alreadySent } = await supabase
       .from("broadcast_recipients")
       .select("submission_id")
-      .in("broadcast_id", sentBroadcastIds)
+      .in("broadcast_id", sameBroadcastIds)
       .limit(10000)
 
     excludeIds = new Set((alreadySent ?? []).map((r: any) => r.submission_id))

@@ -19,22 +19,26 @@ export async function GET(request: NextRequest) {
   // Fetch recipient counts per broadcast and user type
   const { data: recipients } = await supabase
     .from("broadcast_recipients")
-    .select("broadcast_id, form_submissions(user_type)")
+    .select("broadcast_id, sent_at, form_submissions(user_type)")
     .limit(10000)
 
-  const recipientCounts: Record<string, { patient: number; midwife: number }> = {}
-  for (const r of recipients ?? []) {
-    const bid = r.broadcast_id
-    if (!recipientCounts[bid]) recipientCounts[bid] = { patient: 0, midwife: 0 }
-    const userType = (r as any).form_submissions?.user_type
-    if (userType === "patient") recipientCounts[bid].patient++
-    else if (userType === "midwife") recipientCounts[bid].midwife++
-  }
-
-  // Count all emails sent today via Resend (daily limit)
   const todayStart = new Date()
   todayStart.setHours(0, 0, 0, 0)
   const todayISO = todayStart.toISOString()
+
+  const recipientCounts: Record<string, { patient: number; midwife: number }> = {}
+  const broadcastsTodayByType = { patient: 0, midwife: 0 }
+  for (const r of recipients ?? []) {
+    const bid = r.broadcast_id
+    if (!recipientCounts[bid]) recipientCounts[bid] = { patient: 0, midwife: 0 }
+    const userType = (r as any).form_submissions?.user_type as string
+    if (userType === "patient") recipientCounts[bid].patient++
+    else if (userType === "midwife") recipientCounts[bid].midwife++
+    if (r.sent_at && r.sent_at >= todayISO) {
+      if (userType === "patient") broadcastsTodayByType.patient++
+      else if (userType === "midwife") broadcastsTodayByType.midwife++
+    }
+  }
 
   const [
     { count: broadcastsToday },
@@ -46,8 +50,8 @@ export async function GET(request: NextRequest) {
     supabase.from("broadcast_recipients").select("*", { count: "exact", head: true }).gte("sent_at", todayISO),
     supabase.from("sent_emails").select("*", { count: "exact", head: true }).gte("sent_at", todayISO),
     supabase.from("form_submissions").select("*", { count: "exact", head: true }).gte("created_at", todayISO),
-    supabase.from("form_submissions").select("*", { count: "exact", head: true }).eq("user_type", "patient").neq("demo_testing", true),
-    supabase.from("form_submissions").select("*", { count: "exact", head: true }).eq("user_type", "midwife").neq("demo_testing", true),
+    supabase.from("form_submissions").select("*", { count: "exact", head: true }).eq("user_type", "patient"),
+    supabase.from("form_submissions").select("*", { count: "exact", head: true }).eq("user_type", "midwife"),
   ])
 
   // Each form submission = welcome email + admin notification = 2 emails via sent_emails + notify
@@ -63,7 +67,7 @@ export async function GET(request: NextRequest) {
     broadcasts: enriched,
     daily_limit: 100,
     sent_today: sentToday ?? 0,
-    broadcasts_today: broadcastsToday ?? 0,
+    broadcasts_today: broadcastsTodayByType,
     subscribers: { patient: totalPatients ?? 0, midwife: totalMidwives ?? 0 },
   })
 }

@@ -65,7 +65,6 @@ export async function POST(request: NextRequest) {
   let query = supabase
     .from("form_submissions")
     .select("id, email")
-    .neq("demo_testing", true)
     .limit(10000)
 
   if (broadcast.target_user_type) {

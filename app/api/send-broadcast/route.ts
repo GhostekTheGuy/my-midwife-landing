@@ -14,17 +14,24 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
   }
 
-  // Find the oldest broadcast in "draft" status
-  const { data: broadcast, error: fetchError } = await supabase
-    .from("broadcasts")
-    .select("*")
-    .eq("status", "draft")
-    .order("created_at", { ascending: true })
-    .limit(1)
-    .single()
+  // Find broadcast by ID or take oldest draft
+  const broadcastId = request.nextUrl.searchParams.get("id")
+  let broadcastQuery = supabase.from("broadcasts").select("*")
+
+  if (broadcastId) {
+    broadcastQuery = broadcastQuery.eq("id", broadcastId)
+  } else {
+    broadcastQuery = broadcastQuery.eq("status", "draft").order("created_at", { ascending: true })
+  }
+
+  const { data: broadcast, error: fetchError } = await broadcastQuery.limit(1).single()
 
   if (fetchError || !broadcast) {
     return NextResponse.json({ message: "No pending broadcasts" })
+  }
+
+  if (broadcast.status !== "draft") {
+    return NextResponse.json({ error: "Broadcast already sent", status: broadcast.status }, { status: 400 })
   }
 
   // Mark as sending

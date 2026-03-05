@@ -40,10 +40,18 @@ export async function POST(request: NextRequest) {
     .update({ status: "sending" })
     .eq("id", broadcast.id)
 
+  // Find subscribers who already received a broadcast with the same subject
+  const { data: alreadySent } = await supabase
+    .from("broadcast_recipients")
+    .select("submission_id, broadcasts!inner(subject)")
+    .eq("broadcasts.subject", broadcast.subject)
+
+  const excludeIds = new Set((alreadySent ?? []).map((r: any) => r.submission_id))
+
   // Build subscriber query
   let query = supabase
     .from("form_submissions")
-    .select("email")
+    .select("id, email")
     .eq("demo_testing", false)
 
   if (broadcast.target_user_type) {
@@ -53,13 +61,16 @@ export async function POST(request: NextRequest) {
     query = query.ilike("city", broadcast.target_city)
   }
 
+  const { data: allSubscribers, error: subError } = await query
+
+  // Filter out subscribers who already received this broadcast subject
+  let subscribers = (allSubscribers ?? []).filter((sub) => !excludeIds.has(sub.id))
+
   // Optional send limit from query param (e.g. ?limit=12)
   const sendLimit = request.nextUrl.searchParams.get("limit")
   if (sendLimit) {
-    query = query.limit(parseInt(sendLimit, 10))
+    subscribers = subscribers.slice(0, parseInt(sendLimit, 10))
   }
-
-  const { data: subscribers, error: subError } = await query
 
   if (subError || !subscribers?.length) {
     await supabase
@@ -94,9 +105,15 @@ export async function POST(request: NextRequest) {
       )
     )
 
-    for (const result of results) {
+    for (let j = 0; j < results.length; j++) {
+      const result = results[j]
       if (result.status === "fulfilled" && result.value.data) {
         sentCount++
+        // Record recipient
+        await supabase.from("broadcast_recipients").insert({
+          broadcast_id: broadcast.id,
+          submission_id: batch[j].id,
+        })
       } else {
         failedCount++
       }

@@ -103,9 +103,11 @@ export async function POST(request: NextRequest) {
   let sentCount = 0
   let failedCount = 0
 
-  // Send in batches of 10 to respect rate limits
-  const BATCH_SIZE = 10
+  // Send in batches of 2 with delay to respect Resend rate limits (free tier: ~2/sec)
+  const BATCH_SIZE = 2
   for (let i = 0; i < subscribers.length; i += BATCH_SIZE) {
+    if (i > 0) await new Promise((r) => setTimeout(r, 1500))
+
     const batch = subscribers.slice(i, i + BATCH_SIZE)
 
     const results = await Promise.allSettled(
@@ -130,6 +132,10 @@ export async function POST(request: NextRequest) {
           submission_id: batch[j].id,
         })
       } else {
+        const errorDetail = result.status === "fulfilled"
+          ? JSON.stringify(result.value.error)
+          : result.reason?.message ?? result.reason
+        console.error(`[broadcast] Failed to send to ${batch[j].id}:`, errorDetail)
         failedCount++
       }
     }

@@ -30,8 +30,8 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ message: "No pending broadcasts" })
   }
 
-  if (broadcast.status !== "draft") {
-    return NextResponse.json({ error: "Broadcast already sent", status: broadcast.status }, { status: 400 })
+  if (broadcast.status === "sending") {
+    return NextResponse.json({ error: "Broadcast is currently being sent", status: broadcast.status }, { status: 400 })
   }
 
   // Mark as sending

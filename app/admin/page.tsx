@@ -71,11 +71,14 @@ function AdminContent() {
     )
   }
 
-  async function handleSend(broadcastId: string) {
-    if (!confirm("Na pewno wysłać ten broadcast?")) return
+  async function handleSend(broadcastId: string, retry = false) {
+    const msg = retry
+      ? "Ponowić wysyłkę do osób, które nie dostały maila?"
+      : "Na pewno wysłać ten broadcast?"
+    if (!confirm(msg)) return
     setSending(broadcastId)
     const limitParam = limit ? `&limit=${limit}` : ""
-    const res = await fetch(`/api/send-broadcast?${limitParam}`, {
+    const res = await fetch(`/api/send-broadcast?id=${broadcastId}${limitParam}`, {
       method: "POST",
       headers: { Authorization: `Bearer ${secret}` },
     })
@@ -197,6 +200,19 @@ function AdminContent() {
                       }}
                     >
                       {sending === b.id ? "Wysyłam..." : "Wyślij"}
+                    </button>
+                  )}
+                  {b.status === "sent" && b.failed_count > 0 && (
+                    <button
+                      onClick={() => handleSend(b.id, true)}
+                      disabled={sending === b.id}
+                      style={{
+                        padding: "8px 16px", border: "1px solid #e352ad", borderRadius: 8,
+                        background: "#fff", color: "#e352ad", cursor: "pointer", fontSize: 13, fontWeight: 600,
+                        opacity: sending === b.id ? 0.6 : 1,
+                      }}
+                    >
+                      {sending === b.id ? "Wysyłam..." : "Ponów"}
                     </button>
                   )}
                 </div>

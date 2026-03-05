@@ -40,7 +40,7 @@ function AdminContent() {
   const [loading, setLoading] = useState(true)
   const [sending, setSending] = useState<string | null>(null)
   const [results, setResults] = useState<Record<string, SendResult>>({})
-  const [limit, setLimit] = useState("")
+  const [limits, setLimits] = useState<Record<string, string>>({})
   const [previewId, setPreviewId] = useState<string | null>(null)
   const [previewHtml, setPreviewHtml] = useState("")
   const [sentToday, setSentToday] = useState(0)
@@ -77,7 +77,7 @@ function AdminContent() {
       : "Na pewno wysłać ten broadcast?"
     if (!confirm(msg)) return
     setSending(broadcastId)
-    const limitParam = limit ? `&limit=${limit}` : ""
+    const limitParam = limits[broadcastId] ? `&limit=${limits[broadcastId]}` : ""
     const res = await fetch(`/api/send-broadcast?id=${broadcastId}${limitParam}`, {
       method: "POST",
       headers: { Authorization: `Bearer ${secret}` },
@@ -108,27 +108,15 @@ function AdminContent() {
           <h1 style={{ fontSize: 28, fontWeight: 700, color: "#0b0b0b", margin: 0 }}>MyMidwife Mail</h1>
           <p style={{ color: "#989898", fontSize: 14, margin: "4px 0 0" }}>Panel wysyłki broadcastów</p>
         </div>
-        <div style={{ display: "flex", gap: 12, alignItems: "center" }}>
-          <div style={{
-            padding: "6px 12px",
-            borderRadius: 8,
-            fontSize: 13,
-            fontWeight: 600,
-            background: dailyLimit - sentToday <= 10 ? "#FFEBEE" : "#E8F5E9",
-            color: dailyLimit - sentToday <= 10 ? "#C62828" : "#2E7D32",
-          }}>
-            {dailyLimit - sentToday}/{dailyLimit} maili
-          </div>
-          <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
-            <label style={{ fontSize: 13, color: "#989898" }}>Limit:</label>
-            <input
-              type="number"
-              value={limit}
-              onChange={(e) => setLimit(e.target.value)}
-              placeholder="brak"
-              style={{ width: 70, padding: "6px 10px", border: "1px solid #EEE", borderRadius: 8, fontSize: 14 }}
-            />
-          </div>
+        <div style={{
+          padding: "6px 12px",
+          borderRadius: 8,
+          fontSize: 13,
+          fontWeight: 600,
+          background: dailyLimit - sentToday <= 10 ? "#FFEBEE" : "#E8F5E9",
+          color: dailyLimit - sentToday <= 10 ? "#C62828" : "#2E7D32",
+        }}>
+          {dailyLimit - sentToday}/{dailyLimit} maili
         </div>
       </div>
 
@@ -179,7 +167,7 @@ function AdminContent() {
                     </p>
                   )}
                 </div>
-                <div style={{ display: "flex", gap: 8 }}>
+                <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
                   <button
                     onClick={() => handlePreview(b.id)}
                     style={{
@@ -189,31 +177,29 @@ function AdminContent() {
                   >
                     {previewId === b.id ? "Zamknij" : "Podgląd"}
                   </button>
-                  {b.status === "draft" && (
-                    <button
-                      onClick={() => handleSend(b.id)}
-                      disabled={sending === b.id}
-                      style={{
-                        padding: "8px 16px", border: "none", borderRadius: 8,
-                        background: "#e352ad", color: "#fff", cursor: "pointer", fontSize: 13, fontWeight: 600,
-                        opacity: sending === b.id ? 0.6 : 1,
-                      }}
-                    >
-                      {sending === b.id ? "Wysyłam..." : "Wyślij"}
-                    </button>
-                  )}
-                  {b.status === "sent" && b.failed_count > 0 && (
-                    <button
-                      onClick={() => handleSend(b.id, true)}
-                      disabled={sending === b.id}
-                      style={{
-                        padding: "8px 16px", border: "1px solid #e352ad", borderRadius: 8,
-                        background: "#fff", color: "#e352ad", cursor: "pointer", fontSize: 13, fontWeight: 600,
-                        opacity: sending === b.id ? 0.6 : 1,
-                      }}
-                    >
-                      {sending === b.id ? "Wysyłam..." : "Ponów"}
-                    </button>
+                  {(b.status === "draft" || (b.status === "sent" && b.failed_count > 0)) && (
+                    <>
+                      <input
+                        type="number"
+                        value={limits[b.id] ?? ""}
+                        onChange={(e) => setLimits((prev) => ({ ...prev, [b.id]: e.target.value }))}
+                        placeholder="wszystkie"
+                        style={{ width: 80, padding: "6px 10px", border: "1px solid #EEE", borderRadius: 8, fontSize: 13 }}
+                      />
+                      <button
+                        onClick={() => handleSend(b.id, b.status === "sent")}
+                        disabled={sending === b.id}
+                        style={{
+                          padding: "8px 16px", border: b.status === "sent" ? "1px solid #e352ad" : "none", borderRadius: 8,
+                          background: b.status === "sent" ? "#fff" : "#e352ad",
+                          color: b.status === "sent" ? "#e352ad" : "#fff",
+                          cursor: "pointer", fontSize: 13, fontWeight: 600,
+                          opacity: sending === b.id ? 0.6 : 1,
+                        }}
+                      >
+                        {sending === b.id ? "Wysyłam..." : b.status === "sent" ? "Ponów" : "Wyślij"}
+                      </button>
+                    </>
                   )}
                 </div>
               </div>

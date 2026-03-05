@@ -187,6 +187,10 @@ export function JoinModal({ open, onOpenChange }: JoinModalProps) {
   const userType = watch("userType")
   const privacyConsent = watch("privacyConsent")
   const demoTesting = watch("demoTesting")
+  const email = watch("email")
+  const city = watch("city")
+
+  const hasFormData = Boolean(userType || email || city)
 
   function resetModalState() {
     reset()
@@ -326,7 +330,15 @@ export function JoinModal({ open, onOpenChange }: JoinModalProps) {
           />
         )}
 
-      <DialogContent className="sm:max-w-[500px]">
+      <DialogContent
+        className="sm:max-w-[500px]"
+        onInteractOutside={(e) => {
+          if (hasFormData) e.preventDefault()
+        }}
+        onEscapeKeyDown={(e) => {
+          if (hasFormData) e.preventDefault()
+        }}
+      >
         <AnimatePresence mode="wait">
           {isSuccess ? (
             <SuccessScreen onClose={() => handleOpenChange(false)} />

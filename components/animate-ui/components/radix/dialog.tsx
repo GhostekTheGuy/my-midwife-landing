@@ -55,12 +55,16 @@ function DialogOverlay({ className, ...props }: DialogOverlayProps) {
 
 type DialogContentProps = DialogContentPrimitiveProps & {
   showCloseButton?: boolean;
+  onInteractOutside?: (event: Event) => void;
+  onEscapeKeyDown?: (event: KeyboardEvent) => void;
 };
 
 function DialogContent({
   className,
   children,
   showCloseButton = true,
+  onInteractOutside,
+  onEscapeKeyDown,
   ...props
 }: DialogContentProps) {
   return (
@@ -71,6 +75,8 @@ function DialogContent({
           'bg-background fixed top-[50%] left-[50%] z-50 grid w-full max-w-[calc(100%-2rem)] max-h-[calc(100dvh-2rem)] overflow-y-auto translate-x-[-50%] translate-y-[-50%] gap-4 rounded-lg border p-6 shadow-lg sm:max-w-lg',
           className,
         )}
+        onInteractOutside={onInteractOutside}
+        onEscapeKeyDown={onEscapeKeyDown}
         {...props}
       >
         {children}

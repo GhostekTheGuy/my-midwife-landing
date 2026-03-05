@@ -12,7 +12,8 @@ interface JoinModalStore {
 export const useJoinModalStore = create<JoinModalStore>((set) => ({
   isOpen: false,
   openModal: (source) => {
-    posthog.capture("form_modal_opened", { source })
+    const formVariant = posthog.getFeatureFlag("form-layout-test") || "control"
+    posthog.capture("form_modal_opened", { source, form_variant: formVariant })
     set({ isOpen: true })
   },
   closeModal: () => set({ isOpen: false }),

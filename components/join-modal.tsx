@@ -7,7 +7,7 @@ import { DotLottieReact } from "@lottiefiles/dotlottie-react"
 import { motion, AnimatePresence } from "motion/react"
 import { Heart, Stethoscope, LucideIcon } from "lucide-react"
 import Confetti from "react-confetti"
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import {
   Dialog,
   DialogContent,
@@ -159,8 +159,25 @@ export function JoinModal({ open, onOpenChange }: JoinModalProps) {
   const [hideForm, setHideForm] = useState(false)
   const [showConfetti, setShowConfetti] = useState(false)
   const [submitError, setSubmitError] = useState<string | null>(null)
+  const [formVariant, setFormVariant] = useState<string>("control")
 
   const windowDimensions = useWindowDimensions()
+
+  useEffect(() => {
+    const variant = posthog.getFeatureFlag("form-layout-test")
+    if (typeof variant === "string") {
+      setFormVariant(variant)
+    }
+
+    return posthog.onFeatureFlags(() => {
+      const flag = posthog.getFeatureFlag("form-layout-test")
+      if (typeof flag === "string") {
+        setFormVariant(flag)
+      }
+    })
+  }, [])
+
+  const isSingleStep = formVariant === "single-step"
 
   const {
     register,
@@ -210,7 +227,8 @@ export function JoinModal({ open, onOpenChange }: JoinModalProps) {
       ].filter(Boolean)
 
       posthog.capture("form_abandoned", {
-        step,
+        step: isSingleStep ? "single" : step,
+        form_variant: formVariant,
         fields_filled: filledFields,
         fields_filled_count: filledFields.length,
       })
@@ -222,10 +240,12 @@ export function JoinModal({ open, onOpenChange }: JoinModalProps) {
   }
 
   function handleUserTypeSelect(type: UserType) {
-    posthog.capture("form_user_type_selected", { user_type: type })
+    posthog.capture("form_user_type_selected", { user_type: type, form_variant: formVariant })
     setValue("userType", type, { shouldValidate: isSubmitted })
     clearErrors("userType")
-    setStep(2)
+    if (!isSingleStep) {
+      setStep(2)
+    }
   }
 
   function handleBack() {
@@ -235,7 +255,7 @@ export function JoinModal({ open, onOpenChange }: JoinModalProps) {
   async function onSubmit(data: FormData) {
     setIsSubmitting(true)
     setSubmitError(null)
-    posthog.capture("form_submit_attempted", { user_type: data.userType })
+    posthog.capture("form_submit_attempted", { user_type: data.userType, form_variant: formVariant })
 
     try {
       const response = await fetch("/api/submit-form", {
@@ -267,6 +287,7 @@ export function JoinModal({ open, onOpenChange }: JoinModalProps) {
         posthog.capture("form_submit_error", {
           status: response.status,
           error: errorMessage,
+          form_variant: formVariant,
         })
         setSubmitError(errorMessage)
         setIsSubmitting(false)
@@ -281,6 +302,7 @@ export function JoinModal({ open, onOpenChange }: JoinModalProps) {
       posthog.capture("form_submitted_successfully", {
         user_type: data.userType,
         demo_testing: data.demoTesting,
+        form_variant: formVariant,
       })
 
       // Success flow
@@ -295,6 +317,7 @@ export function JoinModal({ open, onOpenChange }: JoinModalProps) {
       posthog.capture("form_submit_error", {
         status: "network_error",
         error: error instanceof Error ? error.message : "unknown",
+        form_variant: formVariant,
       })
       setSubmitError(
         "Wystąpił błąd podczas wysyłania formularza. Spróbuj ponownie."
@@ -342,7 +365,172 @@ export function JoinModal({ open, onOpenChange }: JoinModalProps) {
         <AnimatePresence mode="wait">
           {isSuccess ? (
             <SuccessScreen onClose={() => handleOpenChange(false)} />
+          ) : isSingleStep ? (
+            /* ============================================================
+               Wariant B: Single-step — wszystkie pola na jednej stronie
+               ============================================================ */
+            <motion.div
+              key="form-single"
+              initial={{ opacity: 1 }}
+              animate={{ opacity: hideForm ? 0 : 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.3 }}
+            >
+              <DialogHeader>
+                <DialogTitle className="text-2xl text-[#0b0b0b]">
+                  Dołącz do nas!
+                </DialogTitle>
+                <DialogDescription className="text-[#414141]">
+                  Zostaw kontakt – odezwiemy się, gdy wystartujemy w Twoim mieście.
+                </DialogDescription>
+              </DialogHeader>
+
+              <form onSubmit={handleSubmit(onSubmit, (validationErrors) => {
+                posthog.capture("form_validation_failed", {
+                  error_fields: Object.keys(validationErrors),
+                  form_variant: formVariant,
+                })
+              })} className="space-y-6">
+                {/* User Type Selection */}
+                <div className="space-y-3">
+                  <Label className="text-[#0b0b0b]">Jestem:</Label>
+                  <div className="grid grid-cols-2 gap-3">
+                    {USER_TYPE_OPTIONS.map((option) => (
+                      <UserTypeButton
+                        key={option.value}
+                        option={option}
+                        isSelected={userType === option.value}
+                        onSelect={() => handleUserTypeSelect(option.value)}
+                      />
+                    ))}
+                  </div>
+                  {errors.userType && (
+                    <p className="text-sm text-red-500">
+                      {errors.userType?.message}
+                    </p>
+                  )}
+                </div>
+
+                {/* Email */}
+                <div className="space-y-2">
+                  <Label htmlFor="email" className="text-[#0b0b0b]">
+                    Email:
+                  </Label>
+                  <Input
+                    id="email"
+                    type="email"
+                    placeholder="np. anna@email.pl"
+                    {...register("email", {
+                      onChange: () => {
+                        if (submitError) setSubmitError(null)
+                      },
+                    })}
+                  />
+                  {showFieldError("email") && (
+                    <p className="text-sm text-red-500">
+                      {errors.email?.message}
+                    </p>
+                  )}
+                  {submitError &&
+                    !errors.email &&
+                    submitError.includes("email") && (
+                      <p className="text-sm text-red-500">{submitError}</p>
+                    )}
+                </div>
+
+                {/* City */}
+                <div className="space-y-2">
+                  <Label htmlFor="city" className="text-[#0b0b0b]">
+                    Miasto:
+                  </Label>
+                  <Input
+                    id="city"
+                    type="text"
+                    placeholder="np. Warszawa"
+                    {...register("city")}
+                  />
+                  {showFieldError("city") && (
+                    <p className="text-sm text-red-500">
+                      {errors.city?.message}
+                    </p>
+                  )}
+                </div>
+
+                {/* Privacy Consent */}
+                <div className="space-y-2">
+                  <div className="flex items-start space-x-2">
+                    <Checkbox
+                      id="privacyConsent"
+                      checked={privacyConsent}
+                      onCheckedChange={(checked) => {
+                        const isChecked = checked === true
+                        setValue("privacyConsent", isChecked, {
+                          shouldValidate: isSubmitted,
+                        })
+                        if (isChecked) {
+                          clearErrors("privacyConsent")
+                        }
+                      }}
+                      className="mt-1 cursor-pointer"
+                    />
+                    <Label
+                      htmlFor="privacyConsent"
+                      className="text-sm font-normal leading-relaxed cursor-pointer text-[#0b0b0b]"
+                    >
+                      Wyrażam zgodę na przechowywanie i przetwarzanie moich
+                      danych osobowych.{" "}
+                      <button
+                        type="button"
+                        onClick={openPrivacyModal}
+                        className="text-[#e352ad] hover:underline"
+                      >
+                        Polityka prywatności
+                      </button>
+                    </Label>
+                  </div>
+                  {showFieldError("privacyConsent") && (
+                    <p className="text-sm text-red-500">
+                      {errors.privacyConsent?.message}
+                    </p>
+                  )}
+                </div>
+
+                {/* Demo Testing Consent */}
+                <div className="space-y-2">
+                  <div className="flex items-start space-x-2">
+                    <Checkbox
+                      id="demoTesting"
+                      checked={demoTesting}
+                      onCheckedChange={(checked) =>
+                        setValue("demoTesting", checked === true)
+                      }
+                      className="mt-1 cursor-pointer"
+                    />
+                    <Label
+                      htmlFor="demoTesting"
+                      className="text-sm font-normal leading-relaxed cursor-pointer text-[#0b0b0b]"
+                    >
+                      Chcę testować aplikację jako jedna z pierwszych!
+                    </Label>
+                  </div>
+                </div>
+
+                {/* Submit Button */}
+                <div className="pt-4">
+                  <Button
+                    type="submit"
+                    disabled={isSubmitting}
+                    className="w-full bg-[#0b0b0b] text-white hover:bg-[#414141] h-12 text-base"
+                  >
+                    {isSubmitting ? "Wysyłanie..." : "Dołączam!"}
+                  </Button>
+                </div>
+              </form>
+            </motion.div>
           ) : (
+            /* ============================================================
+               Wariant A (control): Multi-step — obecny formularz
+               ============================================================ */
             <motion.div
               key="form"
               initial={{ opacity: 1 }}
@@ -364,6 +552,7 @@ export function JoinModal({ open, onOpenChange }: JoinModalProps) {
               <form onSubmit={handleSubmit(onSubmit, (validationErrors) => {
                 posthog.capture("form_validation_failed", {
                   error_fields: Object.keys(validationErrors),
+                  form_variant: formVariant,
                 })
               })} className="space-y-6">
                 <AnimatePresence mode="wait" initial={false}>

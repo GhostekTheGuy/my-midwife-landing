@@ -45,6 +45,7 @@ function AdminContent() {
   const [previewHtml, setPreviewHtml] = useState("")
   const [sentToday, setSentToday] = useState(0)
   const [dailyLimit, setDailyLimit] = useState(100)
+  const [subscribers, setSubscribers] = useState({ patient: 0, midwife: 0 })
 
   const fetchBroadcasts = useCallback(async () => {
     if (!secret) return
@@ -54,6 +55,7 @@ function AdminContent() {
       setBroadcasts(data.broadcasts)
       setSentToday(data.sent_today)
       setDailyLimit(data.daily_limit)
+      setSubscribers(data.subscribers)
     }
     setLoading(false)
   }, [secret])
@@ -108,15 +110,20 @@ function AdminContent() {
           <h1 style={{ fontSize: 28, fontWeight: 700, color: "#0b0b0b", margin: 0 }}>MyMidwife Mail</h1>
           <p style={{ color: "#989898", fontSize: 14, margin: "4px 0 0" }}>Panel wysyłki broadcastów</p>
         </div>
-        <div style={{
-          padding: "6px 12px",
-          borderRadius: 8,
-          fontSize: 13,
-          fontWeight: 600,
-          background: dailyLimit - sentToday <= 10 ? "#FFEBEE" : "#E8F5E9",
-          color: dailyLimit - sentToday <= 10 ? "#C62828" : "#2E7D32",
-        }}>
-          {dailyLimit - sentToday}/{dailyLimit} maili
+        <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
+          <div style={{ padding: "6px 12px", borderRadius: 8, fontSize: 13, background: "#F5F5F5", color: "#414141" }}>
+            {subscribers.patient} pacjentek, {subscribers.midwife} położnych
+          </div>
+          <div style={{
+            padding: "6px 12px",
+            borderRadius: 8,
+            fontSize: 13,
+            fontWeight: 600,
+            background: dailyLimit - sentToday <= 10 ? "#FFEBEE" : "#E8F5E9",
+            color: dailyLimit - sentToday <= 10 ? "#C62828" : "#2E7D32",
+          }}>
+            {dailyLimit - sentToday}/{dailyLimit} maili
+          </div>
         </div>
       </div>
 
@@ -153,12 +160,8 @@ function AdminContent() {
                   <h3 style={{ fontSize: 16, fontWeight: 600, color: "#0b0b0b", margin: 0 }}>{b.subject}</h3>
                   {b.sent_at && (
                     <p style={{ fontSize: 12, color: "#989898", margin: "4px 0 0" }}>
-                      Wysłano: {new Date(b.sent_at).toLocaleString("pl-PL")} - {b.sent_count} ok, {b.failed_count} błędów
-                      {(b.recipient_counts.patient > 0 || b.recipient_counts.midwife > 0) && (
-                        <span style={{ marginLeft: 8 }}>
-                          ({b.recipient_counts.patient} pacjentek, {b.recipient_counts.midwife} położnych)
-                        </span>
-                      )}
+                      Wysłano: {new Date(b.sent_at).toLocaleString("pl-PL")} - {b.recipient_counts.patient}/{subscribers.patient} pacjentek, {b.recipient_counts.midwife}/{subscribers.midwife} położnych
+                      {b.failed_count > 0 && <span style={{ color: "#C62828" }}> ({b.failed_count} błędów)</span>}
                     </p>
                   )}
                   {results[b.id] && (

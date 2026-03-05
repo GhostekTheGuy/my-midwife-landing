@@ -40,10 +40,14 @@ export async function GET(request: NextRequest) {
     { count: broadcastsToday },
     { count: dripToday },
     { count: submissionsToday },
+    { count: totalPatients },
+    { count: totalMidwives },
   ] = await Promise.all([
     supabase.from("broadcast_recipients").select("*", { count: "exact", head: true }).gte("sent_at", todayISO),
     supabase.from("sent_emails").select("*", { count: "exact", head: true }).gte("sent_at", todayISO),
     supabase.from("form_submissions").select("*", { count: "exact", head: true }).gte("created_at", todayISO),
+    supabase.from("form_submissions").select("*", { count: "exact", head: true }).eq("user_type", "patient").eq("demo_testing", false),
+    supabase.from("form_submissions").select("*", { count: "exact", head: true }).eq("user_type", "midwife").eq("demo_testing", false),
   ])
 
   // Each form submission = welcome email + admin notification = 2 emails via sent_emails + notify
@@ -55,5 +59,10 @@ export async function GET(request: NextRequest) {
     recipient_counts: recipientCounts[b.id] ?? { patient: 0, midwife: 0 },
   }))
 
-  return NextResponse.json({ broadcasts: enriched, daily_limit: 100, sent_today: sentToday ?? 0 })
+  return NextResponse.json({
+    broadcasts: enriched,
+    daily_limit: 100,
+    sent_today: sentToday ?? 0,
+    subscribers: { patient: totalPatients ?? 0, midwife: totalMidwives ?? 0 },
+  })
 }

@@ -3,6 +3,7 @@ import { supabase } from "@/lib/supabase"
 import { z } from "zod"
 import { sendLeadEvent } from "@/lib/meta-capi"
 import { notifyNewSubmission } from "@/lib/notify"
+import { sendDripEmail } from "@/lib/mailer"
 
 // Server-side validation schema (lightweight check)
 const formSubmissionSchema = z.object({
@@ -88,13 +89,31 @@ export async function POST(request: NextRequest) {
         })
       }
 
-      // Email notification
+      // Email notification to admin
       await notifyNewSubmission({
         userType: validationResult.data.userType,
         email: validationResult.data.email,
         city: validationResult.data.city,
         demoTesting: validationResult.data.demoTesting,
       }).catch((err) => console.error("Failed to send notification:", err))
+
+      // Welcome email to subscriber
+      if (!validationResult.data.demoTesting) {
+        await sendDripEmail(
+          validationResult.data.email,
+          validationResult.data.userType,
+          "welcome"
+        )
+          .then(async () => {
+            if (submission) {
+              await supabase.from("sent_emails").insert({
+                submission_id: submission.id,
+                email_key: "welcome",
+              })
+            }
+          })
+          .catch((err) => console.error("Failed to send welcome email:", err))
+      }
     })
 
     return NextResponse.json(

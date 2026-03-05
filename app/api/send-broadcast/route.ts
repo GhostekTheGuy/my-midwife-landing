@@ -40,19 +40,33 @@ export async function POST(request: NextRequest) {
     .update({ status: "sending" })
     .eq("id", broadcast.id)
 
-  // Find subscribers who already received a broadcast with the same subject
-  const { data: alreadySent } = await supabase
-    .from("broadcast_recipients")
-    .select("submission_id, broadcasts!inner(subject)")
-    .eq("broadcasts.subject", broadcast.subject)
+  // Find broadcast IDs with the same subject that were already sent
+  const { data: sameBroadcasts } = await supabase
+    .from("broadcasts")
+    .select("id")
+    .eq("subject", broadcast.subject)
+    .eq("status", "sent")
 
-  const excludeIds = new Set((alreadySent ?? []).map((r: any) => r.submission_id))
+  const sentBroadcastIds = (sameBroadcasts ?? []).map((b: any) => b.id)
+
+  // Find subscribers who already received a broadcast with the same subject
+  let excludeIds = new Set<string>()
+  if (sentBroadcastIds.length > 0) {
+    const { data: alreadySent } = await supabase
+      .from("broadcast_recipients")
+      .select("submission_id")
+      .in("broadcast_id", sentBroadcastIds)
+      .limit(10000)
+
+    excludeIds = new Set((alreadySent ?? []).map((r: any) => r.submission_id))
+  }
 
   // Build subscriber query
   let query = supabase
     .from("form_submissions")
     .select("id, email")
     .eq("demo_testing", false)
+    .limit(10000)
 
   if (broadcast.target_user_type) {
     query = query.eq("user_type", broadcast.target_user_type)
@@ -105,18 +119,24 @@ export async function POST(request: NextRequest) {
       )
     )
 
+    const successfulRecipients: { broadcast_id: string; submission_id: string }[] = []
+
     for (let j = 0; j < results.length; j++) {
       const result = results[j]
       if (result.status === "fulfilled" && result.value.data) {
         sentCount++
-        // Record recipient
-        await supabase.from("broadcast_recipients").insert({
+        successfulRecipients.push({
           broadcast_id: broadcast.id,
           submission_id: batch[j].id,
         })
       } else {
         failedCount++
       }
+    }
+
+    // Batch insert all successful recipients at once
+    if (successfulRecipients.length > 0) {
+      await supabase.from("broadcast_recipients").insert(successfulRecipients)
     }
   }
 

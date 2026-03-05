@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect, useCallback } from "react"
+import { Suspense, useState, useEffect, useCallback } from "react"
 import { useSearchParams } from "next/navigation"
 
 interface Broadcast {
@@ -24,6 +24,14 @@ interface SendResult {
 }
 
 export default function AdminPage() {
+  return (
+    <Suspense fallback={<div style={{ padding: 40, textAlign: "center", color: "#989898" }}>Ładowanie...</div>}>
+      <AdminContent />
+    </Suspense>
+  )
+}
+
+function AdminContent() {
   const searchParams = useSearchParams()
   const secret = searchParams.get("secret")
 

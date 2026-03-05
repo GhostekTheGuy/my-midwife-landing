@@ -46,6 +46,12 @@ export async function POST(request: NextRequest) {
     query = query.ilike("city", broadcast.target_city)
   }
 
+  // Optional send limit from query param (e.g. ?limit=12)
+  const sendLimit = request.nextUrl.searchParams.get("limit")
+  if (sendLimit) {
+    query = query.limit(parseInt(sendLimit, 10))
+  }
+
   const { data: subscribers, error: subError } = await query
 
   if (subError || !subscribers?.length) {

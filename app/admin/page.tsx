@@ -14,6 +14,7 @@ interface Broadcast {
   failed_count: number
   created_at: string
   sent_at: string | null
+  recipient_counts: { patient: number; midwife: number }
 }
 
 interface SendResult {
@@ -42,13 +43,17 @@ function AdminContent() {
   const [limit, setLimit] = useState("")
   const [previewId, setPreviewId] = useState<string | null>(null)
   const [previewHtml, setPreviewHtml] = useState("")
+  const [sentToday, setSentToday] = useState(0)
+  const [dailyLimit, setDailyLimit] = useState(100)
 
   const fetchBroadcasts = useCallback(async () => {
     if (!secret) return
     const res = await fetch(`/api/admin/broadcasts?secret=${secret}`)
     if (res.ok) {
       const data = await res.json()
-      setBroadcasts(data)
+      setBroadcasts(data.broadcasts)
+      setSentToday(data.sent_today)
+      setDailyLimit(data.daily_limit)
     }
     setLoading(false)
   }, [secret])
@@ -100,15 +105,27 @@ function AdminContent() {
           <h1 style={{ fontSize: 28, fontWeight: 700, color: "#0b0b0b", margin: 0 }}>MyMidwife Mail</h1>
           <p style={{ color: "#989898", fontSize: 14, margin: "4px 0 0" }}>Panel wysyłki broadcastów</p>
         </div>
-        <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
-          <label style={{ fontSize: 13, color: "#989898" }}>Limit:</label>
-          <input
-            type="number"
-            value={limit}
-            onChange={(e) => setLimit(e.target.value)}
-            placeholder="brak"
-            style={{ width: 70, padding: "6px 10px", border: "1px solid #EEE", borderRadius: 8, fontSize: 14 }}
-          />
+        <div style={{ display: "flex", gap: 12, alignItems: "center" }}>
+          <div style={{
+            padding: "6px 12px",
+            borderRadius: 8,
+            fontSize: 13,
+            fontWeight: 600,
+            background: dailyLimit - sentToday <= 10 ? "#FFEBEE" : "#E8F5E9",
+            color: dailyLimit - sentToday <= 10 ? "#C62828" : "#2E7D32",
+          }}>
+            {dailyLimit - sentToday}/{dailyLimit} maili
+          </div>
+          <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
+            <label style={{ fontSize: 13, color: "#989898" }}>Limit:</label>
+            <input
+              type="number"
+              value={limit}
+              onChange={(e) => setLimit(e.target.value)}
+              placeholder="brak"
+              style={{ width: 70, padding: "6px 10px", border: "1px solid #EEE", borderRadius: 8, fontSize: 14 }}
+            />
+          </div>
         </div>
       </div>
 
@@ -145,7 +162,12 @@ function AdminContent() {
                   <h3 style={{ fontSize: 16, fontWeight: 600, color: "#0b0b0b", margin: 0 }}>{b.subject}</h3>
                   {b.sent_at && (
                     <p style={{ fontSize: 12, color: "#989898", margin: "4px 0 0" }}>
-                      Wysłano: {new Date(b.sent_at).toLocaleString("pl-PL")} – {b.sent_count} ok, {b.failed_count} błędów
+                      Wysłano: {new Date(b.sent_at).toLocaleString("pl-PL")} - {b.sent_count} ok, {b.failed_count} błędów
+                      {(b.recipient_counts.patient > 0 || b.recipient_counts.midwife > 0) && (
+                        <span style={{ marginLeft: 8 }}>
+                          ({b.recipient_counts.patient} pacjentek, {b.recipient_counts.midwife} położnych)
+                        </span>
+                      )}
                     </p>
                   )}
                   {results[b.id] && (

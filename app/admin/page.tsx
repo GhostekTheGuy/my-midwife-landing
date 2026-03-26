@@ -9,6 +9,7 @@ interface Broadcast {
   body_html: string
   target_user_type: string | null
   target_city: string | null
+  target_demo_testing: boolean | null
   status: string
   sent_count: number
   failed_count: number
@@ -154,6 +155,11 @@ function AdminContent() {
                     {b.target_city && (
                       <span style={{ fontSize: 11, color: "#989898", background: "#F5F5F5", padding: "2px 8px", borderRadius: 4 }}>
                         {b.target_city}
+                      </span>
+                    )}
+                    {b.target_demo_testing && (
+                      <span style={{ fontSize: 11, color: "#1565C0", background: "#E3F2FD", padding: "2px 8px", borderRadius: 4 }}>
+                        demo_testing
                       </span>
                     )}
                   </div>

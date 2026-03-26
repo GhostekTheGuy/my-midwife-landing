@@ -62,14 +62,23 @@ export async function POST(request: NextRequest) {
   // Build subscriber query
   let query = supabase
     .from("form_submissions")
-    .select("id, email")
+    .select("id, email, city")
     .limit(10000)
 
   if (broadcast.target_user_type) {
     query = query.eq("user_type", broadcast.target_user_type)
   }
+  if (broadcast.target_demo_testing) {
+    query = query.eq("demo_testing", true)
+  }
   if (broadcast.target_city) {
-    query = query.ilike("city", broadcast.target_city)
+    // Support comma-separated city list with OR matching (each wrapped in %...%)
+    const cities = broadcast.target_city.split(",").map((c: string) => c.trim()).filter(Boolean)
+    if (cities.length === 1) {
+      query = query.ilike("city", `%${cities[0]}%`)
+    } else if (cities.length > 1) {
+      query = query.or(cities.map((c: string) => `city.ilike.%${c}%`).join(","))
+    }
   }
 
   const { data: allSubscribers, error: subError } = await query

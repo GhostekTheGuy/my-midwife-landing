@@ -10,6 +10,7 @@ interface Broadcast {
   target_user_type: string | null
   target_city: string | null
   target_demo_testing: boolean | null
+  scheduled_at: string | null
   status: string
   sent_count: number
   failed_count: number
@@ -42,6 +43,7 @@ function AdminContent() {
   const [sending, setSending] = useState<string | null>(null)
   const [results, setResults] = useState<Record<string, SendResult>>({})
   const [limits, setLimits] = useState<Record<string, string>>({})
+  const [schedules, setSchedules] = useState<Record<string, string>>({})
   const [previewId, setPreviewId] = useState<string | null>(null)
   const [previewHtml, setPreviewHtml] = useState("")
   const [sentToday, setSentToday] = useState(0)
@@ -59,6 +61,18 @@ function AdminContent() {
       setBroadcastsToday(data.broadcasts_today)
       setDailyLimit(data.daily_limit)
       setSubscribers(data.subscribers)
+      // Initialize schedule inputs from existing data
+      const scheduleInit: Record<string, string> = {}
+      for (const b of data.broadcasts) {
+        if (b.scheduled_at) {
+          // Convert UTC to local datetime-local format
+          const local = new Date(b.scheduled_at)
+          const offset = local.getTimezoneOffset()
+          const adjusted = new Date(local.getTime() - offset * 60000)
+          scheduleInit[b.id] = adjusted.toISOString().slice(0, 16)
+        }
+      }
+      setSchedules((prev) => ({ ...scheduleInit, ...prev }))
     }
     setLoading(false)
   }, [secret])
@@ -79,7 +93,7 @@ function AdminContent() {
   async function handleSend(broadcastId: string, retry = false) {
     const msg = retry
       ? "Ponowić wysyłkę do osób, które nie dostały maila?"
-      : "Na pewno wysłać ten broadcast?"
+      : "Na pewno wysłać ten broadcast teraz?"
     if (!confirm(msg)) return
     setSending(broadcastId)
     const limitParam = limits[broadcastId] ? `&limit=${limits[broadcastId]}` : ""
@@ -95,6 +109,40 @@ function AdminContent() {
     fetchBroadcasts()
   }
 
+  async function handleSchedule(broadcastId: string) {
+    const dateStr = schedules[broadcastId]
+    if (!dateStr) {
+      alert("Wybierz datę i godzinę wysyłki")
+      return
+    }
+    const utcDate = new Date(dateStr).toISOString()
+    const res = await fetch(`/api/admin/broadcasts/schedule?secret=${secret}`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ broadcast_id: broadcastId, scheduled_at: utcDate }),
+    })
+    if (res.ok) {
+      fetchBroadcasts()
+    }
+  }
+
+  async function handleCancelSchedule(broadcastId: string) {
+    if (!confirm("Anulować zaplanowaną wysyłkę?")) return
+    const res = await fetch(`/api/admin/broadcasts/schedule?secret=${secret}`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ broadcast_id: broadcastId, scheduled_at: null }),
+    })
+    if (res.ok) {
+      setSchedules((prev) => {
+        const next = { ...prev }
+        delete next[broadcastId]
+        return next
+      })
+      fetchBroadcasts()
+    }
+  }
+
   async function handlePreview(id: string) {
     if (previewId === id) {
       setPreviewId(null)
@@ -104,6 +152,16 @@ function AdminContent() {
     const html = await res.text()
     setPreviewHtml(html)
     setPreviewId(id)
+  }
+
+  function formatSchedule(isoStr: string) {
+    return new Date(isoStr).toLocaleString("pl-PL", {
+      day: "numeric",
+      month: "long",
+      year: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
+    })
   }
 
   return (
@@ -136,47 +194,60 @@ function AdminContent() {
         <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
           {broadcasts.map((b) => (
             <div key={b.id} style={{ border: "1px solid #EEE", borderRadius: 12, overflow: "hidden" }}>
-              <div style={{ padding: "16px 20px", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                <div style={{ flex: 1 }}>
-                  <div style={{ display: "flex", gap: 8, alignItems: "center", marginBottom: 6 }}>
-                    <span style={{
-                      fontSize: 11,
-                      fontWeight: 600,
-                      padding: "2px 8px",
-                      borderRadius: 4,
-                      background: b.status === "draft" ? "#FFF3E0" : b.status === "sent" ? "#E8F5E9" : b.status === "sending" ? "#E3F2FD" : "#FFEBEE",
-                      color: b.status === "draft" ? "#E65100" : b.status === "sent" ? "#2E7D32" : b.status === "sending" ? "#1565C0" : "#C62828",
-                    }}>
-                      {b.status}
-                    </span>
+              <div style={{ padding: "16px 20px" }}>
+                {/* Tags row */}
+                <div style={{ display: "flex", gap: 8, alignItems: "center", marginBottom: 6, flexWrap: "wrap" }}>
+                  <span style={{
+                    fontSize: 11,
+                    fontWeight: 600,
+                    padding: "2px 8px",
+                    borderRadius: 4,
+                    background: b.status === "draft"
+                      ? (b.scheduled_at ? "#E8EAF6" : "#FFF3E0")
+                      : b.status === "sent" ? "#E8F5E9"
+                      : b.status === "sending" ? "#E3F2FD"
+                      : "#FFEBEE",
+                    color: b.status === "draft"
+                      ? (b.scheduled_at ? "#283593" : "#E65100")
+                      : b.status === "sent" ? "#2E7D32"
+                      : b.status === "sending" ? "#1565C0"
+                      : "#C62828",
+                  }}>
+                    {b.status === "draft" && b.scheduled_at ? `zaplanowano · ${formatSchedule(b.scheduled_at)}` : b.status}
+                  </span>
+                  <span style={{ fontSize: 11, color: "#989898", background: "#F5F5F5", padding: "2px 8px", borderRadius: 4 }}>
+                    {b.target_user_type ?? "wszyscy"}
+                  </span>
+                  {b.target_city && (
                     <span style={{ fontSize: 11, color: "#989898", background: "#F5F5F5", padding: "2px 8px", borderRadius: 4 }}>
-                      {b.target_user_type ?? "wszyscy"}
+                      {b.target_city}
                     </span>
-                    {b.target_city && (
-                      <span style={{ fontSize: 11, color: "#989898", background: "#F5F5F5", padding: "2px 8px", borderRadius: 4 }}>
-                        {b.target_city}
-                      </span>
-                    )}
-                    {b.target_demo_testing && (
-                      <span style={{ fontSize: 11, color: "#1565C0", background: "#E3F2FD", padding: "2px 8px", borderRadius: 4 }}>
-                        demo_testing
-                      </span>
-                    )}
-                  </div>
-                  <h3 style={{ fontSize: 16, fontWeight: 600, color: "#0b0b0b", margin: 0 }}>{b.subject}</h3>
-                  {b.sent_at && (
-                    <p style={{ fontSize: 12, color: "#989898", margin: "4px 0 0" }}>
-                      Wysłano: {new Date(b.sent_at).toLocaleString("pl-PL")} - {b.recipient_counts.patient}/{subscribers.patient} pacjentek, {b.recipient_counts.midwife}/{subscribers.midwife} położnych
-                      {b.failed_count > 0 && <span style={{ color: "#C62828" }}> ({b.failed_count} błędów)</span>}
-                    </p>
                   )}
-                  {results[b.id] && (
-                    <p style={{ fontSize: 12, color: "#2E7D32", margin: "4px 0 0", fontWeight: 600 }}>
-                      Wysłano {results[b.id].sent_count}/{results[b.id].total_subscribers}
-                    </p>
+                  {b.target_demo_testing && (
+                    <span style={{ fontSize: 11, color: "#1565C0", background: "#E3F2FD", padding: "2px 8px", borderRadius: 4 }}>
+                      demo_testing
+                    </span>
                   )}
                 </div>
-                <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
+
+                {/* Subject */}
+                <h3 style={{ fontSize: 16, fontWeight: 600, color: "#0b0b0b", margin: "0 0 8px 0" }}>{b.subject}</h3>
+
+                {/* Sent info */}
+                {b.sent_at && (
+                  <p style={{ fontSize: 12, color: "#989898", margin: "0 0 8px 0" }}>
+                    Wysłano: {new Date(b.sent_at).toLocaleString("pl-PL")} - {b.recipient_counts.patient}/{subscribers.patient} pacjentek, {b.recipient_counts.midwife}/{subscribers.midwife} położnych
+                    {b.failed_count > 0 && <span style={{ color: "#C62828" }}> ({b.failed_count} błędów)</span>}
+                  </p>
+                )}
+                {results[b.id] && (
+                  <p style={{ fontSize: 12, color: "#2E7D32", margin: "0 0 8px 0", fontWeight: 600 }}>
+                    Wysłano {results[b.id].sent_count}/{results[b.id].total_subscribers}
+                  </p>
+                )}
+
+                {/* Actions row */}
+                <div style={{ display: "flex", gap: 8, alignItems: "center", flexWrap: "wrap", marginTop: 12 }}>
                   <button
                     onClick={() => handlePreview(b.id)}
                     style={{
@@ -186,32 +257,95 @@ function AdminContent() {
                   >
                     {previewId === b.id ? "Zamknij" : "Podgląd"}
                   </button>
-                  {(b.status === "draft" || b.status === "sent") && (
+
+                  {b.status === "draft" && (
+                    <>
+                      {/* Schedule section */}
+                      <input
+                        type="datetime-local"
+                        value={schedules[b.id] ?? ""}
+                        onChange={(e) => setSchedules((prev) => ({ ...prev, [b.id]: e.target.value }))}
+                        style={{
+                          padding: "6px 10px", border: "1px solid #EEE", borderRadius: 8, fontSize: 13,
+                          color: "#414141",
+                        }}
+                      />
+                      <button
+                        onClick={() => handleSchedule(b.id)}
+                        style={{
+                          padding: "8px 16px", border: "1px solid #283593", borderRadius: 8,
+                          background: "#fff", color: "#283593",
+                          cursor: "pointer", fontSize: 13, fontWeight: 600,
+                        }}
+                      >
+                        Zaplanuj
+                      </button>
+                      {b.scheduled_at && (
+                        <button
+                          onClick={() => handleCancelSchedule(b.id)}
+                          style={{
+                            padding: "8px 16px", border: "1px solid #C62828", borderRadius: 8,
+                            background: "#fff", color: "#C62828",
+                            cursor: "pointer", fontSize: 13, fontWeight: 600,
+                          }}
+                        >
+                          Anuluj
+                        </button>
+                      )}
+
+                      {/* Divider */}
+                      <div style={{ width: 1, height: 24, background: "#EEE" }} />
+
+                      {/* Manual send */}
+                      <input
+                        type="number"
+                        value={limits[b.id] ?? ""}
+                        onChange={(e) => setLimits((prev) => ({ ...prev, [b.id]: e.target.value }))}
+                        placeholder="limit"
+                        style={{ width: 70, padding: "6px 10px", border: "1px solid #EEE", borderRadius: 8, fontSize: 13 }}
+                      />
+                      <button
+                        onClick={() => handleSend(b.id)}
+                        disabled={sending === b.id}
+                        style={{
+                          padding: "8px 16px", border: "none", borderRadius: 8,
+                          background: "#e352ad", color: "#fff",
+                          cursor: "pointer", fontSize: 13, fontWeight: 600,
+                          opacity: sending === b.id ? 0.6 : 1,
+                        }}
+                      >
+                        {sending === b.id ? "Wysyłam..." : "Wyślij teraz"}
+                      </button>
+                    </>
+                  )}
+
+                  {b.status === "sent" && (
                     <>
                       <input
                         type="number"
                         value={limits[b.id] ?? ""}
                         onChange={(e) => setLimits((prev) => ({ ...prev, [b.id]: e.target.value }))}
-                        placeholder="wszystkie"
-                        style={{ width: 80, padding: "6px 10px", border: "1px solid #EEE", borderRadius: 8, fontSize: 13 }}
+                        placeholder="limit"
+                        style={{ width: 70, padding: "6px 10px", border: "1px solid #EEE", borderRadius: 8, fontSize: 13 }}
                       />
                       <button
-                        onClick={() => handleSend(b.id, b.status === "sent")}
+                        onClick={() => handleSend(b.id, true)}
                         disabled={sending === b.id}
                         style={{
-                          padding: "8px 16px", border: b.status === "sent" ? "1px solid #e352ad" : "none", borderRadius: 8,
-                          background: b.status === "sent" ? "#fff" : "#e352ad",
-                          color: b.status === "sent" ? "#e352ad" : "#fff",
+                          padding: "8px 16px", border: "1px solid #e352ad", borderRadius: 8,
+                          background: "#fff", color: "#e352ad",
                           cursor: "pointer", fontSize: 13, fontWeight: 600,
                           opacity: sending === b.id ? 0.6 : 1,
                         }}
                       >
-                        {sending === b.id ? "Wysyłam..." : b.status === "sent" ? "Ponów" : "Wyślij"}
+                        {sending === b.id ? "Wysyłam..." : "Ponów"}
                       </button>
                     </>
                   )}
                 </div>
               </div>
+
+              {/* Preview iframe */}
               {previewId === b.id && (
                 <div style={{ borderTop: "1px solid #EEE" }}>
                   <iframe

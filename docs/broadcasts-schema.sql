@@ -8,6 +8,7 @@ CREATE TABLE IF NOT EXISTS broadcasts (
   target_user_type TEXT CHECK (target_user_type IN ('patient', 'midwife')),  -- NULL = all
   target_city TEXT,  -- NULL = all cities, supports comma-separated list (e.g. "Warszawa,Marki,Otwock")
   target_demo_testing BOOLEAN,  -- NULL = all, true = only demo_testing subscribers
+  scheduled_at TIMESTAMP WITH TIME ZONE,  -- NULL = manual send, set = auto-send by cron when time arrives
   status TEXT NOT NULL DEFAULT 'draft' CHECK (status IN ('draft', 'sending', 'sent', 'failed')),
   sent_count INTEGER DEFAULT 0,
   failed_count INTEGER DEFAULT 0,

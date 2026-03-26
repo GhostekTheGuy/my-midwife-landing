@@ -1,1 +1,8 @@
-{}
+{
+  "crons": [
+    {
+      "path": "/api/cron/send-broadcasts",
+      "schedule": "0 11 * * *"
+    }
+  ]
+}

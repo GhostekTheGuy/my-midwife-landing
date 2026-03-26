@@ -3,6 +3,8 @@ import { Resend } from "resend"
 import { supabase } from "@/lib/supabase"
 import { wrapInBrandLayout } from "@/lib/email-templates"
 
+export const maxDuration = 60
+
 const resend = new Resend(process.env.RESEND_API_KEY)
 const FROM_EMAIL = process.env.FROM_EMAIL ?? "MyMidwife <onboarding@resend.dev>"
 const TEST_EMAIL_OVERRIDE = process.env.TEST_EMAIL_OVERRIDE
@@ -62,7 +64,7 @@ export async function POST(request: NextRequest) {
   // Build subscriber query
   let query = supabase
     .from("form_submissions")
-    .select("id, email, city")
+    .select("id, email")
     .limit(10000)
 
   if (broadcast.target_user_type) {
